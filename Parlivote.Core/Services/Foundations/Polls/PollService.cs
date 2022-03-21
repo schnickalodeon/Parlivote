@@ -15,8 +15,8 @@ public class PollService : IPollService
         this.loggingBroker = loggingBroker;
         this.storageBroker = storageBroker;
     }
-    public Task<Poll> AddPollAsync(Poll poll)
+    public async Task<Poll> AddPollAsync(Poll poll)
     {
-        throw new System.NotImplementedException();
+        return await this.storageBroker.InsertPollAsync(poll);
     }
 }
