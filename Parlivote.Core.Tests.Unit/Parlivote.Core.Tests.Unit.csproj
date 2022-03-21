@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -27,6 +27,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Parlivote.Core\Parlivote.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Services\Foundations\Polls\" />
   </ItemGroup>
 
 </Project>
