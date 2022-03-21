@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Parlivote.Core.Brokers.Logging;
 using Parlivote.Core.Brokers.Storage;
 
 namespace Parlivote.Core
@@ -34,6 +35,7 @@ namespace Parlivote.Core
 
         private static void AddBrokers(IServiceCollection services)
         {
+            services.AddTransient<ILoggingBroker, LoggingBroker>();
             services.AddTransient<IStorageBroker, StorageBroker>();
         }
 
