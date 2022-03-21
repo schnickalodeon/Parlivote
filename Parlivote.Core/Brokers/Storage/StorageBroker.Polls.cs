@@ -1,9 +1,9 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Parlivote.Shared.Models.Polls;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Parlivote.Core.Brokers.Storage;
 
@@ -21,19 +21,16 @@ public partial class StorageBroker
 
         return addedEntityEntry.Entity;
     }
-
     public IQueryable<Poll> SelectAllPolls()
     {
         using var broker = new StorageBroker(this.configuration);
         return broker.Polls;
     }
-
     public async Task<Poll> SelectPollById(Guid pollId)
     {
         await using var broker = new StorageBroker(this.configuration);
         return await broker.Polls.FindAsync(pollId);
     }
-
     public async Task<Poll> UpdatePollAsync(Poll poll)
     {
         await using var broker = new StorageBroker(this.configuration);
@@ -45,7 +42,6 @@ public partial class StorageBroker
 
         return updatedEntityEntry.Entity;
     }
-
     public async Task<Poll> DeletePollAsync(Poll poll)
     {
         await using var broker = new StorageBroker(this.configuration);

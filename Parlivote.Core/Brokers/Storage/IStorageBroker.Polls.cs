@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Parlivote.Shared.Models.Polls;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Parlivote.Shared.Models.Polls;
 
 namespace Parlivote.Core.Brokers.Storage;
 
