@@ -2,10 +2,12 @@
 using Parlivote.Core.Brokers.Logging;
 using Parlivote.Core.Brokers.Storage;
 using Parlivote.Core.Services.Foundations.Polls;
+using Parlivote.Shared.Models.Polls;
+using Tynamix.ObjectFiller;
 
 namespace Parlivote.Core.Tests.Unit.Services.Foundations.Polls;
 
-public class PollServiceTests
+public partial class PollServiceTests
 {
     private Mock<ILoggingBroker> loggingBrokerMock;
     private Mock<IStorageBroker> storageBrokerMock;
@@ -21,5 +23,12 @@ public class PollServiceTests
             this.storageBrokerMock.Object);
     }
 
+    private static Poll GetRandomPoll() =>
+        GetPollFiller().Create();
+
+    private static Filler<Poll> GetPollFiller()
+    {
+        return new Filler<Poll>();
+    }
 
 }
