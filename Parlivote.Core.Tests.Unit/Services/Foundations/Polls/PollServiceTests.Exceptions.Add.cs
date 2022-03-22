@@ -67,25 +67,23 @@ public partial class PollServiceTests
             = new PollDependencyValidationException(alreadyExistsPollException);
 
         this.storageBrokerMock.Setup(broker =>
-                broker.InsertPollAsync(It.IsAny<Poll>()))
-            .ThrowsAsync(duplicateKeyException);
+            broker.InsertPollAsync(It.IsAny<Poll>()))
+                .ThrowsAsync(duplicateKeyException);
 
         // Act
         Task<Poll> addPollTask =
             this.pollService.AddAsyncAsync(alreadyExistingPoll);
 
         // Assert
-        await Assert.ThrowsAsync<PollDependencyValidationException>(() =>
-            addPollTask.AsTask());
+        await Assert.ThrowsAsync<PollDependencyValidationException>(() => addPollTask);
 
         this.storageBrokerMock.Verify(broker =>
-                broker.InsertPollAsync(It.IsAny<Poll>()),
+            broker.InsertPollAsync(alreadyExistingPoll),
             Times.Once);
 
-        this.loggingBrokerMock.Verify(broker =>
-                broker.LogError(It.Is(
-                    SameExceptionAs(expectedPollDependencyValidationException))),
-            Times.Once);
+        Tests.VerifyCriticalExceptionLogged(
+            this.loggingBrokerMock,
+            expectedPollDependencyValidationException);
 
         this.storageBrokerMock.VerifyNoOtherCalls();
         this.loggingBrokerMock.VerifyNoOtherCalls();
