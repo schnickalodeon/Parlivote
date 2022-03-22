@@ -5,5 +5,5 @@ namespace Parlivote.Core.Services.Foundations.Polls;
 
 public interface IPollService
 {
-    Task<Poll> AddAsyncAsync(Poll poll);
+    Task<Poll> AddAsync(Poll poll);
 }

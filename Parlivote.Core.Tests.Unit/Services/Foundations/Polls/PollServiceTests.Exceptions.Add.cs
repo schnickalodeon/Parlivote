@@ -3,6 +3,7 @@ using EFxceptions.Models.Exceptions;
 using FluentAssertions;
 using Force.DeepCloner;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualBasic;
 using Moq;
 using Parlivote.Shared.Models.Polls;
@@ -34,7 +35,7 @@ public partial class PollServiceTests
 
         // Act
         Task<Poll> addPollTask =
-            this.pollService.AddAsyncAsync(inputPoll);
+            this.pollService.AddAsync(inputPoll);
 
         // Assert
         await Assert.ThrowsAsync<PollDependencyException>(() => addPollTask);
@@ -72,7 +73,7 @@ public partial class PollServiceTests
 
         // Act
         Task<Poll> addPollTask =
-            this.pollService.AddAsyncAsync(alreadyExistingPoll);
+            this.pollService.AddAsync(alreadyExistingPoll);
 
         // Assert
         await Assert.ThrowsAsync<PollDependencyValidationException>(() => addPollTask);
@@ -84,6 +85,43 @@ public partial class PollServiceTests
         Tests.VerifyExceptionLogged(
             this.loggingBrokerMock,
             expectedPollDependencyValidationException);
+
+        this.storageBrokerMock.VerifyNoOtherCalls();
+        this.loggingBrokerMock.VerifyNoOtherCalls();
+    }
+
+    [Fact]
+    public async Task ShouldThrowDependencyExceptionOnAddIfDatabaseUpdateErrorOccursAndLogItAsync()
+    {
+        // Arrange
+        Poll somePoll = GetRandomPoll();
+
+        var databaseUpdateException =
+            new DbUpdateException();
+
+        var failedPollStorageException =
+            new FailedPollStorageException(databaseUpdateException);
+
+        var expectedDependencyException =
+            new PollDependencyException(failedPollStorageException);
+
+        this.storageBrokerMock.Setup(broker =>
+                broker.InsertPollAsync(It.IsAny<Poll>()))
+            .ThrowsAsync(databaseUpdateException);
+
+        // Act
+        Task<Poll> addPollTask = this.pollService.AddAsync(somePoll);
+
+        // Assert
+        await Assert.ThrowsAsync<PollDependencyException>(() => addPollTask);
+
+        this.storageBrokerMock.Verify(broker =>
+            broker.InsertPollAsync(somePoll),
+            Times.Once());
+
+        Tests.VerifyExceptionLogged(
+            this.loggingBrokerMock,
+            expectedDependencyException);
 
         this.storageBrokerMock.VerifyNoOtherCalls();
         this.loggingBrokerMock.VerifyNoOtherCalls();
