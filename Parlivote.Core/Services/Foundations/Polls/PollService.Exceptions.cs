@@ -21,6 +21,10 @@ public partial class PollService
         {
             return await returningPollFunction();
         }
+        catch (NullPollException nullPollException)
+        {
+            throw CreateAndLogValidationException(nullPollException);
+        }
         catch (DbUpdateException dbUpdateException)
         {
             var failedPollStorageException =
@@ -51,6 +55,15 @@ public partial class PollService
         }
     }
 
+    private PollValidationException CreateAndLogValidationException(Xeption exception)
+    {
+        var pollValidationException =
+            new PollValidationException(exception);
+
+        this.loggingBroker.LogError(pollValidationException);
+
+        return pollValidationException;
+    }
     private PollDependencyValidationException CreateAndLogDependencyValidationException(Xeption exception)
     {
         var pollDependencyValidationException =

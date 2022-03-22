@@ -37,7 +37,7 @@ public static class Tests
             Times.Once);
     }
     public static void VerifyCriticalExceptionLogged(Mock<ILoggingBroker> loggingBrokerMock, Xeption expectedException)
-    {
+    { 
         loggingBrokerMock.Verify(broker =>
             broker.LogCritical(It.Is(SameExceptionAs(expectedException))),
             Times.Once);
