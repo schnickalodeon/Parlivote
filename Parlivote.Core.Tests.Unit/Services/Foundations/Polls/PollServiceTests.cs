@@ -1,4 +1,6 @@
-﻿using Moq;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Moq;
 using Parlivote.Core.Brokers.Logging;
 using Parlivote.Core.Brokers.Storage;
 using Parlivote.Core.Services.Foundations.Polls;
@@ -25,6 +27,13 @@ public partial class PollServiceTests
 
     private static Poll GetRandomPoll() =>
         GetPollFiller().Create();
+
+    private static IQueryable<Poll> GetRandomPolls()
+    {
+        return GetPollFiller()
+            .Create(count: Tests.GetRandomNumber())
+            .AsQueryable();
+    }
 
     private static Filler<Poll> GetPollFiller()
     {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
@@ -14,6 +15,7 @@ namespace Parlivote.Core.Services.Foundations.Polls;
 public partial class PollService
 {
     private delegate Task<Poll> ReturningPollFunction();
+    private delegate IQueryable<Poll> ReturningPollsFunction();
 
     private async Task<Poll> TryCatch(ReturningPollFunction returningPollFunction)
     {
@@ -42,6 +44,27 @@ public partial class PollService
                 new AlreadyExistsPollException(duplicateKeyException);
 
             throw CreateAndLogDependencyValidationException(alreadyExistsPollException);
+        }
+        catch (SqlException sqlException)
+        {
+            var failedPollStorageException =
+                new FailedPollStorageException(sqlException);
+
+            throw CreateAndLogCriticalDependencyException(failedPollStorageException);
+        }
+        catch (Exception exception)
+        {
+            var failedPollServiceException =
+                new FailedPollServiceException(exception);
+
+            throw CreateAndLogServiceException(failedPollServiceException);
+        }
+    }
+    private IQueryable<Poll> TryCatch(ReturningPollsFunction returningPollsFunction)
+    {
+        try
+        {
+            return returningPollsFunction();
         }
         catch (SqlException sqlException)
         {
