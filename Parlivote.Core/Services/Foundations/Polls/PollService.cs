@@ -25,8 +25,9 @@ public partial class PollService : IPollService
             return await this.storageBroker.InsertPollAsync(poll);
         });
 
-    public IQueryable<Poll> RetrieveAll()
-    {
-        return this.storageBroker.SelectAllPolls();
-    }
+    public IQueryable<Poll> RetrieveAll() =>
+        TryCatch(() =>
+        {
+            return this.storageBroker.SelectAllPolls();
+        });
 }
