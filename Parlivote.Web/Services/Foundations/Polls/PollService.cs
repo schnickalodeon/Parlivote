@@ -1,0 +1,22 @@
+﻿using System.Threading.Tasks;
+using Parlivote.Shared.Models.Polls;
+using Parlivote.Web.Brokers.API;
+using Parlivote.Web.Brokers.Logging;
+
+namespace Parlivote.Web.Services.Foundations.Polls;
+
+public class PollService : IPollService
+{
+    private readonly ILoggingBroker loggingBroker;
+    private readonly IApiBroker apiBroker;
+
+    public PollService(ILoggingBroker loggingBroker, IApiBroker apiBroker)
+    {
+        this.loggingBroker = loggingBroker;
+        this.apiBroker = apiBroker;
+    }
+    public Task<Poll> AddAsync(Poll poll)
+    {
+        throw new System.NotImplementedException();
+    }
+}
