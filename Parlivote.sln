@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Parlivote.Shared", "Parlivo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Parlivote.Web", "Parlivote.Web\Parlivote.Web.csproj", "{A3D283A8-CBE4-437C-9113-4CAE139E47CF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Parlivote.Web.Tests.Unit", "Parlivote.Web.Tests.Unit\Parlivote.Web.Tests.Unit.csproj", "{34440786-A467-4025-A399-7487FF8B7E94}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{A3D283A8-CBE4-437C-9113-4CAE139E47CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A3D283A8-CBE4-437C-9113-4CAE139E47CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A3D283A8-CBE4-437C-9113-4CAE139E47CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{34440786-A467-4025-A399-7487FF8B7E94}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34440786-A467-4025-A399-7487FF8B7E94}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34440786-A467-4025-A399-7487FF8B7E94}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34440786-A467-4025-A399-7487FF8B7E94}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
