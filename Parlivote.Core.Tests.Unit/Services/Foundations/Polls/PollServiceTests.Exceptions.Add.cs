@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
 using FluentAssertions;
 using Force.DeepCloner;
@@ -122,6 +123,40 @@ public partial class PollServiceTests
         Tests.VerifyExceptionLogged(
             this.loggingBrokerMock,
             expectedDependencyException);
+
+        this.storageBrokerMock.VerifyNoOtherCalls();
+        this.loggingBrokerMock.VerifyNoOtherCalls();
+    }
+
+    [Fact]
+    public async Task ShouldThrowServiceExceptionOnAddIfExceptionOccursAndLogItAsync()
+    {
+        // Arrange
+        Poll somePoll = GetRandomPoll();
+        string randomExceptionMessage = Tests.GetRandomString();
+        var serviceException = new Exception(randomExceptionMessage);
+
+        var failedPollServiceException =
+            new FailedPollServiceException(serviceException);
+
+        var expectedPollServiceException =
+            new PollServiceException(failedPollServiceException);
+
+        this.storageBrokerMock.Setup(broker =>
+                broker.InsertPollAsync(It.IsAny<Poll>()))
+            .ThrowsAsync(serviceException);
+
+        //Act
+        Task<Poll> addPollTask = this.pollService.AddAsync(somePoll);
+
+        //Assert
+        await Assert.ThrowsAsync<PollServiceException>(() => addPollTask);
+
+        this.storageBrokerMock.Verify(broker =>
+            broker.InsertPollAsync(It.IsAny<Poll>()),
+            Times.Once);
+
+        Tests.VerifyExceptionLogged(this.loggingBrokerMock,expectedPollServiceException);
 
         this.storageBrokerMock.VerifyNoOtherCalls();
         this.loggingBrokerMock.VerifyNoOtherCalls();
