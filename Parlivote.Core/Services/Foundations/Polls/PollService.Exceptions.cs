@@ -73,6 +73,13 @@ public partial class PollService
 
             throw CreateAndLogCriticalDependencyException(failedPollStorageException);
         }
+        catch (Exception exception)
+        {
+            var failedPollServiceException =
+                new FailedPollServiceException(exception);
+
+            throw CreateAndLogServiceException(failedPollServiceException);
+        }
     }
 
     private PollValidationException CreateAndLogValidationException(Xeption exception)
