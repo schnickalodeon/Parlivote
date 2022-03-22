@@ -42,6 +42,13 @@ public partial class PollService
 
             throw CreateAndLogCriticalDependencyException(failedPollStorageException);
         }
+        catch (Exception exception)
+        {
+            var failedPollServiceException =
+                new FailedPollServiceException(exception);
+
+            throw CreateAndLogServiceException(failedPollServiceException);
+        }
     }
 
     private PollDependencyValidationException CreateAndLogDependencyValidationException(Xeption exception)
@@ -70,5 +77,14 @@ public partial class PollService
         this.loggingBroker.LogCritical(pollDependencyException);
 
         return pollDependencyException;
+    }
+    private PollServiceException CreateAndLogServiceException(Xeption exception)
+    {
+        var pollServiceException =
+            new PollServiceException(exception);
+
+        this.loggingBroker.LogError(pollServiceException);
+
+        return pollServiceException;
     }
 }
