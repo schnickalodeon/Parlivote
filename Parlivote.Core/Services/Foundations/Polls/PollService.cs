@@ -5,7 +5,7 @@ using Parlivote.Shared.Models.Polls;
 
 namespace Parlivote.Core.Services.Foundations.Polls;
 
-public class PollService : IPollService
+public partial class PollService : IPollService
 {
     private readonly ILoggingBroker loggingBroker;
     private readonly IStorageBroker storageBroker;
@@ -15,8 +15,10 @@ public class PollService : IPollService
         this.loggingBroker = loggingBroker;
         this.storageBroker = storageBroker;
     }
-    public async Task<Poll> AddPollAsync(Poll poll)
-    {
-        return await this.storageBroker.InsertPollAsync(poll);
-    }
+
+    public Task<Poll> AddPollAsync(Poll poll) =>
+        TryCatch(async () =>
+        {
+            return await this.storageBroker.InsertPollAsync(poll);
+        });
 }
