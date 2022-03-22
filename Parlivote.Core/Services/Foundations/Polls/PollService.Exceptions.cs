@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using Parlivote.Core.Brokers.Logging;
 using Parlivote.Core.Brokers.Storage;
 using Parlivote.Shared.Models.Polls;
@@ -19,6 +20,13 @@ public partial class PollService
         try
         {
             return await returningPollFunction();
+        }
+        catch (DbUpdateException dbUpdateException)
+        {
+            var failedPollStorageException =
+                new FailedPollStorageException(dbUpdateException);
+
+            throw CreateAndLogDependencyException(failedPollStorageException);
         }
         catch (DuplicateKeyException duplicateKeyException)
         {
@@ -45,7 +53,15 @@ public partial class PollService
 
         return pollDependencyValidationException;
     }
+    private PollDependencyException CreateAndLogDependencyException(Xeption exception)
+    {
+        var pollDependencyException =
+            new PollDependencyException(exception);
 
+        this.loggingBroker.LogError(pollDependencyException);
+
+        return pollDependencyException;
+    }
     private PollDependencyException CreateAndLogCriticalDependencyException(Xeption exception)
     {
         var pollDependencyException =

@@ -106,8 +106,8 @@ public partial class PollServiceTests
             new PollDependencyException(failedPollStorageException);
 
         this.storageBrokerMock.Setup(broker =>
-                broker.InsertPollAsync(It.IsAny<Poll>()))
-            .ThrowsAsync(databaseUpdateException);
+            broker.InsertPollAsync(It.IsAny<Poll>()))
+                .ThrowsAsync(databaseUpdateException);
 
         // Act
         Task<Poll> addPollTask = this.pollService.AddAsync(somePoll);
