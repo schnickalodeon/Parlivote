@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Parlivote.Core.Brokers.Logging;
 using Parlivote.Core.Brokers.Storage;
+using Parlivote.Core.Services.Foundations.Polls;
 
 namespace Parlivote.Core
 {
@@ -18,7 +19,6 @@ namespace Parlivote.Core
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
 
@@ -31,6 +31,14 @@ namespace Parlivote.Core
             AddBrokers(services);
 
             services.AddDbContext<StorageBroker>();
+
+            AddServices(services);
+        }
+
+        private void AddServices(IServiceCollection services)
+        {
+            //Foundation Services
+            services.AddTransient<IPollService, PollService>();
         }
 
         private static void AddBrokers(IServiceCollection services)
@@ -39,7 +47,6 @@ namespace Parlivote.Core
             services.AddTransient<IStorageBroker, StorageBroker>();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
