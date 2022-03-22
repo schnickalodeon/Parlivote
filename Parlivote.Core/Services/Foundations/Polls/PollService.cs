@@ -27,6 +27,6 @@ public partial class PollService : IPollService
 
     public IQueryable<Poll> RetrieveAll()
     {
-        throw new System.NotImplementedException();
+        return this.storageBroker.SelectAllPolls();
     }
 }
