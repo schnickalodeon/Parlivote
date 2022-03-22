@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Parlivote.Core.Services.Foundations.Polls;
@@ -36,6 +37,24 @@ public class PollsController : RESTFulController
             when (pollDependencyException.InnerException is AlreadyExistsPollException)
         {
             return Conflict(pollDependencyException.InnerException);
+        }
+        catch (PollDependencyException pollDependencyException)
+        {
+            return InternalServerError(pollDependencyException);
+        }
+        catch (PollServiceException pollServiceException)
+        {
+            return InternalServerError(pollServiceException);
+        }
+    }
+
+    [HttpGet]
+    public ActionResult<IQueryable<Poll>> GetAllPolls()
+    {
+        try
+        {
+            IQueryable<Poll> polls = this.pollService.RetrieveAll();
+            return Ok(polls);
         }
         catch (PollDependencyException pollDependencyException)
         {
