@@ -52,4 +52,38 @@ public partial class PollServiceTests
         this.loggingBrokerMock.VerifyNoOtherCalls();
     }
 
+    [Fact]
+    public void ShouldThrowServiceExceptionOnRetrieveAllIfExceptionOccursAndLogItAsync()
+    {
+        // Arrange
+        Poll somePoll = GetRandomPoll();
+        string randomExceptionMessage = Tests.GetRandomString();
+        var serviceException = new Exception(randomExceptionMessage);
+
+        var failedPollServiceException =
+            new FailedPollServiceException(serviceException);
+
+        var expectedPollServiceException =
+            new PollServiceException(failedPollServiceException);
+
+        this.storageBrokerMock.Setup(broker =>
+            broker.SelectAllPolls())
+            .Throws(serviceException);
+
+        // Act
+        Action retrieveAllAction = () => this.pollService.RetrieveAll();
+
+        // Assert
+        Assert.Throws<PollServiceException>(retrieveAllAction);
+
+        this.storageBrokerMock.Verify(broker =>
+            broker.SelectAllPolls(),
+            Times.Once);
+
+        Tests.VerifyExceptionLogged(this.loggingBrokerMock, expectedPollServiceException);
+
+        this.storageBrokerMock.VerifyNoOtherCalls();
+        this.loggingBrokerMock.VerifyNoOtherCalls();
+    }
+
 }
