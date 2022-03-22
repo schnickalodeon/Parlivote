@@ -30,6 +30,12 @@ public static class Tests
             (expectedException.InnerException as Xeption).DataEquals(actualException.InnerException.Data);
     }
 
+    public static void VerifyExceptionLogged(Mock<ILoggingBroker> loggingBrokerMock, Xeption expectedException)
+    {
+        loggingBrokerMock.Verify(broker =>
+            broker.LogError(It.Is(SameExceptionAs(expectedException))),
+            Times.Once);
+    }
     public static void VerifyCriticalExceptionLogged(Mock<ILoggingBroker> loggingBrokerMock, Xeption expectedException)
     {
         loggingBrokerMock.Verify(broker =>

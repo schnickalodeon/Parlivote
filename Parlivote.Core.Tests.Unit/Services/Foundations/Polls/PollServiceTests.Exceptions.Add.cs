@@ -81,7 +81,7 @@ public partial class PollServiceTests
             broker.InsertPollAsync(alreadyExistingPoll),
             Times.Once);
 
-        Tests.VerifyCriticalExceptionLogged(
+        Tests.VerifyExceptionLogged(
             this.loggingBrokerMock,
             expectedPollDependencyValidationException);
 
