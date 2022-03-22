@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Parlivote.Core.Brokers.Logging;
 using Parlivote.Core.Brokers.Storage;
 using Parlivote.Shared.Models.Polls;
@@ -22,4 +24,9 @@ public partial class PollService : IPollService
             ValidatePoll(poll);
             return await this.storageBroker.InsertPollAsync(poll);
         });
+
+    public IQueryable<Poll> RetrieveAll()
+    {
+        throw new System.NotImplementedException();
+    }
 }
