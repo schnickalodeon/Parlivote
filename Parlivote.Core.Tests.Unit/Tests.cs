@@ -5,12 +5,19 @@ using Microsoft.Data.SqlClient;
 using Moq;
 using Parlivote.Core.Brokers.Logging;
 using Parlivote.Shared.Models.Polls.Exceptions;
+using Tynamix.ObjectFiller;
 using Xeptions;
 
 namespace Parlivote.Core.Tests.Unit;
 
 public static class Tests
 {
+    public static int GetRandomNumber() =>
+        new IntRange(min: 2, max: 10).GetValue();
+
+    public static string GetRandomString() =>
+        new MnemonicString(wordCount: GetRandomNumber()).GetValue();
+
     public static SqlException GetSqlException() =>
         (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
 

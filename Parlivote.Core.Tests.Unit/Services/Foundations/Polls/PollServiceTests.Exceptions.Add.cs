@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using EFxceptions.Models.Exceptions;
 using FluentAssertions;
 using Force.DeepCloner;
 using Microsoft.Data.SqlClient;
@@ -33,7 +34,7 @@ public partial class PollServiceTests
 
         // Act
         Task<Poll> addPollTask =
-            this.pollService.AddPollAsync(inputPoll);
+            this.pollService.AddAsyncAsync(inputPoll);
 
         // Assert
         await Assert.ThrowsAsync<PollDependencyException>(() => addPollTask);
@@ -43,6 +44,48 @@ public partial class PollServiceTests
             Times.Once);
 
         Tests.VerifyCriticalExceptionLogged(this.loggingBrokerMock, expectedPollDependencyException);
+
+        this.storageBrokerMock.VerifyNoOtherCalls();
+        this.loggingBrokerMock.VerifyNoOtherCalls();
+    }
+
+    [Fact]
+    public async Task ShouldThrowDependencyValidationExceptionOnAddIfPollAlreadyExistsAndLogItAsync()
+    {
+        // Arrange
+        Poll randomPoll = GetRandomPoll();
+        Poll alreadyExistingPoll = randomPoll;
+        string randomMessage = Tests.GetRandomString();
+
+        var duplicateKeyException =
+            new DuplicateKeyException(randomMessage);
+
+        var alreadyExistsPollException =
+            new AlreadyExistsPollException(duplicateKeyException);
+
+        var expectedPollDependencyValidationException
+            = new PollDependencyValidationException(alreadyExistsPollException);
+
+        this.storageBrokerMock.Setup(broker =>
+                broker.InsertPollAsync(It.IsAny<Poll>()))
+            .ThrowsAsync(duplicateKeyException);
+
+        // Act
+        Task<Poll> addPollTask =
+            this.pollService.AddAsyncAsync(alreadyExistingPoll);
+
+        // Assert
+        await Assert.ThrowsAsync<PollDependencyValidationException>(() =>
+            addPollTask.AsTask());
+
+        this.storageBrokerMock.Verify(broker =>
+                broker.InsertPollAsync(It.IsAny<Poll>()),
+            Times.Once);
+
+        this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(
+                    SameExceptionAs(expectedPollDependencyValidationException))),
+            Times.Once);
 
         this.storageBrokerMock.VerifyNoOtherCalls();
         this.loggingBrokerMock.VerifyNoOtherCalls();

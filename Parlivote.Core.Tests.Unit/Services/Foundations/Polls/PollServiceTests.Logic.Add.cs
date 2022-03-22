@@ -24,7 +24,7 @@ public partial class PollServiceTests
 
         // Act
         Poll actualPoll =
-            await this.pollService.AddPollAsync(inputPoll);
+            await this.pollService.AddAsyncAsync(inputPoll);
 
         // Assert
         actualPoll.Should().BeEquivalentTo(expectedPoll);

@@ -16,7 +16,7 @@ public partial class PollService : IPollService
         this.storageBroker = storageBroker;
     }
 
-    public Task<Poll> AddPollAsync(Poll poll) =>
+    public Task<Poll> AddAsyncAsync(Poll poll) =>
         TryCatch(async () =>
         {
             return await this.storageBroker.InsertPollAsync(poll);
