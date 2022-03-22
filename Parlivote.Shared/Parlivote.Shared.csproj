@@ -7,7 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Models\Polls\" />
+    <Folder Include="Models\Polls\Exceptions\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Xeption" Version="1.6.0" />
   </ItemGroup>
 
 </Project>
