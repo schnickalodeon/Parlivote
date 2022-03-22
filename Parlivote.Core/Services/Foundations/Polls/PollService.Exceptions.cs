@@ -25,6 +25,10 @@ public partial class PollService
         {
             throw CreateAndLogValidationException(nullPollException);
         }
+        catch (InvalidPollException invalidPollException)
+        {
+            throw CreateAndLogValidationException(invalidPollException);
+        }
         catch (DbUpdateException dbUpdateException)
         {
             var failedPollStorageException =
