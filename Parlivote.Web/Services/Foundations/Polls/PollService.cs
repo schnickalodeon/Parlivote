@@ -19,6 +19,7 @@ public partial class PollService : IPollService
     public Task<Poll> AddAsync(Poll poll) =>
         TryCatch(async () => 
         {
+            ValidatePoll(poll);
             return await this.apiBroker.PostPollAsync(poll);
         });
 }
