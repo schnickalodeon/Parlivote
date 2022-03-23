@@ -27,6 +27,10 @@ public partial class PollService
         {
             throw CreateAndLogValidationException(invalidPollException);
         }
+        catch (HttpResponseUrlNotFoundException httpResponseUrlNotFoundException)
+        {
+            throw CreateAndLogCriticalDependencyException(httpResponseUrlNotFoundException);
+        }
         catch (HttpResponseBadRequestException httpBadRequestException)
         {
             throw CreateAndLogDependencyValidationException(httpBadRequestException);
