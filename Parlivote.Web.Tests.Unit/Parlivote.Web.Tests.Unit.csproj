@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -11,6 +11,7 @@
     <PackageReference Include="CompareNETObjects" Version="4.76.0" />
     <PackageReference Include="DeepCloner" Version="0.10.3" />
     <PackageReference Include="FluentAssertions" Version="6.5.1" />
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="2.1.4" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.2.0-preview-20220301-01" />
     <PackageReference Include="Moq" Version="4.17.2" />
     <PackageReference Include="Tynamix.ObjectFiller" Version="1.5.7" />
@@ -23,6 +24,10 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Parlivote.Web\Parlivote.Web.csproj" />
   </ItemGroup>
 
 </Project>

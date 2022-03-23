@@ -5,12 +5,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Brokers\API\" />
     <Folder Include="Configurations\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="RESTFulSense" Version="2.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Parlivote.Shared\Parlivote.Shared.csproj" />
   </ItemGroup>
 
 </Project>
