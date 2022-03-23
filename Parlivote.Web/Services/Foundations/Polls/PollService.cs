@@ -5,7 +5,7 @@ using Parlivote.Web.Brokers.Logging;
 
 namespace Parlivote.Web.Services.Foundations.Polls;
 
-public class PollService : IPollService
+public partial class PollService : IPollService
 {
     private readonly ILoggingBroker loggingBroker;
     private readonly IApiBroker apiBroker;
@@ -15,8 +15,10 @@ public class PollService : IPollService
         this.loggingBroker = loggingBroker;
         this.apiBroker = apiBroker;
     }
-    public async Task<Poll> AddAsync(Poll poll)
-    {
-        return await this.apiBroker.PostPollAsync(poll);
-    }
+
+    public Task<Poll> AddAsync(Poll poll) =>
+        TryCatch(async () => 
+        {
+            return await this.apiBroker.PostPollAsync(poll);
+        });
 }
