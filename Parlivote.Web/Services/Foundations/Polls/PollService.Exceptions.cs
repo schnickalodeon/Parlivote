@@ -47,6 +47,10 @@ public partial class PollService
         {
             throw CreateAndLogDependencyException(httpInternalServerErrorException);
         }
+        catch (HttpResponseException httpResponseException)
+        {
+            throw CreateAndLogDependencyException(httpResponseException);
+        }
         catch (Exception exception)
         {
             var failedPollServiceException =
