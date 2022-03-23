@@ -129,7 +129,46 @@ namespace Parlivote.Web.Tests.Unit.Services.Foundations.Polls
             this.loggingBrokerMock.VerifyNoOtherCalls();
         }
 
+        [Fact]
+        public async Task ShouldThrowAndLogDependencyException_OnAdd_IfInternalServerErrorOccurs()
+        {
+            // Arrange
+            Poll somePoll = GetRandomPoll();
 
-        
+            string randomMessage = Tests.GetRandomString();
+            var responseMessage = new HttpResponseMessage();
+
+            var internalServerErrorException =
+                new HttpResponseInternalServerErrorException(
+                    responseMessage: responseMessage,
+                    message: randomMessage);
+
+            var expectedPollDependencyException =
+                new PollDependencyException(
+                    internalServerErrorException);
+
+            this.apiBrokerMock.Setup(broker =>
+                broker.PostPollAsync(It.IsAny<Poll>()))
+                    .ThrowsAsync(internalServerErrorException);
+
+            // Act
+            Task<Poll> addPollTask =
+                this.pollService.AddAsync(somePoll);
+
+            // Assert
+            await Assert.ThrowsAsync<PollDependencyException>(() => addPollTask);
+
+            this.apiBrokerMock.Verify(broker =>
+                broker.PostPollAsync(somePoll),
+                Times.Once);
+
+            Tests.VerifyExceptionLogged(
+                this.loggingBrokerMock,
+                expectedPollDependencyException);
+
+            this.apiBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+        }
+
     }
 }
