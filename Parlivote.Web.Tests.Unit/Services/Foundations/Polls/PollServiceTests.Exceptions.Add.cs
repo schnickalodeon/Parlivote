@@ -15,28 +15,6 @@ namespace Parlivote.Web.Tests.Unit.Services.Foundations.Polls
 {
     public partial class PollServiceTests
     {
-        public static TheoryData CriticalDependencyException()
-        {
-            string randomMessage = Tests.GetRandomString();
-            var responseMessage = new HttpResponseMessage();
-
-            var badRequestException =
-                new HttpResponseUrlNotFoundException(
-                    responseMessage: responseMessage,
-                    message: randomMessage);
-
-            var unauthorizedException =
-                new HttpResponseUnauthorizedException(
-                    responseMessage: responseMessage,
-                    message: randomMessage);
-
-            return new TheoryData<Xeption>
-            {
-                badRequestException,
-                unauthorizedException
-            };
-        }
-
         [Fact]
         public async Task ShouldThrowAndLogDependencyValidationException_OnAdd_IfBadRequestExceptionOccurs()
         {
@@ -76,6 +54,28 @@ namespace Parlivote.Web.Tests.Unit.Services.Foundations.Polls
 
             this.apiBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
+        }
+
+        public static TheoryData CriticalDependencyException()
+        {
+            string randomMessage = Tests.GetRandomString();
+            var responseMessage = new HttpResponseMessage();
+
+            var badRequestException =
+                new HttpResponseUrlNotFoundException(
+                    responseMessage: responseMessage,
+                    message: randomMessage);
+
+            var unauthorizedException =
+                new HttpResponseUnauthorizedException(
+                    responseMessage: responseMessage,
+                    message: randomMessage);
+
+            return new TheoryData<Xeption>
+            {
+                badRequestException,
+                unauthorizedException
+            };
         }
 
         [Theory]
