@@ -8,12 +8,35 @@ using Moq;
 using Parlivote.Shared.Models.Polls;
 using Parlivote.Shared.Models.Polls.Exceptions;
 using RESTFulSense.Exceptions;
+using Xeptions;
 using Xunit;
 
 namespace Parlivote.Web.Tests.Unit.Services.Foundations.Polls
 {
     public partial class PollServiceTests
     {
+        public static TheoryData CriticalDependencyException()
+        {
+            string randomMessage = Tests.GetRandomString();
+            var responseMessage = new HttpResponseMessage();
+
+            var badRequestException =
+                new HttpResponseUrlNotFoundException(
+                    responseMessage: responseMessage,
+                    message: randomMessage);
+
+            var unauthorizedException =
+                new HttpResponseUnauthorizedException(
+                    responseMessage: responseMessage,
+                    message: randomMessage);
+
+            return new TheoryData<Xeption>
+            {
+                badRequestException,
+                unauthorizedException
+            };
+        }
+
         [Fact]
         public async Task ShouldThrowAndLogDependencyValidationException_OnAdd_IfBadRequestExceptionOccurs()
         {
@@ -55,27 +78,21 @@ namespace Parlivote.Web.Tests.Unit.Services.Foundations.Polls
             this.loggingBrokerMock.VerifyNoOtherCalls();
         }
 
-        [Fact]
-        public async Task ShouldThrowAndLogCriticalDependencyException_OnAdd_IfUrlNotFound()
+        [Theory]
+        [MemberData(nameof(CriticalDependencyException))]
+        public async Task ShouldThrowAndLogCriticalDependencyException_OnAdd_IfCriticalExceptionOccurs(
+            Xeption criticalException)
         {
             // Arrange
             Poll somePoll = GetRandomPoll();
 
-            string randomMessage = Tests.GetRandomString();
-            var responseMessage = new HttpResponseMessage();
-
-            var badRequestException =
-                new HttpResponseUrlNotFoundException(
-                    responseMessage: responseMessage,
-                    message: randomMessage);
-
             var expectedPollDependencyException =
                 new PollDependencyException(
-                    badRequestException);
+                    criticalException);
 
             this.apiBrokerMock.Setup(broker =>
                 broker.PostPollAsync(It.IsAny<Poll>()))
-                    .ThrowsAsync(badRequestException);
+                    .ThrowsAsync(criticalException);
 
             // Act
             Task<Poll> addPollTask =
@@ -95,6 +112,8 @@ namespace Parlivote.Web.Tests.Unit.Services.Foundations.Polls
             this.apiBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
         }
+
+
         
     }
 }
