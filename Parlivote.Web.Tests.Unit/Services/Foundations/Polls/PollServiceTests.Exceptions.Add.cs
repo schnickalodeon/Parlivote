@@ -15,12 +15,8 @@ namespace Parlivote.Web.Tests.Unit.Services.Foundations.Polls
 {
     public partial class PollServiceTests
     {
-        [Fact]
-        public async Task ShouldThrowAndLogDependencyValidationException_OnAdd_IfBadRequestExceptionOccurs()
+        public static TheoryData DependencyValidationException()
         {
-            // Arrange
-            Poll somePoll = GetRandomPoll();
-
             string randomMessage = Tests.GetRandomString();
             var responseMessage = new HttpResponseMessage();
 
@@ -29,13 +25,33 @@ namespace Parlivote.Web.Tests.Unit.Services.Foundations.Polls
                     responseMessage: responseMessage,
                     message: randomMessage);
 
+            var conflictException =
+                new HttpResponseConflictException(
+                    responseMessage: responseMessage,
+                    message: randomMessage);
+
+            return new TheoryData<Xeption>
+            {
+                badRequestException,
+                conflictException
+            };
+        }
+
+        [Theory]
+        [MemberData(nameof(DependencyValidationException))]
+        public async Task ShouldThrowAndLogDependencyValidationException_OnAdd_IfDependencyValidationExceptionOccurs(
+            Xeption dependencyValidationException)
+        {
+            // Arrange
+            Poll somePoll = GetRandomPoll();
+
             var expectedPollDependencyValidationException =
                 new PollDependencyValidationException(
-                    badRequestException);
+                    dependencyValidationException);
 
             this.apiBrokerMock.Setup(broker =>
                 broker.PostPollAsync(It.IsAny<Poll>()))
-                    .ThrowsAsync(badRequestException);
+                    .ThrowsAsync(dependencyValidationException);
 
             // Act
             Task<Poll> addPollTask =
@@ -61,7 +77,7 @@ namespace Parlivote.Web.Tests.Unit.Services.Foundations.Polls
             string randomMessage = Tests.GetRandomString();
             var responseMessage = new HttpResponseMessage();
 
-            var badRequestException =
+            var urlNotFounException =
                 new HttpResponseUrlNotFoundException(
                     responseMessage: responseMessage,
                     message: randomMessage);
@@ -73,7 +89,7 @@ namespace Parlivote.Web.Tests.Unit.Services.Foundations.Polls
 
             return new TheoryData<Xeption>
             {
-                badRequestException,
+                urlNotFounException,
                 unauthorizedException
             };
         }
