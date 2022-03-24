@@ -10,10 +10,9 @@ namespace Parlivote.Web.Services.Views.Polls;
 public class PollViewService : IPollViewService
 {
     private readonly IPollService pollService;
-    public PollViewService(IPollService pollService, ILoggingBroker loggingBroker)
+    public PollViewService(IPollService pollService)
     {
         this.pollService = pollService;
-        this.loggingBroker = loggingBroker;
     }
     public async Task<PollView> AddAsync(PollView pollView)
     {
