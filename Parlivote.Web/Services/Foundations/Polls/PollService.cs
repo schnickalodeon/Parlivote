@@ -24,8 +24,8 @@ public partial class PollService : IPollService
             return await this.apiBroker.PostPollAsync(poll);
         });
 
-    public Task<List<Poll>> RetrieveAllAsync()
+    public async Task<List<Poll>> RetrieveAllAsync()
     {
-        throw new System.NotImplementedException();
+        return await this.apiBroker.GetAllPollsAsync();
     }
 }
