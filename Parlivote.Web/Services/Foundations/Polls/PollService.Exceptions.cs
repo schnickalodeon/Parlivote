@@ -66,6 +66,14 @@ public partial class PollService
         {
             return await returningPollsFunction();
         }
+        catch (HttpResponseUrlNotFoundException httpResponseUrlNotFoundException)
+        {
+            throw CreateAndLogCriticalDependencyException(httpResponseUrlNotFoundException);
+        }
+        catch (HttpResponseUnauthorizedException httpUnauthorizedException)
+        {
+            throw CreateAndLogCriticalDependencyException(httpUnauthorizedException);
+        }
         catch (HttpResponseInternalServerErrorException httpInternalServerErrorException)
         {
             throw CreateAndLogDependencyException(httpInternalServerErrorException);
