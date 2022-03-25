@@ -9,33 +9,26 @@ using Moq;
 using Parlivote.Shared.Models.Polls;
 using Parlivote.Shared.Models.Polls.Exceptions;
 using RESTFulSense.Exceptions;
+using Xeptions;
 using Xunit;
 
 namespace Parlivote.Web.Tests.Unit.Services.Foundations.Polls;
 
 public partial class PollServiceTests
 {
-    [Fact]
-    public async Task ShouldThrowDependencyExceptionOnRetrieveAllIfResponseInternalServerExceptionOccursAndLogItAsync()
+    [Theory]
+    [MemberData(nameof(DependencyException))]
+    public async Task ShouldThrowAndLogDependencyException_OnRetrieveAll_IfDependencyExceptionErrorOccurs(
+        Xeption dependencyException)
     {
         // Arrange
-        string someMessage = Tests.GetRandomString();
-        var httpResponseMessage = new HttpResponseMessage();
-
-        var httpResponseException =
-            new HttpResponseException(
-                httpResponseMessage,
-                someMessage);
-
-        var failedPollDependencyException =
-            new FailedPollDependencyException(httpResponseException);
-
         var expectedPollDependencyException =
-            new PollDependencyException(failedPollDependencyException);
+            new PollDependencyException(
+                dependencyException);
 
         this.apiBrokerMock.Setup(broker =>
-            broker.GetAllPollsAsync())
-                .ThrowsAsync(httpResponseException);
+            broker.PostPollAsync(It.IsAny<Poll>()))
+            .ThrowsAsync(dependencyException);
 
         // Act
         Task<List<Poll>> addPollTask =
@@ -48,9 +41,9 @@ public partial class PollServiceTests
             broker.GetAllPollsAsync(),
             Times.Once);
 
-       Tests.VerifyExceptionLogged(
-           this.loggingBrokerMock,
-           expectedPollDependencyException);
+        Tests.VerifyExceptionLogged(
+            this.loggingBrokerMock,
+            expectedPollDependencyException);
 
         this.apiBrokerMock.VerifyNoOtherCalls();
         this.loggingBrokerMock.VerifyNoOtherCalls();
