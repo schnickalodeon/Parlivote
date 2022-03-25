@@ -27,7 +27,7 @@ public partial class PollServiceTests
                 dependencyException);
 
         this.apiBrokerMock.Setup(broker =>
-            broker.PostPollAsync(It.IsAny<Poll>()))
+            broker.GetAllPollsAsync())
             .ThrowsAsync(dependencyException);
 
         // Act

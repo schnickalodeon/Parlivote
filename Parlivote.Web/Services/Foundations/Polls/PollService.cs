@@ -24,8 +24,9 @@ public partial class PollService : IPollService
             return await this.apiBroker.PostPollAsync(poll);
         });
 
-    public async Task<List<Poll>> RetrieveAllAsync()
-    {
-        return await this.apiBroker.GetAllPollsAsync();
-    }
+    public Task<List<Poll>> RetrieveAllAsync() =>
+        TryCatch(async () =>
+        {
+            return await this.apiBroker.GetAllPollsAsync();
+        });
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Parlivote.Shared.Models.Polls;
@@ -11,7 +12,7 @@ namespace Parlivote.Web.Services.Foundations.Polls;
 public partial class PollService
 {
     private delegate Task<Poll> ReturningPollFunction();
-    private delegate IQueryable<Poll> ReturningPollsFunction();
+    private delegate Task<List<Poll>> ReturningPollsFunction();
 
     private async Task<Poll> TryCatch(ReturningPollFunction returningPollFunction)
     {
@@ -57,6 +58,21 @@ public partial class PollService
                 new FailedPollServiceException(exception);
 
             throw CreateAndLogServiceException(failedPollServiceException);
+        }
+    }
+    private async Task<List<Poll>> TryCatch(ReturningPollsFunction returningPollsFunction)
+    {
+        try
+        {
+            return await returningPollsFunction();
+        }
+        catch (HttpResponseInternalServerErrorException httpInternalServerErrorException)
+        {
+            throw CreateAndLogDependencyException(httpInternalServerErrorException);
+        }
+        catch (HttpResponseException httpResponseException)
+        {
+            throw CreateAndLogDependencyException(httpResponseException);
         }
     }
     private PollValidationException CreateAndLogValidationException(Xeption exception)
