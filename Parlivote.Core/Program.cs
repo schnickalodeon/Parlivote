@@ -15,6 +15,7 @@ namespace Parlivote.Core
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
+                    webBuilder.UseUrls("https://localhost:6001");
                 });
     }
 }
