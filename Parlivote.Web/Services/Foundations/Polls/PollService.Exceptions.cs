@@ -82,6 +82,13 @@ public partial class PollService
         {
             throw CreateAndLogDependencyException(httpResponseException);
         }
+        catch (Exception exception)
+        {
+            var failedPollServiceException =
+                new FailedPollServiceException(exception);
+
+            throw CreateAndLogServiceException(failedPollServiceException);
+        }
     }
     private PollValidationException CreateAndLogValidationException(Xeption exception)
     {
