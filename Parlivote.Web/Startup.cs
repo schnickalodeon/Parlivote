@@ -6,7 +6,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Parlivote.Web.Brokers.API;
+using Parlivote.Web.Brokers.Logging;
 using Parlivote.Web.Configurations;
+using Parlivote.Web.Services.Foundations.Polls;
+using Parlivote.Web.Services.Views.Polls;
 using RESTFulSense.Clients;
 
 namespace Parlivote.Web
@@ -31,8 +34,22 @@ namespace Parlivote.Web
             services.AddHttpClient<IRESTFulApiFactoryClient, RESTFulApiFactoryClient>(
                 client => client.BaseAddress = new Uri(localConfigurations.ApiConfigurations.Url));
 
-            services.AddTransient<IApiBroker, ApiBroker>();
+            AddServices(services);
         }
+
+        private static void AddServices(IServiceCollection services)
+        {
+            //Brokers
+            services.AddTransient<IApiBroker, ApiBroker>();
+            services.AddTransient<ILoggingBroker, LoggingBroker>();
+
+            //View Services
+            services.AddTransient<IPollViewService, PollViewService>();
+
+            //Foundation Services
+            services.AddTransient<IPollService, PollService>();
+        }
+
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())

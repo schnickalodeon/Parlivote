@@ -1,0 +1,20 @@
+﻿@using PrettyBlazor
+@using Parlivote.Web.Models;
+
+<Condition Evaluation="@(this.State == ComponentState.Loading)">
+    <Match>
+        @Loading
+    </Match>
+</Condition>
+
+<Condition Evaluation="@(this.State == ComponentState.Content)">
+    <Match>
+        @Content
+    </Match>
+</Condition>
+
+<Condition Evaluation="@(this.State == ComponentState.Error)">
+    <Match>
+        @Error
+    </Match>
+</Condition>
