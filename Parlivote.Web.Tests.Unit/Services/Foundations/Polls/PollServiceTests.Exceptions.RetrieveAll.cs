@@ -48,4 +48,36 @@ public partial class PollServiceTests
         this.apiBrokerMock.VerifyNoOtherCalls();
         this.loggingBrokerMock.VerifyNoOtherCalls();
     }
+
+    [Theory]
+    [MemberData(nameof(CriticalDependencyException))]
+    public async Task ShouldThrowAndLogCriticalDependencyException_OnRetrieveAll_IfCriticalExceptionOccurs(
+        Xeption criticalException)
+    {
+        // Arrange
+        var expectedPollDependencyException =
+            new PollDependencyException(
+                criticalException);
+
+        this.apiBrokerMock.Setup(broker =>
+            broker.GetAllPollsAsync())
+            .ThrowsAsync(criticalException);
+
+        // Act
+        Task<List<Poll>> addPollTask = this.pollService.RetrieveAllAsync();
+
+        // Assert
+        await Assert.ThrowsAsync<PollDependencyException>(() => addPollTask);
+
+        this.apiBrokerMock.Verify(broker =>
+            broker.GetAllPollsAsync(),
+            Times.Once);
+
+        Tests.VerifyCriticalExceptionLogged(
+            this.loggingBrokerMock,
+            expectedPollDependencyException);
+
+        this.apiBrokerMock.VerifyNoOtherCalls();
+        this.loggingBrokerMock.VerifyNoOtherCalls();
+    }
 }
