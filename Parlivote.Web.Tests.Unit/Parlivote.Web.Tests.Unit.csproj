@@ -30,4 +30,8 @@
     <ProjectReference Include="..\Parlivote.Web\Parlivote.Web.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Services\Views\Polls\" />
+  </ItemGroup>
+
 </Project>

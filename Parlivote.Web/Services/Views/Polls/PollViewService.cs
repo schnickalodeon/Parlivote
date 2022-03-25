@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Parlivote.Shared.Models.Polls;
 using Parlivote.Web.Brokers.Logging;
@@ -28,6 +30,14 @@ public class PollViewService : IPollViewService
         return mappedPollView;
     }
 
+    public async Task<List<PollView>> GetAllAsync()
+    {
+        List<Poll> polls = 
+            await this.pollService.RetrieveAllAsync();
+
+        return polls.Select(AsPollView).ToList();
+    }
+
     private static Poll MapToPoll(PollView pollView)
     {
         return new Poll
@@ -37,6 +47,8 @@ public class PollViewService : IPollViewService
             Text = pollView.Text
         };
     }
+
+    private static Func<Poll, PollView> AsPollView => MapToPollView;
     private static PollView MapToPollView(Poll poll)
     {
         return new PollView
