@@ -6,7 +6,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Parlivote.Core.Brokers.Logging;
 using Parlivote.Core.Brokers.Storage;
-using Parlivote.Core.Services.Foundations.Polls;
+using Parlivote.Core.Services.Foundations.Motions;
 
 namespace Parlivote.Core
 {
@@ -38,7 +38,7 @@ namespace Parlivote.Core
         private void AddServices(IServiceCollection services)
         {
             //Foundation Services
-            services.AddTransient<IPollService, PollService>();
+            services.AddTransient<IMotionService, MotionService>();
         }
 
         private static void AddBrokers(IServiceCollection services)

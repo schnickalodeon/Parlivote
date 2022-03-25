@@ -31,7 +31,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\Views\Polls\" />
+    <Folder Include="Services\Views\Motions\" />
   </ItemGroup>
 
 </Project>

@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 using Microsoft.Data.SqlClient;
 using Moq;
 using Parlivote.Core.Brokers.Logging;
-using Parlivote.Shared.Models.Polls.Exceptions;
+using Parlivote.Shared.Models.Motions.Exceptions;
 using Tynamix.ObjectFiller;
 using Xeptions;
 

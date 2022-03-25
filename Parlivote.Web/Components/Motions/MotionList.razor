@@ -1,0 +1,22 @@
+﻿
+<StateEvaluation State="@this.state">
+    <Loading>
+        <p>Loading....</p>
+    </Loading>
+
+    <Content>
+        <ul>
+            <Iterations Items="motions">
+                <li>
+                    @($"{context.Version}: {context.Text} [{context.State}]")
+                </li>
+            </Iterations>
+        </ul>
+    </Content>
+    
+    <Error>
+        <div class="alert alert-danger">
+            @error
+        </div>
+    </Error>
+</StateEvaluation>

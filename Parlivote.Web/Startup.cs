@@ -8,8 +8,8 @@ using Microsoft.Extensions.Hosting;
 using Parlivote.Web.Brokers.API;
 using Parlivote.Web.Brokers.Logging;
 using Parlivote.Web.Configurations;
-using Parlivote.Web.Services.Foundations.Polls;
-using Parlivote.Web.Services.Views.Polls;
+using Parlivote.Web.Services.Foundations.Motions;
+using Parlivote.Web.Services.Views.Motions;
 using RESTFulSense.Clients;
 
 namespace Parlivote.Web
@@ -44,10 +44,10 @@ namespace Parlivote.Web
             services.AddTransient<ILoggingBroker, LoggingBroker>();
 
             //View Services
-            services.AddTransient<IPollViewService, PollViewService>();
+            services.AddTransient<IMotionViewService, MotionViewService>();
 
             //Foundation Services
-            services.AddTransient<IPollService, PollService>();
+            services.AddTransient<IMotionService, MotionService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
