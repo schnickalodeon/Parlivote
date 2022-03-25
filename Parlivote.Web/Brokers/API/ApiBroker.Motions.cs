@@ -7,7 +7,7 @@ namespace Parlivote.Web.Brokers.API;
 
 public partial class ApiBroker
 {
-    private const string MotionsRelativeUrl = "/api/v1/polls";
+    private const string MotionsRelativeUrl = "/api/v1/motions";
 
     public async Task<Motion> PostMotionAsync(Motion poll) =>
         await this.PostAsync(MotionsRelativeUrl, poll);

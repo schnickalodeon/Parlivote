@@ -14,7 +14,7 @@ public partial class MotionList : ComponentBase
     public IMotionViewService MotionViewService { get; set; }
 
     private ComponentState state;
-    private List<MotionView> polls;
+    private List<MotionView> motions;
     private string error;
 
     protected override async Task OnInitializedAsync()
@@ -27,7 +27,7 @@ public partial class MotionList : ComponentBase
     {
         try
         {
-            this.polls = await this.MotionViewService.GetAllAsync();
+            this.motions = await this.MotionViewService.GetAllAsync();
             this.state = ComponentState.Content;
         }
         catch (Exception e)
