@@ -9,9 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Parlivote.Core.Tests.Unit",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Parlivote.Shared", "Parlivote.Shared\Parlivote.Shared.csproj", "{AE7648AD-1059-419B-A2BC-CAE933A1F499}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Parlivote.Web", "Parlivote.Web\Parlivote.Web.csproj", "{A3D283A8-CBE4-437C-9113-4CAE139E47CF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Parlivote.Web", "Parlivote.Web\Parlivote.Web.csproj", "{A3D283A8-CBE4-437C-9113-4CAE139E47CF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Parlivote.Web.Tests.Unit", "Parlivote.Web.Tests.Unit\Parlivote.Web.Tests.Unit.csproj", "{34440786-A467-4025-A399-7487FF8B7E94}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Parlivote.Web.Tests.Unit", "Parlivote.Web.Tests.Unit\Parlivote.Web.Tests.Unit.csproj", "{34440786-A467-4025-A399-7487FF8B7E94}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
