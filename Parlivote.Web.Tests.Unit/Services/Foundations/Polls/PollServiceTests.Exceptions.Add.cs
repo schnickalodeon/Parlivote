@@ -15,28 +15,6 @@ namespace Parlivote.Web.Tests.Unit.Services.Foundations.Polls
 {
     public partial class PollServiceTests
     {
-        public static TheoryData DependencyValidationException()
-        {
-            string randomMessage = Tests.GetRandomString();
-            var responseMessage = new HttpResponseMessage();
-
-            var badRequestException =
-                new HttpResponseBadRequestException(
-                    responseMessage: responseMessage,
-                    message: randomMessage);
-
-            var conflictException =
-                new HttpResponseConflictException(
-                    responseMessage: responseMessage,
-                    message: randomMessage);
-
-            return new TheoryData<Xeption>
-            {
-                badRequestException,
-                conflictException
-            };
-        }
-
         [Theory]
         [MemberData(nameof(DependencyValidationException))]
         public async Task ShouldThrowAndLogDependencyValidationException_OnAdd_IfDependencyValidationExceptionOccurs(
@@ -70,28 +48,6 @@ namespace Parlivote.Web.Tests.Unit.Services.Foundations.Polls
 
             this.apiBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
-        }
-
-        public static TheoryData CriticalDependencyException()
-        {
-            string randomMessage = Tests.GetRandomString();
-            var responseMessage = new HttpResponseMessage();
-
-            var urlNotFounException =
-                new HttpResponseUrlNotFoundException(
-                    responseMessage: responseMessage,
-                    message: randomMessage);
-
-            var unauthorizedException =
-                new HttpResponseUnauthorizedException(
-                    responseMessage: responseMessage,
-                    message: randomMessage);
-
-            return new TheoryData<Xeption>
-            {
-                urlNotFounException,
-                unauthorizedException
-            };
         }
 
         [Theory]
@@ -129,27 +85,6 @@ namespace Parlivote.Web.Tests.Unit.Services.Foundations.Polls
             this.loggingBrokerMock.VerifyNoOtherCalls();
         }
 
-        public static TheoryData DependencyException()
-        {
-            string randomMessage = Tests.GetRandomString();
-            var responseMessage = new HttpResponseMessage();
-
-            var httpResponseException =
-                new HttpResponseException(
-                    httpResponseMessage: responseMessage,
-                    message: randomMessage);
-
-            var httpResponseInternalServerErrorException =
-                new HttpResponseInternalServerErrorException(
-                    responseMessage: responseMessage,
-                    message: randomMessage);
-
-            return new TheoryData<Xeption>
-            {
-                httpResponseException,
-                httpResponseInternalServerErrorException
-            };
-        }
 
         [Theory]
         [MemberData(nameof(DependencyException))]

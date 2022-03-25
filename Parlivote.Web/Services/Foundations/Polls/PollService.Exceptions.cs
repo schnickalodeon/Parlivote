@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Parlivote.Shared.Models.Polls;
@@ -11,7 +12,7 @@ namespace Parlivote.Web.Services.Foundations.Polls;
 public partial class PollService
 {
     private delegate Task<Poll> ReturningPollFunction();
-    private delegate IQueryable<Poll> ReturningPollsFunction();
+    private delegate Task<List<Poll>> ReturningPollsFunction();
 
     private async Task<Poll> TryCatch(ReturningPollFunction returningPollFunction)
     {
@@ -42,6 +43,36 @@ public partial class PollService
         catch (HttpResponseBadRequestException httpBadRequestException)
         {
             throw CreateAndLogDependencyValidationException(httpBadRequestException);
+        }
+        catch (HttpResponseInternalServerErrorException httpInternalServerErrorException)
+        {
+            throw CreateAndLogDependencyException(httpInternalServerErrorException);
+        }
+        catch (HttpResponseException httpResponseException)
+        {
+            throw CreateAndLogDependencyException(httpResponseException);
+        }
+        catch (Exception exception)
+        {
+            var failedPollServiceException =
+                new FailedPollServiceException(exception);
+
+            throw CreateAndLogServiceException(failedPollServiceException);
+        }
+    }
+    private async Task<List<Poll>> TryCatch(ReturningPollsFunction returningPollsFunction)
+    {
+        try
+        {
+            return await returningPollsFunction();
+        }
+        catch (HttpResponseUrlNotFoundException httpResponseUrlNotFoundException)
+        {
+            throw CreateAndLogCriticalDependencyException(httpResponseUrlNotFoundException);
+        }
+        catch (HttpResponseUnauthorizedException httpUnauthorizedException)
+        {
+            throw CreateAndLogCriticalDependencyException(httpUnauthorizedException);
         }
         catch (HttpResponseInternalServerErrorException httpInternalServerErrorException)
         {
