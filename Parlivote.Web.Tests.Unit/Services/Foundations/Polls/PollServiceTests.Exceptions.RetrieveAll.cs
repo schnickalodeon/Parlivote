@@ -64,10 +64,10 @@ public partial class PollServiceTests
             .ThrowsAsync(criticalException);
 
         // Act
-        Task<List<Poll>> addPollTask = this.pollService.RetrieveAllAsync();
+        Task<List<Poll>> retrieveAllTask = this.pollService.RetrieveAllAsync();
 
         // Assert
-        await Assert.ThrowsAsync<PollDependencyException>(() => addPollTask);
+        await Assert.ThrowsAsync<PollDependencyException>(() => retrieveAllTask);
 
         this.apiBrokerMock.Verify(broker =>
             broker.GetAllPollsAsync(),
@@ -76,6 +76,42 @@ public partial class PollServiceTests
         Tests.VerifyCriticalExceptionLogged(
             this.loggingBrokerMock,
             expectedPollDependencyException);
+
+        this.apiBrokerMock.VerifyNoOtherCalls();
+        this.loggingBrokerMock.VerifyNoOtherCalls();
+    }
+
+    [Fact]
+    public async Task ShouldThrowAndLogServiceException_OnRetrieveAll_IfExceptionOccursAndLogItAsync()
+    {
+        // Arrange
+        Poll somePoll = GetRandomPoll();
+        string randomExceptionMessage = Tests.GetRandomString();
+        var serviceException = new Exception(randomExceptionMessage);
+
+        var failedPollServiceException =
+            new FailedPollServiceException(serviceException);
+
+        var expectedPollServiceException =
+            new PollServiceException(failedPollServiceException);
+
+        this.apiBrokerMock.Setup(broker =>
+            broker.GetAllPollsAsync())
+                .ThrowsAsync(serviceException);
+
+        //Act
+        Task<List<Poll>> retrieveAllTask = this.pollService.RetrieveAllAsync();
+
+        //Assert
+        await Assert.ThrowsAsync<PollServiceException>(() => retrieveAllTask);
+
+        this.apiBrokerMock.Verify(broker =>
+            broker.GetAllPollsAsync(),
+            Times.Once);
+
+        Tests.VerifyExceptionLogged(
+            this.loggingBrokerMock, 
+            expectedPollServiceException);
 
         this.apiBrokerMock.VerifyNoOtherCalls();
         this.loggingBrokerMock.VerifyNoOtherCalls();
