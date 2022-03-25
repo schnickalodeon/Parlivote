@@ -43,7 +43,8 @@ public class MotionViewService : IMotionViewService
         return new Motion
         {
             Id = pollView.Id,
-            AgendaItem = pollView.AgendaItem,
+            Version = pollView.Version,
+            State = MotionStateConverter.FromString(pollView.State),
             Text = pollView.Text
         };
     }
@@ -54,7 +55,8 @@ public class MotionViewService : IMotionViewService
         return new MotionView
         {
             Id = poll.Id,
-            AgendaItem = poll.AgendaItem,
+            Version = poll.Version,
+            State = poll.State.GetValue(),
             Text = poll.Text
         };
     }

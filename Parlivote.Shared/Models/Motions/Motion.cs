@@ -3,7 +3,8 @@
     public class Motion
     {
         public Guid Id { get; set; }
-        public string AgendaItem { get; set; }
+        public int Version { get; set; }
+        public MotionState State { get; set; }
         public string Text { get; set; }
     }
 }

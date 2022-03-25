@@ -23,7 +23,8 @@ public partial class MotionViewServiceTests
                 new Motion
                 {
                     Id = property.Id,
-                    AgendaItem = property.AgendaItem,
+                    Version = property.Version,
+                    State = property.State,
                     Text = property.Text
                 }).ToList();
 
@@ -34,7 +35,8 @@ public partial class MotionViewServiceTests
                 new MotionView
                 {
                     Id = property.Id,
-                    AgendaItem = property.AgendaItem,
+                    Version = property.Version,
+                    State = ((MotionState)property.State).GetValue(),
                     Text = property.Text
                 }).ToList();
 

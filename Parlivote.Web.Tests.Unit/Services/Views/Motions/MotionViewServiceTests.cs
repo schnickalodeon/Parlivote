@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using Moq;
+using Parlivote.Shared.Models.Motions;
 using Parlivote.Web.Brokers.API;
 using Parlivote.Web.Brokers.Logging;
 using Parlivote.Web.Services.Foundations.Motions;
 using Parlivote.Web.Services.Views.Motions;
+using Tynamix.ObjectFiller;
 
 namespace Parlivote.Web.Tests.Unit.Services.Views.Motions;
 
@@ -23,6 +25,17 @@ public partial class MotionViewServiceTests
             this.pollServiceMock.Object);
     }
 
+    private static MotionState GetRandomState()
+    {
+        int studentGenderCount =
+            Enum.GetValues(typeof(MotionState)).Length;
+
+        int randomStateValue =
+            new IntRange(min: 0, max: studentGenderCount).GetValue();
+
+        return (MotionState)randomStateValue;
+    }
+
     private static List<dynamic> CreateRandomMotionViewCollections()
     {
         int randomCount = Tests.GetRandomNumber();
@@ -32,7 +45,8 @@ public partial class MotionViewServiceTests
             return new
             {
                 Id = Guid.NewGuid(),
-                AgendaItem = Tests.GetRandomString(),
+                Version = Tests.GetRandomNumber(),
+                State = GetRandomState(),
                 Text = Tests.GetRandomString()
             };
         }).ToList<dynamic>();
