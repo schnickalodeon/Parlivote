@@ -18,6 +18,9 @@ public static class Tests
     public static string GetRandomString() =>
         new MnemonicString(wordCount: GetRandomNumber()).GetValue();
 
+    public static DateTimeOffset GetRandomDateTimeOffset() =>
+        new DateTimeRange(earliestDate: new DateTime()).GetValue();
+
     public static SqlException GetSqlException() =>
         (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
 
