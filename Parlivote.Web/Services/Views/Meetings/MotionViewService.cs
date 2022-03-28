@@ -35,7 +35,8 @@ public class MeetingViewService : IMeetingViewService
         return new Meeting
         {
             Id = meetingView.Id,
-            Description = meetingView.Description
+            Description = meetingView.Description,
+            Start = meetingView.Start
         };
     }
 
@@ -45,7 +46,8 @@ public class MeetingViewService : IMeetingViewService
         return new MeetingView
         {
             Id = meeting.Id,
-            Description = meeting.Description
+            Description = meeting.Description,
+            Start = meeting.Start
         };
     }
 }
