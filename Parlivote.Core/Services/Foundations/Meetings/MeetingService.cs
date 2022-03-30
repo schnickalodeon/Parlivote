@@ -25,8 +25,9 @@ public partial class MeetingService : IMeetingService
             return await this.storageBroker.InsertMeetingAsync(meeting);
         });
 
-    public IQueryable<Meeting> RetrieveAll()
-    {
-        return this.storageBroker.SelectAllMeetings();
-    }
+    public IQueryable<Meeting> RetrieveAll() =>
+        TryCatch(() =>
+        {
+            return this.storageBroker.SelectAllMeetings();
+        });
 }
