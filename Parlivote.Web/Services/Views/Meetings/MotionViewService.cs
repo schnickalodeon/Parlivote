@@ -30,6 +30,14 @@ public class MeetingViewService : IMeetingViewService
         return mappedMeetingView;
     }
 
+    public async Task<List<MeetingView>> GetAllAsync()
+    {
+        List<Meeting> meetings =
+            await this.meetingService.RetrieveAllAsync();
+
+        return meetings.Select(AsMeetingView).ToList();
+    }
+
     private static Meeting MapToMeeting(MeetingView meetingView)
     {
         return new Meeting
