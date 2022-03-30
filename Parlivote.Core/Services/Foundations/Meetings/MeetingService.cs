@@ -24,4 +24,9 @@ public partial class MeetingService : IMeetingService
             ValidateMeeting(meeting);
             return await this.storageBroker.InsertMeetingAsync(meeting);
         });
+
+    public IQueryable<Meeting> RetrieveAll()
+    {
+        throw new System.NotImplementedException();
+    }
 }

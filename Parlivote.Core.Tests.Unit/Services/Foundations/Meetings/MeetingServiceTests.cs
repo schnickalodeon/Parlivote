@@ -26,6 +26,11 @@ public partial class MeetingServiceTests
             this.storageBrokerMock.Object);
     }
 
+    private static IQueryable<Meeting> GetRandomMeetings() =>
+        GetMeetingFiller(dates: Tests.GetRandomDateTimeOffset())
+            .Create(Tests.GetRandomNumber())
+            .AsQueryable();
+
     private static Meeting GetRandomMeeting() =>
         GetMeetingFiller(dates: Tests.GetRandomDateTimeOffset()).Create();
 
