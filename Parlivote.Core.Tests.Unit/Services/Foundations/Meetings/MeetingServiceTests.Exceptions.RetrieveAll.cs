@@ -51,4 +51,38 @@ public partial class MeetingServiceTests
         this.storageBrokerMock.VerifyNoOtherCalls();
         this.loggingBrokerMock.VerifyNoOtherCalls();
     }
+    
+    [Fact]
+    public void ShouldThrowServiceExceptionOnRetrieveAllIfExceptionOccursAndLogItAsync()
+    {
+        // Arrange
+        Meeting someMeeting = GetRandomMeeting();
+        string randomExceptionMessage = Tests.GetRandomString();
+        var serviceException = new Exception(randomExceptionMessage);
+
+        var failedMeetingServiceException =
+            new FailedMeetingServiceException(serviceException);
+
+        var expectedMeetingServiceException =
+            new MeetingServiceException(failedMeetingServiceException);
+
+        this.storageBrokerMock.Setup(broker =>
+                broker.SelectAllMeetings())
+            .Throws(serviceException);
+
+        // Act
+        Action retrieveAllAction = () => this.meetingService.RetrieveAll();
+
+        // Assert
+        Assert.Throws<MeetingServiceException>(retrieveAllAction);
+
+        this.storageBrokerMock.Verify(broker =>
+                broker.SelectAllMeetings(),
+            Times.Once);
+
+        Tests.VerifyExceptionLogged(this.loggingBrokerMock, expectedMeetingServiceException);
+
+        this.storageBrokerMock.VerifyNoOtherCalls();
+        this.loggingBrokerMock.VerifyNoOtherCalls();
+    }
 }
