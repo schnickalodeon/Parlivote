@@ -1,0 +1,10 @@
+﻿@using System.Collections
+<StateEvaluation ComponentState="@this.state">
+    <Content>
+        <ul class="flonke">
+            <Iterations Items="@this.validationDictionary">
+                <li>@($"{context.Key}: {context.Value}")</li>
+            </Iterations>
+        </ul>
+    </Content>
+</StateEvaluation>
