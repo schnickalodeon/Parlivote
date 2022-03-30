@@ -73,6 +73,13 @@ public partial class MeetingService
 
             throw CreateAndLogCriticalDependencyException(failedMotionStorageException);
         }
+        catch (Exception exception)
+        {
+            var failedMotionServiceException =
+                new FailedMeetingServiceException(exception);
+
+            throw CreateAndLogServiceException(failedMotionServiceException);
+        }
     }
 
     private MeetingValidationException CreateAndLogValidationException(Xeption exception)
