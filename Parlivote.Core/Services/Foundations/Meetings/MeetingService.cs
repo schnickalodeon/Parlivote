@@ -27,6 +27,6 @@ public partial class MeetingService : IMeetingService
 
     public IQueryable<Meeting> RetrieveAll()
     {
-        throw new System.NotImplementedException();
+        return this.storageBroker.SelectAllMeetings();
     }
 }
