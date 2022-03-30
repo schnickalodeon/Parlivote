@@ -47,4 +47,22 @@ public class MeetingsController : RESTFulController
             return InternalServerError(meetingServiceException);
         }
     }
+
+    [HttpGet]
+    public ActionResult<IQueryable<Meeting>> GetAllMotions()
+    {
+        try
+        {
+            IQueryable<Meeting> meetings = this.meetingService.RetrieveAll();
+            return Ok(meetings);
+        }
+        catch (MeetingDependencyException meetingDependencyException)
+        {
+            return InternalServerError(meetingDependencyException);
+        }
+        catch (MeetingServiceException meetingServiceException)
+        {
+            return InternalServerError(meetingServiceException);
+        }
+    }
 }

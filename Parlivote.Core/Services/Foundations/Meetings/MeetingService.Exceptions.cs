@@ -15,6 +15,7 @@ namespace Parlivote.Core.Services.Foundations.Meetings;
 public partial class MeetingService
 {
     private delegate Task<Meeting> ReturningMeetingFunction();
+    private delegate IQueryable<Meeting> ReturningMeetingsFunction();
 
     private async Task<Meeting> TryCatch(ReturningMeetingFunction returningMeetingFunction)
     {
@@ -59,7 +60,28 @@ public partial class MeetingService
             throw CreateAndLogServiceException(failedMeetingServiceException);
         }
     }
-    
+    private IQueryable<Meeting> TryCatch(ReturningMeetingsFunction returningMeetingsFunction)
+    {
+        try
+        {
+            return returningMeetingsFunction();
+        }
+        catch (SqlException sqlException)
+        {
+            var failedMotionStorageException =
+                new FailedMeetingStorageException(sqlException);
+
+            throw CreateAndLogCriticalDependencyException(failedMotionStorageException);
+        }
+        catch (Exception exception)
+        {
+            var failedMotionServiceException =
+                new FailedMeetingServiceException(exception);
+
+            throw CreateAndLogServiceException(failedMotionServiceException);
+        }
+    }
+
     private MeetingValidationException CreateAndLogValidationException(Xeption exception)
     {
         var meetingValidationException =

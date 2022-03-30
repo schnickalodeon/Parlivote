@@ -8,4 +8,5 @@ namespace Parlivote.Core.Services.Foundations.Meetings;
 public interface IMeetingService
 {
     Task<Meeting> AddAsync(Meeting meeting);
+    IQueryable<Meeting> RetrieveAll();
 }
