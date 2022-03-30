@@ -13,6 +13,7 @@ using Parlivote.Web.Services.Foundations.Motions;
 using Parlivote.Web.Services.Views.Meetings;
 using Parlivote.Web.Services.Views.Motions;
 using RESTFulSense.Clients;
+using Syncfusion.Blazor;
 
 namespace Parlivote.Web
 {
@@ -29,14 +30,30 @@ namespace Parlivote.Web
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
-
+            
             LocalConfigurations localConfigurations = 
                 Configuration.Get<LocalConfigurations>();
 
             services.AddHttpClient<IRESTFulApiFactoryClient, RESTFulApiFactoryClient>(
                 client => client.BaseAddress = new Uri(localConfigurations.ApiConfigurations.Url));
 
+            AddSyncfusionBlazor(services);
+
+          
+
             AddServices(services);
+        }
+
+        private void AddSyncfusionBlazor(IServiceCollection services)
+        {
+
+            LocalConfigurations localConfigurations =
+                Configuration.Get<LocalConfigurations>();
+
+            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(localConfigurations.SyncfusionApiKey);
+
+            services.AddSyncfusionBlazor(options => options.IgnoreScriptIsolation = true);
+
         }
 
         private static void AddServices(IServiceCollection services)
