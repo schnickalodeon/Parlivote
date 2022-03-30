@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Moq;
 using Parlivote.Core.Brokers.Logging;
@@ -37,7 +38,12 @@ public partial class MotionServiceTests
 
     private static Filler<Motion> GetMotionFiller()
     {
-        return new Filler<Motion>();
+        var filler = new Filler<Motion>();
+
+        filler.Setup()
+            .OnProperty(motion => motion.Meeting).IgnoreIt();
+
+        return filler;
     }
 
 }

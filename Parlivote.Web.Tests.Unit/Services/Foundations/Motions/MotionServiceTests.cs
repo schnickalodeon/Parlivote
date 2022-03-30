@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Win32.SafeHandles;
 using Moq;
+using Parlivote.Shared.Models.Meetings;
 using Parlivote.Shared.Models.Motions;
 using Parlivote.Web.Brokers.API;
 using Parlivote.Web.Brokers.Logging;
@@ -43,7 +44,12 @@ public partial class MotionServiceTests
 
     private static Filler<Motion> GetMotionFiller()
     {
-        return new Filler<Motion>();
+        var filler = new Filler<Motion>();
+
+        filler.Setup()
+            .OnType<Meeting>().IgnoreIt();
+
+        return filler;
     }
 
     public static TheoryData DependencyException()
