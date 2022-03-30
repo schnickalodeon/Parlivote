@@ -7,7 +7,7 @@
         <ul>
             <Iterations Items="meetings">
                 <li>
-                    @($"{context.Start}: {context.Description}")
+                    @($"{context.Start.ToString("ddddd dd.MM.yy HH:mm")}: {context.Description}")
                 </li>
             </Iterations>
         </ul>
