@@ -8,7 +8,9 @@ using Microsoft.Extensions.Hosting;
 using Parlivote.Web.Brokers.API;
 using Parlivote.Web.Brokers.Logging;
 using Parlivote.Web.Configurations;
+using Parlivote.Web.Services.Foundations.Meetings;
 using Parlivote.Web.Services.Foundations.Motions;
+using Parlivote.Web.Services.Views.Meetings;
 using Parlivote.Web.Services.Views.Motions;
 using RESTFulSense.Clients;
 
@@ -45,9 +47,11 @@ namespace Parlivote.Web
 
             //View Services
             services.AddTransient<IMotionViewService, MotionViewService>();
+            services.AddTransient<IMeetingViewService, MeetingViewService>();
 
             //Foundation Services
             services.AddTransient<IMotionService, MotionService>();
+            services.AddTransient<IMeetingService, MeetingService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
