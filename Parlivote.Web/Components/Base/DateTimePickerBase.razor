@@ -1,0 +1,9 @@
+﻿@using Syncfusion.Blazor.Calendars
+
+<SfDateTimePicker TValue="DateTimeOffset" @bind-Value=@this.Value>
+
+    <DateTimePickerEvents 
+        TValue="DateTimeOffset" 
+        ValueChange="@OnValueChanged" />
+
+</SfDateTimePicker>

@@ -1,4 +1,7 @@
-﻿<input type="text" @bind-value=@Value
-       @oninput=@OnValueChanged
-       Placeholder=@Placeholder
-        Enabled=@IsEnabled/>
+﻿@using Syncfusion.Blazor.Inputs
+
+<SfTextBox @bind-value=@Value
+		   @oninput=@OnValueChanged
+           Placeholder=@Placeholder
+           Enabled=@IsEnabled
+           FloatLabelType=@FloatLabelType.Never />
