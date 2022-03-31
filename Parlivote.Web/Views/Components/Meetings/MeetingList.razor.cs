@@ -29,7 +29,8 @@ public partial class MeetingList : ComponentBase
         try
         {
             this.meetings =
-                await this.MeetingViewService.GetAllAsync();
+                await this.MeetingViewService.GetAllWithMotionsAsync();
+
             this.state = ComponentState.Content;
         }
         catch (Exception e)

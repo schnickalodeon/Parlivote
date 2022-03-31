@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Parlivote.Shared.Models.Meetings;
 using Parlivote.Web.Brokers.API;
 using Parlivote.Web.Brokers.Logging;
@@ -29,4 +31,9 @@ public partial class MeetingService : IMeetingService
         {
             return await this.apiBroker.GetAllMeetingsAsync();
         });
+
+    public async Task<List<Meeting>> RetrieveAllWithMotionsAsync()
+    {
+        return await this.apiBroker.GetAllMeetingsWithMotionsAsync();
+    }
 }

@@ -8,4 +8,5 @@ public interface IMeetingService
 {
     Task<Meeting> AddAsync(Meeting meeting);
     Task<List<Meeting>> RetrieveAllAsync();
+    Task<List<Meeting>> RetrieveAllWithMotionsAsync();
 }
