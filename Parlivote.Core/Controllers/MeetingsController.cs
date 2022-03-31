@@ -49,7 +49,7 @@ public class MeetingsController : RESTFulController
     }
 
     [HttpGet]
-    public ActionResult<IQueryable<Meeting>> GetAllMotions()
+    public ActionResult<IQueryable<Meeting>> GetAllMeetings()
     {
         try
         {
