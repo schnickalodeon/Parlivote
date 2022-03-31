@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Parlivote.Core.Services.Foundations.Meetings;
 using Parlivote.Shared.Models.Meetings;
 using Parlivote.Shared.Models.Meetings.Exceptions;
@@ -55,6 +57,30 @@ public class MeetingsController : RESTFulController
         {
             IQueryable<Meeting> meetings = this.meetingService.RetrieveAll();
             return Ok(meetings);
+        }
+        catch (MeetingDependencyException meetingDependencyException)
+        {
+            return InternalServerError(meetingDependencyException);
+        }
+        catch (MeetingServiceException meetingServiceException)
+        {
+            return InternalServerError(meetingServiceException);
+        }
+    }
+
+    [HttpGet("WithMotions")]
+    public async Task<ActionResult<List<Meeting>>> GetAllMeetingsWithMotions()
+    {
+        try
+        {
+            IQueryable<Meeting> meetings = this.meetingService
+                .RetrieveAll()
+                .Include(meeting => meeting.Motions);
+
+            List<Meeting> meetingsWithMotions =
+                await meetings.ToListAsync();
+
+            return Ok(meetingsWithMotions);
         }
         catch (MeetingDependencyException meetingDependencyException)
         {
