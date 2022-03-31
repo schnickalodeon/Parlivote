@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Parlivote.Shared.Models.Meetings;
 
@@ -9,6 +10,7 @@ public partial interface IApiBroker
 {
     Task<Meeting> PostMeetingAsync(Meeting meeting);
     Task<List<Meeting>>GetAllMeetingsAsync();
+    Task<List<Meeting>> GetAllMeetingsWithMotionsAsync();
     Task<Meeting> GetMeetingById(Guid meetingId);
     Task<Meeting> PutMeetingAsync(Meeting meeting);
     Task<Meeting> DeleteMeetingById(Guid meetingId);

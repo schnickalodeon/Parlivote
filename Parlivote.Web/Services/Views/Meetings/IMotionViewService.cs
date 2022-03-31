@@ -8,4 +8,5 @@ public interface IMeetingViewService
 {
     Task<MeetingView> AddAsync(MeetingView meetingView);
     Task<List<MeetingView>> GetAllAsync();
+    Task<List<MeetingView>> GetAllWithMotionsAsync();
 }
