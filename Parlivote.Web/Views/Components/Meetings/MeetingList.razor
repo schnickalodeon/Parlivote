@@ -1,4 +1,9 @@
-﻿<StateEvaluation State="@this.state">
+﻿<div class="d-flex flex-row my-3">
+    <h3 class="mr-4">Meetings </h3>
+    <ButtonBase Text="Add Meeting" OnClick="@(() => addMeetingComponent.Show())" />
+</div>
+
+<StateEvaluation State="@this.state">
     <Loading>
         <p>Loading....</p>
     </Loading>
@@ -19,3 +24,5 @@
         </div>
     </Error>
 </StateEvaluation>
+
+<AddMeetingComponent @ref="addMeetingComponent" OnMeetingAdded="LoadMeetings" />

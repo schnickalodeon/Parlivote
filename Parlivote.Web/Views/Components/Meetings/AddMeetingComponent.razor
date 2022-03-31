@@ -1,7 +1,7 @@
 ﻿<DialogBase @ref="@this.dialog"
-            Title="Gebiet anlegen"
-            SubmitButtonText="Anlegen"
-            CancelButtonText="Abbrechen"
+            Title="Add Meeting"
+            SubmitButtonText="Add"
+            CancelButtonText="Cancel"
             Error="@this.error"
             OnSubmit="AddMeetingViewAsync">
 
@@ -9,12 +9,7 @@
     <FormControlBase LabelText="Beschreibung">
         <TextBoxBase @bind-Value="meetingView.Description"/>
     </FormControlBase>
-    
-    @*Start*@
-    <FormControlBase LabelText="Beschreibung">
-        <TextBoxBase @bind-Value="meetingView.Description"/>
-    </FormControlBase>
-    
+
     @*Start*@
     <FormControlBase LabelText="Start">
         <DateTimePickerBase @bind-Value="meetingView.Start" />

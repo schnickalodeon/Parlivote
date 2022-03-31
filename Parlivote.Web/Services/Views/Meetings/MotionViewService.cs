@@ -18,6 +18,8 @@ public class MeetingViewService : IMeetingViewService
     }
     public async Task<MeetingView> AddAsync(MeetingView meetingView)
     {
+        meetingView.Id = Guid.NewGuid();
+
         Meeting mappedMeeting = 
             MapToMeeting(meetingView);
 

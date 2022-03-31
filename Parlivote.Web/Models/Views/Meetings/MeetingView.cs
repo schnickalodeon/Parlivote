@@ -6,6 +6,7 @@ namespace Parlivote.Web.Models.Views.Meetings
     {
         public Guid Id { get; set; }
         public string Description { get; set; }
-        public DateTimeOffset Start { get; set; }
+        public DateTimeOffset Start { get; set; } = DateTime.Today.AddHours(18);
+
     }
 }

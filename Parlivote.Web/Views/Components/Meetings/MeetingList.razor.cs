@@ -13,6 +13,7 @@ public partial class MeetingList : ComponentBase
     [Inject]
     public IMeetingViewService MeetingViewService { get; set; }
 
+    private AddMeetingComponent addMeetingComponent;
     private ComponentState state;
     private List<MeetingView> meetings;
     private string error;
