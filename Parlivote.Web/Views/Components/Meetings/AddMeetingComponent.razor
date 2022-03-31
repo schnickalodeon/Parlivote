@@ -1,0 +1,30 @@
+﻿<DialogBase @ref="@this.dialog"
+            Title="Gebiet anlegen"
+            SubmitButtonText="Anlegen"
+            CancelButtonText="Abbrechen"
+            Error="@this.error"
+            OnSubmit="AddMeetingViewAsync">
+
+    @*Description*@
+    <FormControlBase LabelText="Beschreibung">
+        <TextBoxBase @bind-Value="meetingView.Description"/>
+    </FormControlBase>
+    
+    @*Start*@
+    <FormControlBase LabelText="Beschreibung">
+        <TextBoxBase @bind-Value="meetingView.Description"/>
+    </FormControlBase>
+    
+    @*Start*@
+    <FormControlBase LabelText="Start">
+        <DateTimePickerBase @bind-Value="meetingView.Start" />
+    </FormControlBase>
+
+    <Condition Evaluation="@(this.error.IsNullOrWhitespace() == false)">
+        <Match>
+            <ValidationSummaryBase ValidationErrors="@this.validationErrors" />
+            <ErrorBase ErrorMessage="@error" />
+        </Match>
+    </Condition>
+
+</DialogBase>

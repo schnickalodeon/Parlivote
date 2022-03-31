@@ -1,4 +1,4 @@
-﻿namespace DOOR.VSS4.BlazorClient.Models.Configurations
+﻿namespace Parlivote.Web.Configurations
 {
     public class ApiConfiguratons
     {

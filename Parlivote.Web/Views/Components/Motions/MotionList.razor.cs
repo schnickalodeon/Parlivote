@@ -3,39 +3,38 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Parlivote.Web.Models;
-using Parlivote.Web.Models.Views.Meetings;
 using Parlivote.Web.Models.Views.Motions;
-using Parlivote.Web.Services.Views.Meetings;
+using Parlivote.Web.Services.Views.Motions;
 
-namespace Parlivote.Web.Components.Meetings;
+namespace Parlivote.Web.Views.Components.Motions;
 
-public partial class MeetingList : ComponentBase
+public partial class MotionList : ComponentBase
 {
     [Inject]
-    public IMeetingViewService MeetingViewService { get; set; }
+    public IMotionViewService MotionViewService { get; set; }
 
     private ComponentState state;
-    private List<MeetingView> meetings;
+    private List<MotionView> motions;
     private string error;
 
     protected override async Task OnInitializedAsync()
     {
         this.state = ComponentState.Loading;
-        await LoadMeetings();
+        await LoadMotions();
     }
 
-    private async Task LoadMeetings()
+    private async Task LoadMotions()
     {
         try
         {
-            this.meetings =
-                await this.MeetingViewService.GetAllAsync();
+            this.motions = await this.MotionViewService.GetAllAsync();
             this.state = ComponentState.Content;
         }
         catch (Exception e)
         {
-            this.error = e.InnerException?.Message;
+            this.error = e.InnerException.Message;
             this.state = ComponentState.Error;
         }
+        StateHasChanged();
     }
 }

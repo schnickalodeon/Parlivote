@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Syncfusion.Blazor.Calendars;
 
-namespace Parlivote.Web.Components.Base;
+namespace Parlivote.Web.Views.Base;
 
 public partial class DateTimePickerBase : ComponentBase
 {

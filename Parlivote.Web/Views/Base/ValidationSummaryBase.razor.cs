@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Components;
 using Parlivote.Web.Models;
 
-namespace Parlivote.Web.Components.Base;
+namespace Parlivote.Web.Views.Base;
 
 public partial class ValidationSummaryBase : ComponentBase
 {

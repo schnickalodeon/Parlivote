@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 
-namespace Parlivote.Web.Components.Base;
+namespace Parlivote.Web.Views.Base;
 
 public partial class TextBoxBase : ComponentBase
 {

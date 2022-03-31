@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Parlivote.Web.Models;
 
-namespace Parlivote.Web.Components;
+namespace Parlivote.Web.Views.Components;
 
 public partial class StateEvaluation : ComponentBase
 {

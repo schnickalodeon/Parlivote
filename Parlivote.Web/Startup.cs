@@ -28,7 +28,8 @@ namespace Parlivote.Web
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddRazorPages();
+
+            services.AddRazorPages(options => options.RootDirectory = "/Views/Pages");
             services.AddServerSideBlazor();
             
             LocalConfigurations localConfigurations = 
