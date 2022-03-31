@@ -1,0 +1,14 @@
+﻿<ListGroupItem>
+    <Title>@Motion.Text</Title>
+    <Body>@($"Version {Motion.Version}")</Body>
+    <Additional>
+        <div class="d-flex align-items-center justify-content-center h-100 me-4">
+            <ButtonBase CustomCss="btn btn-primary btn-lg" Text="Start"/>
+        </div>
+        <div class="d-flex align-items-center justify-content-center h-100">
+            <span class="badge @this.statusPillCss rounded-pill" style="font-size: 1em;">
+                @Motion.State
+            </span>
+        </div>
+    </Additional>
+</ListGroupItem>

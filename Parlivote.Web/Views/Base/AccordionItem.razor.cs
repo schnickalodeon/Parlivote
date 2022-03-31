@@ -12,6 +12,11 @@ public partial class AccordionItem : ComponentBase
     public RenderFragment Header { get; set; }
 
     [Parameter]
+    public RenderFragment OuterButtonHeader { get; set; }
+
+    
+
+    [Parameter]
     public RenderFragment Body { get; set; }
 
     [Parameter] public bool Collapsed { get; set; }
