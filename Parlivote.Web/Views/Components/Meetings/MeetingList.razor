@@ -9,13 +9,11 @@
     </Loading>
 
     <Content>
-        <ul>
+        <Accordion>
             <Iterations Items="meetings">
-                <li>
-                    @($"{context.Start.ToString("ddddd dd.MM.yy HH:mm")}: {context.Description}")
-                </li>
+                <MeetingBox Meeting="@context" />
             </Iterations>
-        </ul>
+        </Accordion>
     </Content>
     
     <Error>
