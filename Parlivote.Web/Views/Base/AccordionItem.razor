@@ -1,0 +1,13 @@
+﻿<div class="accordion-item">
+    <h2 class="accordion-header">
+        <button class="accordion-button @(Collapsed ? "collapsed" : "")" type="button" @onclick="Toggle">
+            @Header
+        </button>
+    </h2>
+
+    <div class="accordion-collapse @(Collapsed ? "collapse" : "show")" data-bs-parent=@($"#{AccordionId.ToString()}")>
+        <div class="accordion-body">
+            @Body
+        </div>
+    </div>
+</div>
