@@ -51,7 +51,7 @@ public class MeetingsController : RESTFulController
     }
 
     [HttpGet]
-    public async Task<ActionResult<IQueryable<Meeting>>> GetAllMotions()
+    public ActionResult<IQueryable<Meeting>> GetAllMeetings()
     {
         try
         {

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using Parlivote.Shared.Models.Meetings;
 using Parlivote.Web.Brokers.API;
 using Parlivote.Web.Brokers.Logging;

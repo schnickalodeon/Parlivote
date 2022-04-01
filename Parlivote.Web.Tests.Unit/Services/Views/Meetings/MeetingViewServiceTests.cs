@@ -28,7 +28,9 @@ public partial class MeetingViewServiceTests
         this.meetingViewService = new MeetingViewService(
             this.meetingServiceMock.Object);
 
-        this.compareLogic = new CompareLogic();
+        var compareConfig = new ComparisonConfig();
+        compareConfig.IgnoreProperty<Meeting>(meeting => meeting.Id);
+        this.compareLogic = new CompareLogic(compareConfig);
     }
 
     private Expression<Func<Meeting, bool>> SameMeetingAs(Meeting expectedMeeting)

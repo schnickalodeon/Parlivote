@@ -1,0 +1,27 @@
+﻿@using Parlivote.Web.Views.Components.Motions
+<AccordionItem>
+    <Header>
+        <h5 class="d-flex flex-row mb-0">
+            <b>@Meeting.Description</b>
+            <span class="ms-2">(@Meeting.Start.ToString("dddd dd.MM.yy HH:mm"))</span>
+        </h5>
+    </Header>
+    <OuterButtonHeader>
+        <ButtonBase Text="+" />
+    </OuterButtonHeader>
+
+    <Body>
+
+            <div class="btn-group w-100 mb-4" role="group" aria-label="Basic example">
+                <ButtonBase Text="Add Motion" />
+                <ButtonBase Text="Delete Meeting" />
+            </div>
+
+    <ListGroup>
+            <Iterations Items="@Meeting.Motions">
+                <MotionListItem Motion="@context"/>
+            </Iterations>
+        </ListGroup>
+    </Body>
+
+</AccordionItem>

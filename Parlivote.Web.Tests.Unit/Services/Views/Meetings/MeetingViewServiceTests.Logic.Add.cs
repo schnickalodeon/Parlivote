@@ -29,7 +29,8 @@ public partial class MeetingViewServiceTests
         {
             Id = someMeetingViewInput.Id,
             Description = someMeetingViewInput.Description,
-            Start = someMeetingViewInput.Start
+            Start = someMeetingViewInput.Start,
+            Motions = null
         };
 
         Meeting expectedInputMeeting = someMeeting;
@@ -44,7 +45,9 @@ public partial class MeetingViewServiceTests
             await this.meetingViewService.AddAsync(inputMeetingView);
 
         // Assert
-        actualMeetingView.Should().BeEquivalentTo(expectedMeetingView);
+        actualMeetingView.Should().BeEquivalentTo(
+            expectedMeetingView, 
+            options => options.Excluding(meetingView => meetingView.Id));
 
         this.meetingServiceMock.Verify(service =>
             service.AddAsync(It.Is(SameMeetingAs(expectedInputMeeting))),

@@ -1,5 +1,5 @@
 ﻿<div class="d-flex flex-row my-3">
-    <h3 class="mr-4">Meetings </h3>
+    <h3 class="me-4">Meetings </h3>
     <ButtonBase Text="Add Meeting" OnClick="@(() => addMeetingComponent.Show())" />
 </div>
 
@@ -9,13 +9,11 @@
     </Loading>
 
     <Content>
-        <ul>
+        <Accordion>
             <Iterations Items="meetings">
-                <li>
-                    @($"{context.Start.ToString("ddddd dd.MM.yy HH:mm")}: {context.Description}")
-                </li>
+                <MeetingBox Meeting="@context" />
             </Iterations>
-        </ul>
+        </Accordion>
     </Content>
     
     <Error>
