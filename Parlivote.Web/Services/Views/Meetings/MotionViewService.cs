@@ -69,7 +69,7 @@ public class MeetingViewService : IMeetingViewService
             Id = meeting.Id,
             Description = meeting.Description,
             Start = meeting.Start,
-            Motions = meeting.Motions.Select(AsMotionView).ToList()
+            Motions = meeting.Motions?.Select(AsMotionView).ToList()
         };
     }
     private static MotionView MapToMotionView(Motion poll)

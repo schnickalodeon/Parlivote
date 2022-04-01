@@ -7,5 +7,5 @@ public class Meeting
     public Guid Id { get; set; }
     public string Description { get; set; }
     public DateTimeOffset Start { get; set; }
-    public ICollection<Motion> Motions { get; set; }
+    public List<Motion>? Motions { get; set; }
 }
