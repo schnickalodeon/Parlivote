@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Parlivote.Core.Brokers.Logging;
@@ -30,4 +31,9 @@ public partial class MeetingService : IMeetingService
         {
             return this.storageBroker.SelectAllMeetings();
         });
+
+    public Task<Meeting> DeleteMeetingById(Guid meetingId)
+    {
+        throw new NotImplementedException();
+    }
 }
