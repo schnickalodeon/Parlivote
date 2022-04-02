@@ -12,16 +12,20 @@
 
     <Body>
 
-            <div class="btn-group w-100 mb-4" role="group" aria-label="Basic example">
-                <ButtonBase Text="Add Motion" />
-                <ButtonBase Text="Delete Meeting" />
-            </div>
+    <div class="btn-group w-100 mb-4" role="group" aria-label="Basic example">
+        <ButtonBase Text="Add Motion" />
+        <ButtonBase Text="Delete Meeting" OnClick="confirmationDialog.Show" />
+    </div>
 
     <ListGroup>
-            <Iterations Items="@Meeting.Motions">
-                <MotionListItem Motion="@context"/>
-            </Iterations>
-        </ListGroup>
+        <Iterations Items="@Meeting.Motions">
+            <MotionListItem Motion="@context"/>
+        </Iterations>
+    </ListGroup>
     </Body>
 
 </AccordionItem>
+
+<ConfirmationDialog @ref="confirmationDialog" Title="Confirm Delete" OnDelete="DeleteMeeting">
+    @($"Do you really want to delete {Meeting.Description}?")
+</ConfirmationDialog>

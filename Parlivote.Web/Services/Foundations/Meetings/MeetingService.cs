@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Parlivote.Shared.Models.Meetings;
@@ -34,5 +35,10 @@ public partial class MeetingService : IMeetingService
     public async Task<List<Meeting>> RetrieveAllWithMotionsAsync()
     {
         return await this.apiBroker.GetAllMeetingsWithMotionsAsync();
+    }
+
+    public async Task<Meeting> DeleteByIdAsync(Guid meetingId)
+    {
+        return await this.apiBroker.DeleteMeetingById(meetingId);
     }
 }

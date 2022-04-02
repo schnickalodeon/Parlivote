@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Parlivote.Core.Brokers.Logging;
@@ -30,4 +31,12 @@ public partial class MeetingService : IMeetingService
         {
             return this.storageBroker.SelectAllMeetings();
         });
+
+    public async Task<Meeting> DeleteMeetingById(Guid meetingId)
+    {
+        Meeting meetingToDelete =
+            await this.storageBroker.SelectMeetingById(meetingId);
+
+        return await this.storageBroker.DeleteMeetingAsync(meetingToDelete);
+    }
 }

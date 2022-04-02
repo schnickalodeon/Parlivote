@@ -11,7 +11,7 @@
     <Content>
         <Accordion>
             <Iterations Items="meetings">
-                <MeetingBox Meeting="@context" />
+                <MeetingBox Meeting="@context" OnDeleted="LoadMeetings" />
             </Iterations>
         </Accordion>
     </Content>
