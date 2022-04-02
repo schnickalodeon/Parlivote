@@ -31,6 +31,13 @@ public partial class MeetingService
         {
             throw CreateAndLogValidationException(invalidMeetingException);
         }
+        catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
+        {
+            var lockedMeetingException =
+                new LockedMeetingException(dbUpdateConcurrencyException);
+
+            throw CreateAndLogDependencyValidationException(lockedMeetingException);
+        }
         catch (DbUpdateException dbUpdateException)
         {
             var failedMeetingStorageException =
