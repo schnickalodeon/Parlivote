@@ -52,4 +52,42 @@ public partial class MeetingServiceTests
         this.storageBrokerMock.VerifyNoOtherCalls();
         this.loggingBrokerMock.VerifyNoOtherCalls();
     }
+
+
+    [Fact]
+    public async Task ShouldThrowDependencyExceptionOnModifyIfDatabaseUpdateErrorOccursAndLogItAsync()
+    {
+        // Arrange
+        Meeting someMeeting = GetRandomMeeting();
+
+        var databaseUpdateException =
+            new DbUpdateException();
+
+        var failedMeetingStorageException =
+            new FailedMeetingStorageException(databaseUpdateException);
+
+        var expectedDependencyException =
+            new MeetingDependencyException(failedMeetingStorageException);
+
+        this.storageBrokerMock.Setup(broker =>
+            broker.SelectMeetingById(It.IsAny<Guid>()))
+                .ThrowsAsync(databaseUpdateException);
+
+        // Act
+        Task<Meeting> modifyMeetingTask = this.meetingService.ModifyAsync(someMeeting);
+
+        // Assert
+        await Assert.ThrowsAsync<MeetingDependencyException>(() => modifyMeetingTask);
+
+        this.storageBrokerMock.Verify(broker =>
+            broker.SelectMeetingById(someMeeting.Id),
+            Times.Once());
+
+        Tests.VerifyExceptionLogged(
+            this.loggingBrokerMock,
+            expectedDependencyException);
+
+        this.storageBrokerMock.VerifyNoOtherCalls();
+        this.loggingBrokerMock.VerifyNoOtherCalls();
+    }
 }
