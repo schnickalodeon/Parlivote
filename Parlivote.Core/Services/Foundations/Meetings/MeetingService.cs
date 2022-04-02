@@ -32,13 +32,14 @@ public partial class MeetingService : IMeetingService
             return this.storageBroker.SelectAllMeetings();
         });
 
-    public async Task<Meeting> ModifyAsync(Meeting meeting)
-    {
-        Meeting maybeMeeting =
-            await this.storageBroker.SelectMeetingById(meeting.Id);
+    public Task<Meeting> ModifyAsync(Meeting meeting) =>
+        TryCatch(async () =>
+        {
+            Meeting maybeMeeting =
+                await this.storageBroker.SelectMeetingById(meeting.Id);
 
-        return await this.storageBroker.UpdateMeetingAsync(meeting);
-    }
+            return await this.storageBroker.UpdateMeetingAsync(meeting);
+        });
 
     public async Task<Meeting> DeleteMeetingById(Guid meetingId)
     {
