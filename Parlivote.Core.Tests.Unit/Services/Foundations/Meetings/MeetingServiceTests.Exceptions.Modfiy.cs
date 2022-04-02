@@ -53,7 +53,6 @@ public partial class MeetingServiceTests
         this.loggingBrokerMock.VerifyNoOtherCalls();
     }
 
-
     [Fact]
     public async Task ShouldThrowDependencyExceptionOnModifyIfDatabaseUpdateErrorOccursAndLogItAsync()
     {
@@ -86,6 +85,43 @@ public partial class MeetingServiceTests
         Tests.VerifyExceptionLogged(
             this.loggingBrokerMock,
             expectedDependencyException);
+
+        this.storageBrokerMock.VerifyNoOtherCalls();
+        this.loggingBrokerMock.VerifyNoOtherCalls();
+    }
+
+    [Fact]
+    public async Task ShouldThrowAndLogDependencyValidationExceptionOnModifyIfDatabaseUpdateConcurrencyErrorOccurs()
+    {
+        // Arrange
+        Meeting randomMeeting = GetRandomMeeting();
+        Meeting inputMeeting = randomMeeting;
+
+        var databaseUpdateConcurrencyException = new DbUpdateConcurrencyException();
+
+        var lockedMeetingException = 
+            new LockedMeetingException(databaseUpdateConcurrencyException);
+
+        var expectedMeetingDependencyValidationException =
+            new MeetingDependencyValidationException(lockedMeetingException);
+
+        this.storageBrokerMock.Setup(broker => 
+            broker.SelectMeetingById(It.IsAny<Guid>()))
+            .ThrowsAsync(lockedMeetingException);
+
+        // Act
+        Task<Meeting> modifyMeetingTask =
+            this.meetingService.ModifyAsync(inputMeeting);
+
+        // Assert
+        await Assert.ThrowsAsync<MeetingDependencyValidationException>(() => modifyMeetingTask);
+
+        this.storageBrokerMock.Verify(broker =>
+            broker.SelectMeetingById(inputMeeting.Id),
+            Times.Once);
+
+        Tests.VerifyExceptionLogged(this.loggingBrokerMock,
+            expectedMeetingDependencyValidationException);
 
         this.storageBrokerMock.VerifyNoOtherCalls();
         this.loggingBrokerMock.VerifyNoOtherCalls();
