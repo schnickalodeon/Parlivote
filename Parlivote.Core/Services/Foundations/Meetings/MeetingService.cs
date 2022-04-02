@@ -32,6 +32,11 @@ public partial class MeetingService : IMeetingService
             return this.storageBroker.SelectAllMeetings();
         });
 
+    public Task<Meeting> ModifyAsync(Meeting meeting)
+    {
+        throw new NotImplementedException();
+    }
+
     public async Task<Meeting> DeleteMeetingById(Guid meetingId)
     {
         Meeting meetingToDelete =
