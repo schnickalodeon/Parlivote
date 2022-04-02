@@ -107,7 +107,7 @@ public partial class MeetingServiceTests
 
         this.storageBrokerMock.Setup(broker => 
             broker.SelectMeetingById(It.IsAny<Guid>()))
-            .ThrowsAsync(lockedMeetingException);
+            .ThrowsAsync(databaseUpdateConcurrencyException);
 
         // Act
         Task<Meeting> modifyMeetingTask =
