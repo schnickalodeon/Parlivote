@@ -91,4 +91,21 @@ public class MeetingsController : RESTFulController
             return InternalServerError(meetingServiceException);
         }
     }
+
+    [HttpDelete("{meetingId}")]
+    public async Task<ActionResult<Meeting>> DeleteMeetingById(Guid meetingId)
+    {
+        try
+        {
+            Meeting deletedMeeting =
+                await this.meetingService.DeleteMeetingById(meetingId);
+
+            return Ok(deletedMeeting);
+        }
+        catch (Exception e)
+        {
+           //TODO Handle Excpetions
+           return InternalServerError(e);
+        }
+    }
 }

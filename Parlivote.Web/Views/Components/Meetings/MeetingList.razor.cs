@@ -24,7 +24,7 @@ public partial class MeetingList : ComponentBase
         await LoadMeetings();
     }
 
-    private async Task LoadMeetings()
+    public async Task LoadMeetings()
     {
         try
         {

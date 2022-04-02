@@ -50,6 +50,11 @@ public class MeetingViewService : IMeetingViewService
         return meetings.Select(AsMeetingView).ToList();
     }
 
+    public async Task<Meeting> DeleteByIdAsync(Guid meetingId)
+    {
+        return await this.meetingService.DeleteByIdAsync(meetingId);
+    }
+
     private static Func<Meeting, MeetingView> AsMeetingView => MapToMeetingView;
     private static Func<Motion, MotionView> AsMotionView => MapToMotionView;
 
