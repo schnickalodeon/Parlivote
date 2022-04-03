@@ -40,8 +40,12 @@ public partial class MeetingService : IMeetingService
     public Task<Meeting> ModifyAsync(Meeting meeting) =>
         TryCatch(async () =>
         {
+            ValidateMeeting(meeting);
+
             Meeting maybeMeeting =
                 await this.apiBroker.GetMeetingById(meeting.Id);
+
+            ValidateStorageMeeting(maybeMeeting, meeting.Id);
 
             return await this.apiBroker.PutMeetingAsync(meeting);
         });

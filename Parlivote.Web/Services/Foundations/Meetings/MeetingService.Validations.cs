@@ -17,6 +17,13 @@ public partial class MeetingService
         );
     }
 
+    private void ValidateStorageMeeting(Meeting maybeMeeting, Guid meetingId)
+    {
+        if (maybeMeeting is null)
+        {
+            throw new NotFoundMeetingException(meetingId);
+        }
+    }
     private void ValidateMeetingIsNotNull(Meeting meeting)
     {
         if (meeting is null)
@@ -52,5 +59,4 @@ public partial class MeetingService
 
         invalidPostException.ThrowIfContainsErrors();
     }
-
 }
