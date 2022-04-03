@@ -9,6 +9,7 @@ public interface IMeetingService
 {
     Task<Meeting> AddAsync(Meeting meeting);
     IQueryable<Meeting> RetrieveAll();
+    Task<Meeting> RetrieveByIdAsync(Guid meetingId);
     Task<Meeting> ModifyAsync(Meeting meeting);
     Task<Meeting> DeleteMeetingById(Guid meetingId);
 }

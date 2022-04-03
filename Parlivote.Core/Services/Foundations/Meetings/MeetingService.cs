@@ -32,6 +32,11 @@ public partial class MeetingService : IMeetingService
             return this.storageBroker.SelectAllMeetings();
         });
 
+    public Task<Meeting> RetrieveByIdAsync(Guid meetingId)
+    {
+        throw new NotImplementedException();
+    }
+
     public Task<Meeting> ModifyAsync(Meeting meeting) =>
         TryCatch(async () =>
         {
