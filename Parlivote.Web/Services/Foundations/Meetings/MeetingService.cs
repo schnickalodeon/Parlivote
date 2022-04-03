@@ -37,9 +37,12 @@ public partial class MeetingService : IMeetingService
         return await this.apiBroker.GetAllMeetingsWithMotionsAsync();
     }
 
-    public Task<Meeting> ModifyAsync(Meeting meeting)
+    public async Task<Meeting> ModifyAsync(Meeting meeting)
     {
-        throw new NotImplementedException();
+        Meeting maybeMeeting =
+            await this.apiBroker.GetMeetingById(meeting.Id);
+
+        return await this.apiBroker.PutMeetingAsync(meeting);
     }
 
     public async Task<Meeting> DeleteByIdAsync(Guid meetingId)
