@@ -107,7 +107,6 @@ public partial class MeetingServiceTests
             broker.SelectMeetingById(nonExistMeeting.Id))
                 .ReturnsAsync(nullMeeting);
 
-        
         // when 
         Task<Meeting> modifyMeetingTask =
             this.meetingService.ModifyAsync(nonExistMeeting);

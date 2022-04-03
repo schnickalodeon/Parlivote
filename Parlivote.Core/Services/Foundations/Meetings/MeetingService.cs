@@ -39,6 +39,8 @@ public partial class MeetingService : IMeetingService
             Meeting maybeMeeting =
                 await this.storageBroker.SelectMeetingById(meeting.Id);
 
+            ValidateStorageMeeting(maybeMeeting, meeting.Id);
+
             return await this.storageBroker.UpdateMeetingAsync(meeting);
         });
 
