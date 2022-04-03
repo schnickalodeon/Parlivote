@@ -92,6 +92,40 @@ public class MeetingsController : RESTFulController
         }
     }
 
+    [HttpPut]
+    public async Task<ActionResult<Meeting>> PutMeetingAsync(Meeting meeting)
+    {
+        try
+        {
+            Meeting modifiedMeeting =
+                await this.meetingService.ModifyAsync(meeting);
+
+            return Ok(modifiedMeeting);
+        }
+        catch (MeetingValidationException meetingValidationException)
+            when (meetingValidationException.InnerException is NotFoundMeetingException)
+        {
+            return NotFound(meetingValidationException.InnerException);
+        }
+        catch (MeetingValidationException meetingValidationException)
+        {
+            return BadRequest(meetingValidationException.InnerException);
+        }
+        catch (MeetingDependencyValidationException meetingDependencyValidationException)
+            when (meetingDependencyValidationException.InnerException is AlreadyExistsMeetingException)
+        {
+            return Conflict(meetingDependencyValidationException.InnerException);
+        }
+        catch (MeetingDependencyException meetingDependencyException)
+        {
+            return InternalServerError(meetingDependencyException);
+        }
+        catch (MeetingServiceException meetingServiceException)
+        {
+            return InternalServerError(meetingServiceException);
+        }
+    }
+
     [HttpDelete("{meetingId}")]
     public async Task<ActionResult<Meeting>> DeleteMeetingById(Guid meetingId)
     {
