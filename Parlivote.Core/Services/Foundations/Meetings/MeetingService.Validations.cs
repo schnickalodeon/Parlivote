@@ -37,6 +37,10 @@ public partial class MeetingService
         }
     }
 
+    private void ValidateMeetingId(Guid meetingId)
+    {
+        Validate((IsInvalid(meetingId), nameof(Meeting.Id)));
+    }
     private static dynamic IsInvalid(Guid id) => new
     {
         Condition = id == Guid.Empty,

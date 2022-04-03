@@ -35,6 +35,7 @@ public partial class MeetingService : IMeetingService
     public Task<Meeting> RetrieveByIdAsync(Guid meetingId) =>
         TryCatch(async () =>
         {
+            ValidateMeetingId(meetingId);
             return await this.storageBroker.SelectMeetingById(meetingId);
         });
 
