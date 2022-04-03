@@ -44,4 +44,48 @@ public partial class MeetingServiceTests
         this.storageBrokerMock.VerifyNoOtherCalls();
     }
 
+    [Theory]
+    [InlineData(null)]
+    [InlineData("")]
+    [InlineData(" ")]
+    public async Task ShouldThrowValidationExceptionOnModifyIfMeetingIsInvalidAndLogItAsync(string invalidText)
+    {
+        // Arrange
+        var invalidMeeting = new Meeting
+        {
+            Id = Guid.Empty,
+            Description = invalidText
+        };
+
+        var invalidMeetingException =
+            new InvalidMeetingException();
+
+        invalidMeetingException.AddData(
+            key: nameof(Meeting.Id),
+            values: ExceptionMessages.INVALID_ID);
+
+        invalidMeetingException.AddData(
+            key: nameof(Meeting.Description),
+            values: ExceptionMessages.INVALID_STRING);
+
+        var expectedMeetingValidationException
+            = new MeetingValidationException(invalidMeetingException);
+
+        // Act
+        Task<Meeting> modifyMeetingTask = this.meetingService.ModifyAsync(invalidMeeting);
+
+        // Assert
+        await Assert.ThrowsAsync<MeetingValidationException>(() => modifyMeetingTask);
+
+        Tests.VerifyExceptionLogged(
+            this.loggingBrokerMock,
+            expectedMeetingValidationException);
+
+        this.storageBrokerMock.Verify(broker =>
+                broker.InsertMeetingAsync(It.IsAny<Meeting>()),
+            Times.Never);
+
+        this.loggingBrokerMock.VerifyNoOtherCalls();
+        this.storageBrokerMock.VerifyNoOtherCalls();
+    }
 }
