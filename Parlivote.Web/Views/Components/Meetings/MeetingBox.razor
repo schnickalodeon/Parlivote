@@ -14,6 +14,7 @@
 
     <div class="btn-group w-100 mb-4" role="group" aria-label="Basic example">
         <ButtonBase Text="Add Motion" />
+        <ButtonBase Text="Edit Meeting" OnClick="@(() => editMeetingComponent.Show(Meeting))" />
         <ButtonBase Text="Delete Meeting" OnClick="confirmationDialog.Show" />
     </div>
 
@@ -25,6 +26,8 @@
     </Body>
 
 </AccordionItem>
+
+<EditMeetingComponent @ref="editMeetingComponent" OnMeetingChanged="OnMeetingChanged" />
 
 <ConfirmationDialog @ref="confirmationDialog" Title="Confirm Delete" OnDelete="DeleteMeeting">
     @($"Do you really want to delete {Meeting.Description}?")

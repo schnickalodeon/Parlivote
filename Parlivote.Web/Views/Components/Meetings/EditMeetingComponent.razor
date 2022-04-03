@@ -1,0 +1,25 @@
+﻿<DialogBase @ref="@this.dialog"
+            Title="Modify Meeting"
+            SubmitButtonText="Save"
+            CancelButtonText="Cancel"
+            Error="@this.error"
+            OnSubmit="SaveMeetingViewAsync">
+
+    @*Description*@
+    <FormControlBase LabelText="Description">
+        <TextBoxBase @bind-Value="meetingToEdit.Description"/>
+    </FormControlBase>
+
+    @*Start*@
+    <FormControlBase LabelText="Start">
+        <DateTimePickerBase @bind-Value="meetingToEdit.Start" />
+    </FormControlBase>
+
+    <Condition Evaluation="@(this.error.IsNullOrWhitespace() == false)">
+        <Match>
+            <ValidationSummaryBase ValidationErrors="@this.validationErrors" />
+            <ErrorBase ErrorMessage="@error" />
+        </Match>
+    </Condition>
+
+</DialogBase>
