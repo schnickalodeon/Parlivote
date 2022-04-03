@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Server.IIS.Core;
 using Microsoft.EntityFrameworkCore;
 using Parlivote.Core.Services.Foundations.Meetings;
 using Parlivote.Shared.Models.Meetings;
@@ -68,6 +69,35 @@ public class MeetingsController : RESTFulController
         }
     }
 
+    [HttpGet("{meetingId}")]
+    public async Task<ActionResult<Meeting>> GetMeetingByIdAsync(Guid meetingId)
+    {
+        try
+        {
+            Meeting meeting =
+                await this.meetingService.RetrieveByIdAsync(meetingId);
+
+            return Ok(meeting);
+        }
+        catch (MeetingValidationException meetingValidationException)
+            when (meetingValidationException.InnerException is NotFoundMeetingException)
+        {
+            return NotFound(meetingValidationException.InnerException);
+        }
+        catch (MeetingValidationException meetingValidationException)
+        {
+            return BadRequest(meetingValidationException.InnerException);
+        }
+        catch (MeetingDependencyException meetingDependencyException)
+        {
+            return InternalServerError(meetingDependencyException.Message);
+        }
+        catch (MeetingServiceException meetingServiceException)
+        {
+            return InternalServerError(meetingServiceException.Message);
+        }
+    }
+
     [HttpGet("WithMotions")]
     public async Task<ActionResult<List<Meeting>>> GetAllMeetingsWithMotions()
     {
@@ -93,7 +123,7 @@ public class MeetingsController : RESTFulController
     }
 
     [HttpPut]
-    public async Task<ActionResult<Meeting>> PutMeetingAsync(Meeting meeting)
+    public async Task<ActionResult<Meeting>> PutMeetingAsync([FromBody] Meeting meeting)
     {
         try
         {
