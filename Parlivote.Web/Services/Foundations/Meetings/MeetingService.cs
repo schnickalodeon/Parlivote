@@ -37,13 +37,14 @@ public partial class MeetingService : IMeetingService
         return await this.apiBroker.GetAllMeetingsWithMotionsAsync();
     }
 
-    public async Task<Meeting> ModifyAsync(Meeting meeting)
-    {
-        Meeting maybeMeeting =
-            await this.apiBroker.GetMeetingById(meeting.Id);
+    public Task<Meeting> ModifyAsync(Meeting meeting) =>
+        TryCatch(async () =>
+        {
+            Meeting maybeMeeting =
+                await this.apiBroker.GetMeetingById(meeting.Id);
 
-        return await this.apiBroker.PutMeetingAsync(meeting);
-    }
+            return await this.apiBroker.PutMeetingAsync(meeting);
+        });
 
     public async Task<Meeting> DeleteByIdAsync(Guid meetingId)
     {
