@@ -88,4 +88,41 @@ public partial class MeetingServiceTests
         this.loggingBrokerMock.VerifyNoOtherCalls();
         this.storageBrokerMock.VerifyNoOtherCalls();
     }
+
+    [Fact]
+    public async Task ShouldThrowValidationExceptionOnModifyIfMeetingDoesNotExistAndLogItAsync()
+    {
+        // given
+        Meeting randomMeeting = GetRandomMeeting();
+        Meeting nonExistMeeting = randomMeeting;
+        Meeting nullMeeting = null;
+
+        var notFoundMeetingException =
+            new NotFoundMeetingException(nonExistMeeting.Id);
+
+        var expectedMeetingValidationException =
+            new MeetingValidationException(notFoundMeetingException);
+
+        this.storageBrokerMock.Setup(broker =>
+            broker.SelectMeetingById(nonExistMeeting.Id))
+                .ReturnsAsync(nullMeeting);
+
+        
+        // when 
+        Task<Meeting> modifyMeetingTask =
+            this.meetingService.ModifyAsync(nonExistMeeting);
+
+        // then
+        await Assert.ThrowsAsync<MeetingValidationException>(() => modifyMeetingTask);
+
+        this.storageBrokerMock.Verify(broker =>
+            broker.SelectMeetingById(nonExistMeeting.Id),
+            Times.Once);
+
+        Tests.VerifyExceptionLogged(this.loggingBrokerMock,
+            expectedMeetingValidationException);
+
+        this.storageBrokerMock.VerifyNoOtherCalls();
+        this.loggingBrokerMock.VerifyNoOtherCalls();
+    }
 }
