@@ -11,5 +11,6 @@ public interface IMeetingViewService
     Task<MeetingView> AddAsync(MeetingView meetingView);
     Task<List<MeetingView>> GetAllAsync();
     Task<List<MeetingView>> GetAllWithMotionsAsync();
+    Task<MeetingView> UpdateAsync(MeetingView meetingView);
     Task<Meeting> DeleteByIdAsync(Guid meetingId);
 }

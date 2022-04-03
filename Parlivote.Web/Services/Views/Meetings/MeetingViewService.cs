@@ -50,6 +50,11 @@ public class MeetingViewService : IMeetingViewService
         return meetings.Select(AsMeetingView).ToList();
     }
 
+    public Task<MeetingView> UpdateAsync(MeetingView meetingView)
+    {
+        throw new NotImplementedException();
+    }
+
     public async Task<Meeting> DeleteByIdAsync(Guid meetingId)
     {
         return await this.meetingService.DeleteByIdAsync(meetingId);
