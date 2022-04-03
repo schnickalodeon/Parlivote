@@ -50,9 +50,16 @@ public class MeetingViewService : IMeetingViewService
         return meetings.Select(AsMeetingView).ToList();
     }
 
-    public Task<MeetingView> UpdateAsync(MeetingView meetingView)
+    public async Task<MeetingView> UpdateAsync(MeetingView meetingView)
     {
-        throw new NotImplementedException();
+        Meeting meetingToUpdate = MapToMeeting(meetingView);
+        
+        Meeting updatedMeeting =
+            await this.meetingService.ModifyAsync(meetingToUpdate);
+
+        MeetingView updatedMeetingView = MapToMeetingView(updatedMeeting);
+
+        return updatedMeetingView;
     }
 
     public async Task<Meeting> DeleteByIdAsync(Guid meetingId)
