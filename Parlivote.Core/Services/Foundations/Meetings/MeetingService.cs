@@ -35,6 +35,7 @@ public partial class MeetingService : IMeetingService
     public Task<Meeting> ModifyAsync(Meeting meeting) =>
         TryCatch(async () =>
         {
+            ValidateMeeting(meeting);
             Meeting maybeMeeting =
                 await this.storageBroker.SelectMeetingById(meeting.Id);
 
