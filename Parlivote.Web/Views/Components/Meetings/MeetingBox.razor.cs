@@ -14,20 +14,21 @@ public partial class MeetingBox : ComponentBase
     public IMeetingViewService MeetingViewService { get; set; }
 
     [Parameter] 
-    public EventCallback OnChanged { get; set; }
+    public EventCallback OnMeetingChanged { get; set; }
 
     [Parameter]
     public MeetingView Meeting { get; set; }
 
     private ConfirmationDialog confirmationDialog;
     private AddMotionComponent addMotionComponent;
+    private EditMeetingComponent editMeetingComponent;
 
     private async void DeleteMeeting()
     {
         try
         {
             await this.MeetingViewService.DeleteByIdAsync(Meeting.Id);
-            await OnChanged.InvokeAsync();
+            await OnMeetingChanged.InvokeAsync();
         }
         catch (Exception e)
         {

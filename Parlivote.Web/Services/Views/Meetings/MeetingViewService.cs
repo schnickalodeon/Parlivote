@@ -50,6 +50,18 @@ public class MeetingViewService : IMeetingViewService
         return meetings.Select(AsMeetingView).ToList();
     }
 
+    public async Task<MeetingView> UpdateAsync(MeetingView meetingView)
+    {
+        Meeting meetingToUpdate = MapToMeeting(meetingView);
+        
+        Meeting updatedMeeting =
+            await this.meetingService.ModifyAsync(meetingToUpdate);
+
+        MeetingView updatedMeetingView = MapToMeetingView(updatedMeeting);
+
+        return updatedMeetingView;
+    }
+
     public async Task<Meeting> DeleteByIdAsync(Guid meetingId)
     {
         return await this.meetingService.DeleteByIdAsync(meetingId);

@@ -24,6 +24,10 @@ public partial class MeetingService
         {
             throw CreateAndLogValidationException(nullMeetingException);
         }
+        catch (NotFoundMeetingException notFoundMeetingException)
+        {
+            throw CreateAndLogValidationException(notFoundMeetingException);
+        }
         catch (InvalidMeetingException invalidMeetingException)
         {
             throw CreateAndLogValidationException(invalidMeetingException);
