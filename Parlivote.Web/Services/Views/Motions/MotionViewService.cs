@@ -18,10 +18,16 @@ public class MotionViewService : IMotionViewService
     }
     public async Task<MotionView> AddAsync(MotionView pollView)
     {
-        Motion mappedMotion = 
-            MapToMotion(pollView);
+        var mappedMotion = new Motion
+        {
+            Id = Guid.NewGuid(),
+            MeetingId = pollView.MeetingId,
+            State = MotionState.Submitted,
+            Text = pollView.Text,
+            Version = pollView.Version
+        };
 
-        Motion storageMotion = 
+            Motion storageMotion = 
             await this.pollService.AddAsync(mappedMotion);
 
         MotionView mappedMotionView = 
