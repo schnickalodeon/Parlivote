@@ -19,6 +19,9 @@ public partial class ApiBroker
     public async Task<List<Meeting>> GetAllMeetingsWithMotionsAsync() =>
         await this.GetAsync<List<Meeting>>($"{MeetingsRelativeUrl}/WithMotions");
 
+    public async Task<Meeting> GetMeetingByIdWithMotionsAsync(Guid meetingId) =>
+        await this.GetAsync<Meeting>($"{MeetingsRelativeUrl}/{meetingId}/WithMotions");
+
     public async Task<Meeting> GetMeetingById(Guid meetingId) =>
         await this.GetAsync<Meeting>($"{MeetingsRelativeUrl}/{meetingId}");
 

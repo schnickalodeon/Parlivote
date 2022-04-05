@@ -14,20 +14,30 @@ public partial class MotionList : ComponentBase
     public IMotionViewService MotionViewService { get; set; }
 
     private ComponentState state;
-    private List<MotionView> motions;
+
+    [Parameter]
+    public List<MotionView> Motions { get; set; } = null;
+
     private string error;
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnParametersSetAsync()
     {
-        this.state = ComponentState.Loading;
-        await LoadMotions();
+        if (Motions is null)
+        {
+            this.state = ComponentState.Loading;
+            await LoadMotions();
+        }
+        else
+        {
+            this.state = ComponentState.Content;
+        }
     }
 
     private async Task LoadMotions()
     {
         try
         {
-            this.motions = await this.MotionViewService.GetAllAsync();
+            this.Motions = await this.MotionViewService.GetAllAsync();
             this.state = ComponentState.Content;
         }
         catch (Exception e)

@@ -13,6 +13,9 @@ public partial class MeetingBox : ComponentBase
     [Inject]
     public IMeetingViewService MeetingViewService { get; set; }
 
+    [Inject]
+    public NavigationManager NavigationManager { get; set; }
+
     [Parameter] 
     public EventCallback OnMeetingChanged { get; set; }
 

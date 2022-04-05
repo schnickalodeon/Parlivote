@@ -1,0 +1,23 @@
+﻿@page "/meetings/{id:guid}"
+@using Parlivote.Web.Views.Components
+@using Parlivote.Web.Views.Components.Motions
+
+<StateEvaluation State="@this.state">
+    <Loading>
+        <SpinnerBase Value="Meeting Data" IsVisible="true" />
+    </Loading>
+
+    <Content>
+        <h3>@meeting.Description</h3>
+        <h5>@meeting.Start.ToString("dddd dd.MM.yy HH:mm")</h5>
+
+        <div class="mt-4">
+            <MotionList Motions="@meeting.Motions" />
+        </div>
+
+    </Content>
+    
+    <Error>
+        <ErrorBase ErrorMessage="@this.error" />
+    </Error>
+</StateEvaluation>
