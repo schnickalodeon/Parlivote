@@ -14,7 +14,7 @@
 
     <div class="btn-group w-100 mb-4" role="group">
         <ButtonBase Text="Edit Meeting" OnClick="@(() => editMeetingComponent.Show(Meeting))" />
-        <ButtonBase Text="Meeting View" OnClick="@(() => editMeetingComponent.Show(Meeting))" />
+        <ButtonBase Text="Meeting View" OnClick="@(() => NavigationManager.NavigateTo($"/meetings/{Meeting.Id}"))" />
         <ButtonBase Text="Delete Meeting" OnClick="confirmationDialog.Show" />
     </div>
     

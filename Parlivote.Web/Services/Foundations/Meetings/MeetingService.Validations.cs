@@ -17,6 +17,10 @@ public partial class MeetingService
         );
     }
 
+    private void ValidateMeetingId(Guid meetingId)
+    {
+        Validate((IsInvalid(meetingId), nameof(Meeting.Id)));
+    }
     private void ValidateStorageMeeting(Meeting maybeMeeting, Guid meetingId)
     {
         if (maybeMeeting is null)
@@ -59,4 +63,5 @@ public partial class MeetingService
 
         invalidPostException.ThrowIfContainsErrors();
     }
+
 }

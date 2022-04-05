@@ -122,6 +122,28 @@ public class MeetingsController : RESTFulController
         }
     }
 
+    [HttpGet("{meetingId}/WithMotions")]
+    public async Task<ActionResult<Meeting>> GetMeetingByIdWithMotions(Guid meetingId)
+    {
+        try
+        {
+            Meeting meeting = await this.meetingService
+                .RetrieveAll()
+                .Include(meeting => meeting.Motions)
+                .FirstOrDefaultAsync(meeting => meeting.Id == meetingId);
+
+            return Ok(meeting);
+        }
+        catch (MeetingDependencyException meetingDependencyException)
+        {
+            return InternalServerError(meetingDependencyException);
+        }
+        catch (MeetingServiceException meetingServiceException)
+        {
+            return InternalServerError(meetingServiceException);
+        }
+    }
+
     [HttpPut]
     public async Task<ActionResult<Meeting>> PutMeetingAsync([FromBody] Meeting meeting)
     {

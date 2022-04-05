@@ -50,6 +50,14 @@ public class MeetingViewService : IMeetingViewService
         return meetings.Select(AsMeetingView).ToList();
     }
 
+    public async Task<MeetingView> GetByIdWithMotions(Guid meetingId)
+    {
+        Meeting meeting =
+            await this.meetingService.RetrieveByIdWithMotionsAsync(meetingId);
+
+        return MapToMeetingView(meeting);
+    }
+
     public async Task<MeetingView> UpdateAsync(MeetingView meetingView)
     {
         Meeting meetingToUpdate = MapToMeeting(meetingView);
@@ -89,14 +97,15 @@ public class MeetingViewService : IMeetingViewService
             Motions = meeting.Motions?.Select(AsMotionView).ToList() ?? new List<MotionView>()
         };
     }
-    private static MotionView MapToMotionView(Motion poll)
+    private static MotionView MapToMotionView(Motion motion)
     {
         return new MotionView
         {
-            Id = poll.Id,
-            Version = poll.Version,
-            State = poll.State.GetValue(),
-            Text = poll.Text
+            Id = motion.Id,
+            Version = motion.Version,
+            State = motion.State.GetValue(),
+            MeetingId = motion.MeetingId,
+            Text = motion.Text
         };
     }
 }
