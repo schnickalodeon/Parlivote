@@ -12,10 +12,15 @@
 
     <Body>
 
-    <div class="btn-group w-100 mb-4" role="group" aria-label="Basic example">
-        <ButtonBase Text="Add Motion" OnClick="(() => addMotionComponent.Show(this.Meeting))" />
+    <div class="btn-group w-100 mb-4" role="group">
         <ButtonBase Text="Edit Meeting" OnClick="@(() => editMeetingComponent.Show(Meeting))" />
+        <ButtonBase Text="Meeting View" OnClick="@(() => editMeetingComponent.Show(Meeting))" />
         <ButtonBase Text="Delete Meeting" OnClick="confirmationDialog.Show" />
+    </div>
+    
+    <div class="d-flex flex-row my-3 align-items-center">
+        <h4 class="me-4 mb-0">Motions</h4>
+        <ButtonBase CustomCss="e-success" Text="Add Motion" OnClick="(() => addMotionComponent.Show(this.Meeting))" />
     </div>
 
     <ListGroup>
