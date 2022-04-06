@@ -28,7 +28,7 @@ namespace Parlivote.Web.Tests.Unit.Services.Foundations.Motions
                     dependencyValidationException);
 
             this.apiBrokerMock.Setup(broker =>
-                broker.PostMotionAsync(It.IsAny<Motion>()))
+                    broker.PostMotionAsync(It.IsAny<Motion>()))
                     .ThrowsAsync(dependencyValidationException);
 
             // Act
@@ -63,7 +63,7 @@ namespace Parlivote.Web.Tests.Unit.Services.Foundations.Motions
                     criticalException);
 
             this.apiBrokerMock.Setup(broker =>
-                broker.PostMotionAsync(It.IsAny<Motion>()))
+                    broker.PostMotionAsync(It.IsAny<Motion>()))
                     .ThrowsAsync(criticalException);
 
             // Act
@@ -84,7 +84,6 @@ namespace Parlivote.Web.Tests.Unit.Services.Foundations.Motions
             this.apiBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
         }
-
 
         [Theory]
         [MemberData(nameof(DependencyException))]
@@ -136,7 +135,7 @@ namespace Parlivote.Web.Tests.Unit.Services.Foundations.Motions
                 new MotionServiceException(failedMotionServiceException);
 
             this.apiBrokerMock.Setup(broker =>
-                broker.PostMotionAsync(It.IsAny<Motion>()))
+                    broker.PostMotionAsync(It.IsAny<Motion>()))
                     .ThrowsAsync(serviceException);
 
             //Act

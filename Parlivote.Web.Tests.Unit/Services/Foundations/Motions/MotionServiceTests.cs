@@ -42,11 +42,25 @@ public partial class MotionServiceTests
             .AsQueryable();
     }
 
+    private static MotionState GetRandomState()
+    {
+        int motionStateCount =
+            Enum.GetValues(typeof(MotionState)).Length;
+
+        int randomStateValue =
+            new IntRange(min: 0, max: motionStateCount - 1).GetValue();
+
+        return (MotionState)randomStateValue;
+    }
+
     private static Filler<Motion> GetMotionFiller()
     {
         var filler = new Filler<Motion>();
 
-        filler.Setup().OnType<Meeting>().IgnoreIt();
+        filler.Setup()
+            .OnType<int>().Use(new IntRange(0,20))
+            .OnType<MotionState>().Use(GetRandomState)
+            .OnType<Meeting>().IgnoreIt();
 
         return filler;
     }
