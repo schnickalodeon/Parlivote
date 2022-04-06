@@ -27,9 +27,20 @@ public partial class MotionService
         {
             throw CreateAndLogValidationException(nullMotionException);
         }
+        catch (NotFoundMotionException notFoundMotionException)
+        {
+            throw CreateAndLogValidationException(notFoundMotionException);
+        }
         catch (InvalidMotionException invalidMotionException)
         {
             throw CreateAndLogValidationException(invalidMotionException);
+        }
+        catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
+        {
+            var lockedMotionException =
+                new LockedMotionException(dbUpdateConcurrencyException);
+
+            throw CreateAndLogDependencyValidationException(lockedMotionException);
         }
         catch (DbUpdateException dbUpdateException)
         {

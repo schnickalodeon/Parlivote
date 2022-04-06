@@ -8,7 +8,7 @@
         <h4>Motions</h4>
         <ListGroup>
             <Iterations Items="@this.Motions">
-                <MotionListItem Motion="@context"/>
+                <MotionListItem Motion="@context" OnMotionChanged="OnMotionsChanged"/>
             </Iterations>
         </ListGroup>
     </Content>

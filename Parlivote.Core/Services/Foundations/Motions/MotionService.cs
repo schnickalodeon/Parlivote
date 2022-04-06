@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Parlivote.Core.Brokers.Logging;
@@ -29,5 +30,24 @@ public partial class MotionService : IMotionService
         TryCatch(() =>
         {
             return this.storageBroker.SelectAllMotions();
+        });
+
+    public Task<Motion> RetrieveByIdAsync(Guid motionId) =>
+        TryCatch(async () =>
+        {
+            ValidateMotionId(motionId);
+            return await this.storageBroker.SelectMotionById(motionId);
+        });
+
+    public Task<Motion> ModifyAsync(Motion motion) =>
+        TryCatch(async () =>
+        {
+            ValidateMotion(motion);
+            Motion maybeMotion =
+                await this.storageBroker.SelectMotionById(motion.Id);
+
+            ValidateStorageMotion(maybeMotion, motion.Id);
+
+            return await this.storageBroker.UpdateMotionAsync(motion);
         });
 }

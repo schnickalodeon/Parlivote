@@ -1,11 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using EFxceptions.Models.Exceptions;
-using FluentAssertions;
-using Force.DeepCloner;
 using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualBasic;
 using Moq;
 using Parlivote.Shared.Models.Motions;
 using Parlivote.Shared.Models.Motions.Exceptions;
@@ -16,36 +11,35 @@ namespace Parlivote.Core.Tests.Unit.Services.Foundations.Motions;
 public partial class MotionServiceTests
 {
     [Fact]
-    public void ThrowsCriticalDependencyException_OnRetrieveAllIfSqlErrorOccursAndLogItAsync()
+    public async Task ThrowsCriticalDependencyException_OnRetrieveByIdIfSqlErrorOccursAndLogItAsync()
     {
         // Arrange
-        Motion someMotion = GetRandomMotion();
-        Motion inputMotion = someMotion;
-
+        Guid inputMotionId = Guid.NewGuid();
         SqlException sqlException = Tests.GetSqlException();
 
-        var pollStorageException =
+        var motionStorageException =
             new FailedMotionStorageException(sqlException);
 
         var expectedMotionDependencyException =
-            new MotionDependencyException(pollStorageException);
+            new MotionDependencyException(motionStorageException);
 
         this.storageBrokerMock.Setup(broker =>
-            broker.SelectAllMotions())
+            broker.SelectMotionById(It.IsAny<Guid>()))
                 .Throws(sqlException);
 
         // Act
-        Action retrieveAllAction = () => this.motionService.RetrieveAll();
+        Task<Motion> retrieveByIdTask = 
+            this.motionService.RetrieveByIdAsync(inputMotionId);
 
         // Assert
-        Assert.Throws<MotionDependencyException>(retrieveAllAction);
+        await Assert.ThrowsAsync<MotionDependencyException>(() => retrieveByIdTask);
 
         this.storageBrokerMock.Verify(broker =>
-            broker.SelectAllMotions(),
+            broker.SelectMotionById(inputMotionId),
             Times.Once);
 
         Tests.VerifyCriticalExceptionLogged(
-            this.loggingBrokerMock, 
+            this.loggingBrokerMock,
             expectedMotionDependencyException);
 
         this.storageBrokerMock.VerifyNoOtherCalls();
@@ -53,10 +47,10 @@ public partial class MotionServiceTests
     }
 
     [Fact]
-    public void ShouldThrowServiceExceptionOnRetrieveAllIfExceptionOccursAndLogItAsync()
+    public async Task ShouldThrowServiceExceptionOnRetrieveByIdIfExceptionOccursAndLogItAsync()
     {
         // Arrange
-        Motion someMotion = GetRandomMotion();
+        Guid inputMotionId = Guid.NewGuid();
         string randomExceptionMessage = Tests.GetRandomString();
         var serviceException = new Exception(randomExceptionMessage);
 
@@ -67,23 +61,25 @@ public partial class MotionServiceTests
             new MotionServiceException(failedMotionServiceException);
 
         this.storageBrokerMock.Setup(broker =>
-            broker.SelectAllMotions())
-            .Throws(serviceException);
+            broker.SelectMotionById(It.IsAny<Guid>()))
+                .Throws(serviceException);
 
         // Act
-        Action retrieveAllAction = () => this.motionService.RetrieveAll();
+        Task<Motion> retrieveByIdTask =
+            this.motionService.RetrieveByIdAsync(inputMotionId);
 
         // Assert
-        Assert.Throws<MotionServiceException>(retrieveAllAction);
+        await Assert.ThrowsAsync<MotionServiceException>(() => retrieveByIdTask);
 
         this.storageBrokerMock.Verify(broker =>
-            broker.SelectAllMotions(),
+            broker.SelectMotionById(inputMotionId),
             Times.Once);
 
-        Tests.VerifyExceptionLogged(this.loggingBrokerMock, expectedMotionServiceException);
+        Tests.VerifyExceptionLogged(
+            this.loggingBrokerMock,
+            expectedMotionServiceException);
 
         this.storageBrokerMock.VerifyNoOtherCalls();
         this.loggingBrokerMock.VerifyNoOtherCalls();
     }
-
 }

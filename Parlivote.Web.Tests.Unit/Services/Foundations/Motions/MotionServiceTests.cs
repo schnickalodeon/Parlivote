@@ -22,13 +22,13 @@ public partial class MotionServiceTests
 {
     private readonly Mock<ILoggingBroker> loggingBrokerMock;
     private readonly Mock<IApiBroker> apiBrokerMock;
-    private readonly IMotionService pollService;
+    private readonly IMotionService motionService;
     public MotionServiceTests()
     {
         this.loggingBrokerMock = new Mock<ILoggingBroker>();
         this.apiBrokerMock = new Mock<IApiBroker>();
 
-        this.pollService = new MotionService(
+        this.motionService = new MotionService(
             this.loggingBrokerMock.Object,
             this.apiBrokerMock.Object);
     }
@@ -42,11 +42,25 @@ public partial class MotionServiceTests
             .AsQueryable();
     }
 
+    private static MotionState GetRandomState()
+    {
+        int motionStateCount =
+            Enum.GetValues(typeof(MotionState)).Length;
+
+        int randomStateValue =
+            new IntRange(min: 0, max: motionStateCount - 2).GetValue();
+
+        return (MotionState)randomStateValue;
+    }
+
     private static Filler<Motion> GetMotionFiller()
     {
         var filler = new Filler<Motion>();
 
-        filler.Setup().OnType<Meeting>().IgnoreIt();
+        filler.Setup()
+            .OnType<int>().Use(new IntRange(1,20))
+            .OnType<MotionState>().Use(GetRandomState)
+            .OnType<Meeting>().IgnoreIt();
 
         return filler;
     }

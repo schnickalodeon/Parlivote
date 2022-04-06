@@ -24,7 +24,7 @@ public partial class MotionServiceTests
                 .Returns(storageMotions);
 
         // Act
-        IQueryable<Motion> actualMotions = this.pollService.RetrieveAll();
+        IQueryable<Motion> actualMotions = this.motionService.RetrieveAll();
         
         // Assert
         actualMotions.Should().BeEquivalentTo(expectedMotions);

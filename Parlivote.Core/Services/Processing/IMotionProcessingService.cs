@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Parlivote.Shared.Models.Motions;
 
@@ -9,4 +10,6 @@ public interface IMotionProcessingService
     Task<Motion> AddAsync(Motion motion);
     IQueryable<Motion> RetrieveAll();
     Task<Motion> RetrieveActiveAsync();
+    Task<Motion> RetrieveByIdAsync(Guid motionId);
+    Task<Motion> ModifyAsync(Motion motion);
 }

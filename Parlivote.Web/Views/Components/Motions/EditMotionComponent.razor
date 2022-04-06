@@ -1,0 +1,20 @@
+﻿<DialogBase @ref="@this.dialog"
+            Title="Edit Motion"
+            SubmitButtonText="Save"
+            CancelButtonText="Cancel"
+            Error="@this.error"
+            OnSubmit="SaveMotionViewAsync">
+
+    @*Text*@
+    <FormControlBase LabelText="Beschreibung">
+        <TextBoxBase @bind-Value="motionView.Text"/>
+    </FormControlBase>
+
+    <Condition Evaluation="@(this.error.IsNullOrWhitespace() == false)">
+        <Match>
+            <ValidationSummaryBase ValidationErrors="@this.validationErrors" />
+            <ErrorBase ErrorMessage="@error" />
+        </Match>
+    </Condition>
+
+</DialogBase>

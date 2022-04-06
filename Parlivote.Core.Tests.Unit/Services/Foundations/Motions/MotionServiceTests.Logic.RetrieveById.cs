@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using FluentAssertions;
 using Force.DeepCloner;
 using Moq;
@@ -10,27 +11,27 @@ namespace Parlivote.Core.Tests.Unit.Services.Foundations.Motions;
 public partial class MotionServiceTests
 {
     [Fact]
-    public async Task ShouldAddMotionAsync()
+    public async Task ShouldRetrieveMotionsByIdAsync()
     {
         // Arrange
-        Motion someMotion = GetRandomMotion();
-        Motion inputMotion = someMotion;
-        Motion storageMotion = inputMotion;
-        Motion expectedMotion = storageMotion.DeepClone();
+        Motion someMotion = Motions.MotionServiceTests.GetRandomMotion();
+        Motion storageMotion = someMotion;
+        Motion expectedMotion = someMotion.DeepClone();
+        Guid inputMotionId = someMotion.Id;
 
         this.storageBrokerMock.Setup(broker =>
-            broker.InsertMotionAsync(It.IsAny<Motion>()))
+            broker.SelectMotionById(It.IsAny<Guid>()))
                 .ReturnsAsync(storageMotion);
 
         // Act
-        Motion actualMotion =
-            await this.motionService.AddAsync(inputMotion);
-
+        Motion actualMotion = 
+            await this.motionService.RetrieveByIdAsync(inputMotionId);
+        
         // Assert
         actualMotion.Should().BeEquivalentTo(expectedMotion);
 
         this.storageBrokerMock.Verify(broker =>
-            broker.InsertMotionAsync(inputMotion),
+            broker.SelectMotionById(inputMotionId),
             Times.Once);
 
         this.storageBrokerMock.VerifyNoOtherCalls();

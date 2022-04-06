@@ -25,7 +25,7 @@ public partial class MotionServiceTests
 
         // Act
         List<Motion> actualMotions =
-            await this.pollService.RetrieveAllAsync();
+            await this.motionService.RetrieveAllAsync();
 
         // Assert
         actualMotions.Should().BeEquivalentTo(expectedMotions);

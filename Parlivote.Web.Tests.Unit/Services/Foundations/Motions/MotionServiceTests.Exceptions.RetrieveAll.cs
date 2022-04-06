@@ -32,7 +32,7 @@ public partial class MotionServiceTests
 
         // Act
         Task<List<Motion>> addMotionTask =
-            this.pollService.RetrieveAllAsync();
+            this.motionService.RetrieveAllAsync();
 
         // Assert
         await Assert.ThrowsAsync<MotionDependencyException>(() => addMotionTask);
@@ -64,7 +64,7 @@ public partial class MotionServiceTests
             .ThrowsAsync(criticalException);
 
         // Act
-        Task<List<Motion>> retrieveAllTask = this.pollService.RetrieveAllAsync();
+        Task<List<Motion>> retrieveAllTask = this.motionService.RetrieveAllAsync();
 
         // Assert
         await Assert.ThrowsAsync<MotionDependencyException>(() => retrieveAllTask);
@@ -100,7 +100,7 @@ public partial class MotionServiceTests
                 .ThrowsAsync(serviceException);
 
         //Act
-        Task<List<Motion>> retrieveAllTask = this.pollService.RetrieveAllAsync();
+        Task<List<Motion>> retrieveAllTask = this.motionService.RetrieveAllAsync();
 
         //Assert
         await Assert.ThrowsAsync<MotionServiceException>(() => retrieveAllTask);

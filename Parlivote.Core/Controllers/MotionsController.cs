@@ -67,6 +67,27 @@ public class MotionsController : RESTFulController
         }
     }
 
+    [HttpGet("{motionId}")]
+    public async Task<ActionResult<Motion>> GetMotionByIdAsync(Guid motionId)
+    {
+        try
+        {
+            Motion activeMotion =
+                await this.motionProcessingService.RetrieveByIdAsync(motionId);
+
+            return Ok(activeMotion);
+        }
+        catch (MotionDependencyException pollDependencyException)
+        {
+            return InternalServerError(pollDependencyException);
+        }
+        catch (MotionServiceException pollServiceException)
+        {
+            return InternalServerError(pollServiceException);
+        }
+    }
+
+
     [HttpGet("Active")]
     public async Task<ActionResult<Motion>> GetActiveMotionAsync()
     {
@@ -84,6 +105,40 @@ public class MotionsController : RESTFulController
         catch (MotionServiceException pollServiceException)
         {
             return InternalServerError(pollServiceException);
+        }
+    }
+
+    [HttpPut]
+    public async Task<ActionResult<Motion>> PutMotionAsync([FromBody] Motion motion)
+    {
+        try
+        {
+            Motion modifiedMotion =
+                await this.motionProcessingService.ModifyAsync(motion);
+
+            return Ok(modifiedMotion);
+        }
+        catch (MotionValidationException motionValidationException)
+            when (motionValidationException.InnerException is NotFoundMotionException)
+        {
+            return NotFound(motionValidationException.InnerException);
+        }
+        catch (MotionValidationException motionValidationException)
+        {
+            return BadRequest(motionValidationException.InnerException);
+        }
+        catch (MotionDependencyValidationException motionDependencyValidationException)
+            when (motionDependencyValidationException.InnerException is AlreadyExistsMotionException)
+        {
+            return Conflict(motionDependencyValidationException.InnerException);
+        }
+        catch (MotionDependencyException motionDependencyException)
+        {
+            return InternalServerError(motionDependencyException);
+        }
+        catch (MotionServiceException motionServiceException)
+        {
+            return InternalServerError(motionServiceException);
         }
     }
 

@@ -28,12 +28,12 @@ namespace Parlivote.Web.Tests.Unit.Services.Foundations.Motions
                     dependencyValidationException);
 
             this.apiBrokerMock.Setup(broker =>
-                broker.PostMotionAsync(It.IsAny<Motion>()))
+                    broker.PostMotionAsync(It.IsAny<Motion>()))
                     .ThrowsAsync(dependencyValidationException);
 
             // Act
             Task<Motion> addMotionTask =
-                this.pollService.AddAsync(someMotion);
+                this.motionService.AddAsync(someMotion);
 
             // Assert
             await Assert.ThrowsAsync<MotionDependencyValidationException>(() => addMotionTask);
@@ -63,12 +63,12 @@ namespace Parlivote.Web.Tests.Unit.Services.Foundations.Motions
                     criticalException);
 
             this.apiBrokerMock.Setup(broker =>
-                broker.PostMotionAsync(It.IsAny<Motion>()))
+                    broker.PostMotionAsync(It.IsAny<Motion>()))
                     .ThrowsAsync(criticalException);
 
             // Act
             Task<Motion> addMotionTask =
-                this.pollService.AddAsync(someMotion);
+                this.motionService.AddAsync(someMotion);
 
             // Assert
             await Assert.ThrowsAsync<MotionDependencyException>(() => addMotionTask);
@@ -84,7 +84,6 @@ namespace Parlivote.Web.Tests.Unit.Services.Foundations.Motions
             this.apiBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
         }
-
 
         [Theory]
         [MemberData(nameof(DependencyException))]
@@ -104,7 +103,7 @@ namespace Parlivote.Web.Tests.Unit.Services.Foundations.Motions
 
             // Act
             Task<Motion> addMotionTask =
-                this.pollService.AddAsync(someMotion);
+                this.motionService.AddAsync(someMotion);
 
             // Assert
             await Assert.ThrowsAsync<MotionDependencyException>(() => addMotionTask);
@@ -136,11 +135,11 @@ namespace Parlivote.Web.Tests.Unit.Services.Foundations.Motions
                 new MotionServiceException(failedMotionServiceException);
 
             this.apiBrokerMock.Setup(broker =>
-                broker.PostMotionAsync(It.IsAny<Motion>()))
+                    broker.PostMotionAsync(It.IsAny<Motion>()))
                     .ThrowsAsync(serviceException);
 
             //Act
-            Task<Motion> addMotionTask = this.pollService.AddAsync(someMotion);
+            Task<Motion> addMotionTask = this.motionService.AddAsync(someMotion);
 
             //Assert
             await Assert.ThrowsAsync<MotionServiceException>(() => addMotionTask);

@@ -36,7 +36,7 @@ public partial class MotionServiceTests
 
         // Act
         Task<Motion> addMotionTask =
-            this.pollService.AddAsync(inputMotion);
+            this.motionService.AddAsync(inputMotion);
 
         // Assert
         await Assert.ThrowsAsync<MotionDependencyException>(() => addMotionTask);
@@ -74,7 +74,7 @@ public partial class MotionServiceTests
 
         // Act
         Task<Motion> addMotionTask =
-            this.pollService.AddAsync(alreadyExistingMotion);
+            this.motionService.AddAsync(alreadyExistingMotion);
 
         // Assert
         await Assert.ThrowsAsync<MotionDependencyValidationException>(() => addMotionTask);
@@ -111,7 +111,7 @@ public partial class MotionServiceTests
                 .ThrowsAsync(databaseUpdateException);
 
         // Act
-        Task<Motion> addMotionTask = this.pollService.AddAsync(someMotion);
+        Task<Motion> addMotionTask = this.motionService.AddAsync(someMotion);
 
         // Assert
         await Assert.ThrowsAsync<MotionDependencyException>(() => addMotionTask);
@@ -147,7 +147,7 @@ public partial class MotionServiceTests
                 .ThrowsAsync(serviceException);
 
         //Act
-        Task<Motion> addMotionTask = this.pollService.AddAsync(someMotion);
+        Task<Motion> addMotionTask = this.motionService.AddAsync(someMotion);
 
         //Assert
         await Assert.ThrowsAsync<MotionServiceException>(() => addMotionTask);

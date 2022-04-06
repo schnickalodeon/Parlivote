@@ -24,6 +24,10 @@ public partial class MotionService
         {
             throw CreateAndLogValidationException(nullMotionException);
         }
+        catch (NotFoundMotionException notFoundMotionException)
+        {
+            throw CreateAndLogValidationException(notFoundMotionException);
+        }
         catch (InvalidMotionException invalidMotionException)
         {
             throw CreateAndLogValidationException(invalidMotionException);

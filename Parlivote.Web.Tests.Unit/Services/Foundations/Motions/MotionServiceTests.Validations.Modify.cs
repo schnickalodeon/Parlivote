@@ -11,7 +11,7 @@ namespace Parlivote.Web.Tests.Unit.Services.Foundations.Motions;
 public partial class MotionServiceTests
 {
     [Fact]
-    public async Task ShouldThrowValidationException_OnAddIfMotionIsNullAndLogItAsync()
+    public async Task ShouldThrowValidationException_OnModifyIfMotionIsNullAndLogItAsync()
     {
         // Arrange
         Motion nullMotion = null;
@@ -23,13 +23,13 @@ public partial class MotionServiceTests
             new MotionValidationException(nullMotionException);
 
         // Act
-        Task<Motion> addMotionTask = this.motionService.AddAsync(nullMotion);
+        Task<Motion> modifyMotionTask = this.motionService.ModifyAsync(nullMotion);
          
         // Assert
-        await Assert.ThrowsAsync<MotionValidationException>(() => addMotionTask);
+        await Assert.ThrowsAsync<MotionValidationException>(() => modifyMotionTask);
 
         this.apiBrokerMock.Verify(broker =>
-            broker.PostMotionAsync(It.IsAny<Motion>()),
+            broker.PutMotionAsync(It.IsAny<Motion>()),
             Times.Never);
 
         Tests.VerifyExceptionLogged(
@@ -44,7 +44,7 @@ public partial class MotionServiceTests
     [InlineData(null)]
     [InlineData("")]
     [InlineData(" ")]
-    public async Task ShouldThrowValidationExceptionOnAddIfMotionIsInvalidAndLogItAsync(string invalidText)
+    public async Task ShouldThrowValidationExceptionOnModifyIfMotionIsInvalidAndLogItAsync(string invalidText)
     {
         // Arrange
         var invalidMotion = new Motion
@@ -73,21 +73,56 @@ public partial class MotionServiceTests
             = new MotionValidationException(invalidMotionException);
 
         // Act
-        Task<Motion> addMotionTask = this.motionService.AddAsync(invalidMotion);
+        Task<Motion> modifyMotionTask = this.motionService.ModifyAsync(invalidMotion);
 
         // Assert
-        await Assert.ThrowsAsync<MotionValidationException>(() => addMotionTask);
+        await Assert.ThrowsAsync<MotionValidationException>(() => modifyMotionTask);
 
         Tests.VerifyExceptionLogged(
             this.loggingBrokerMock,
             expectedMotionValidationException);
 
         this.apiBrokerMock.Verify(broker =>
-            broker.PostMotionAsync(It.IsAny<Motion>()),
+            broker.PutMotionAsync(It.IsAny<Motion>()),
             Times.Never);
 
         this.loggingBrokerMock.VerifyNoOtherCalls();
         this.apiBrokerMock.VerifyNoOtherCalls();
     }
 
+    [Fact]
+    public async Task ShouldThrowValidationExceptionOnModifyIfMotionDoesNotExistAndLogItAsync()
+    {
+        // given
+        Motion randomMotion = GetRandomMotion();
+        Motion nonExistMotion = randomMotion;
+        Motion nullMotion = null;
+
+        var notFoundMotionException =
+            new NotFoundMotionException(nonExistMotion.Id);
+
+        var expectedMotionValidationException =
+            new MotionValidationException(notFoundMotionException);
+
+        this.apiBrokerMock.Setup(broker =>
+            broker.GetMotionById(nonExistMotion.Id))
+                .ReturnsAsync(nullMotion);
+
+        // when 
+        Task<Motion> modifyMotionTask =
+            this.motionService.ModifyAsync(nonExistMotion);
+
+        // then
+        await Assert.ThrowsAsync<MotionValidationException>(() => modifyMotionTask);
+
+        this.apiBrokerMock.Verify(broker =>
+            broker.GetMotionById(nonExistMotion.Id),
+            Times.Once);
+
+        Tests.VerifyExceptionLogged(this.loggingBrokerMock,
+            expectedMotionValidationException);
+
+        this.apiBrokerMock.VerifyNoOtherCalls();
+        this.loggingBrokerMock.VerifyNoOtherCalls();
+    }
 }
