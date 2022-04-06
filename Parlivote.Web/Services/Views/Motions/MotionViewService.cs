@@ -52,26 +52,38 @@ public class MotionViewService : IMotionViewService
         return MapToMotionView(activeMotion);
     }
 
-    private static Motion MapToMotion(MotionView pollView)
+    public async Task<MotionView> UpdateAsync(MotionView motionView)
+    {
+        Motion mappedMotion = MapToMotion(motionView);
+
+        Motion updatedMotion =
+            await this.motionService.ModifyAsync(mappedMotion);
+
+        return MapToMotionView(updatedMotion);
+    }
+
+    private static Motion MapToMotion(MotionView motionView)
     {
         return new Motion
         {
-            Id = pollView.Id,
-            Version = pollView.Version,
-            State = MotionStateConverter.FromString(pollView.State),
-            Text = pollView.Text
+            Id = motionView.MotionId,
+            MeetingId = motionView.MeetingId,
+            Version = motionView.Version,
+            State = MotionStateConverter.FromString(motionView.State),
+            Text = motionView.Text
         };
     }
 
     private static Func<Motion, MotionView> AsMotionView => MapToMotionView;
-    private static MotionView MapToMotionView(Motion poll)
+    private static MotionView MapToMotionView(Motion motion)
     {
         return new MotionView
         {
-            Id = poll.Id,
-            Version = poll.Version,
-            State = poll.State.GetValue(),
-            Text = poll.Text
+            MotionId = motion.Id,
+            Version = motion.Version,
+            MeetingId = motion.MeetingId,
+            State = motion.State.GetValue(),
+            Text = motion.Text
         };
     }
 }

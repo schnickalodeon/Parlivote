@@ -48,7 +48,7 @@ public partial class MotionServiceTests
             Enum.GetValues(typeof(MotionState)).Length;
 
         int randomStateValue =
-            new IntRange(min: 0, max: motionStateCount - 1).GetValue();
+            new IntRange(min: 0, max: motionStateCount - 2).GetValue();
 
         return (MotionState)randomStateValue;
     }
@@ -58,7 +58,7 @@ public partial class MotionServiceTests
         var filler = new Filler<Motion>();
 
         filler.Setup()
-            .OnType<int>().Use(new IntRange(0,20))
+            .OnType<int>().Use(new IntRange(1,20))
             .OnType<MotionState>().Use(GetRandomState)
             .OnType<Meeting>().IgnoreIt();
 

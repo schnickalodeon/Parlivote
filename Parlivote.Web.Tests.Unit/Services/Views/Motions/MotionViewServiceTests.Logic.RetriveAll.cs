@@ -34,7 +34,7 @@ public partial class MotionViewServiceTests
             dynamicMotionViewPropertiesCollection.Select(property =>
                 new MotionView
                 {
-                    Id = property.Id,
+                    MotionId = property.Id,
                     Version = property.Version,
                     State = ((MotionState)property.State).GetValue(),
                     Text = property.Text
@@ -42,21 +42,21 @@ public partial class MotionViewServiceTests
 
         List<MotionView> expectedMotionViews = randomMotionViews;
 
-        this.pollServiceMock.Setup(service =>
+        this.motionServiceMock.Setup(service =>
             service.RetrieveAllAsync())
             .ReturnsAsync(retrievedMotions);
 
         // when
         List<MotionView> retrievedMotionViews =
-            await this.pollViewService.GetAllAsync();
+            await this.motionViewService.GetAllAsync();
 
         // then
         retrievedMotionViews.Should().BeEquivalentTo(expectedMotionViews);
 
-        this.pollServiceMock.Verify(service =>
+        this.motionServiceMock.Verify(service =>
             service.RetrieveAllAsync(),
             Times.Once());
 
-        this.pollServiceMock.VerifyNoOtherCalls();
+        this.motionServiceMock.VerifyNoOtherCalls();
     }
 }

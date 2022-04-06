@@ -101,7 +101,7 @@ public class MeetingViewService : IMeetingViewService
     {
         return new MotionView
         {
-            Id = motion.Id,
+            MotionId = motion.Id,
             Version = motion.Version,
             State = motion.State.GetValue(),
             MeetingId = motion.MeetingId,
