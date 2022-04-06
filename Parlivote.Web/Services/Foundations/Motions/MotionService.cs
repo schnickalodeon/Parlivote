@@ -30,8 +30,8 @@ public partial class MotionService : IMotionService
             return await this.apiBroker.GetAllMotionsAsync();
         });
 
-    public Task<Motion> RetrieveActiveAsync()
+    public async Task<Motion> RetrieveActiveAsync()
     {
-        throw new System.NotImplementedException();
+        return await this.apiBroker.GetActiveMotion();
     }
 }

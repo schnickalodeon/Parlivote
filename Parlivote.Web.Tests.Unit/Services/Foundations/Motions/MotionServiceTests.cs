@@ -35,28 +35,19 @@ public partial class MotionServiceTests
     private static Motion GetRandomMotion() =>
         GetMotionFiller().Create();
 
-    private static IQueryable<Motion> GetRandomMotions(MotionState state = MotionState.Unset)
+    private static IQueryable<Motion> GetRandomMotions()
     {
-        return GetMotionFiller(state)
+        return GetMotionFiller()
             .Create(count: Tests.GetRandomNumber())
             .AsQueryable();
     }
 
-    private static Filler<Motion> GetMotionFiller(MotionState state = MotionState.Unset)
+    private static Filler<Motion> GetMotionFiller()
     {
         var filler = new Filler<Motion>();
 
-        if (state == MotionState.Unset)
-        {
-            filler.Setup().OnType<Meeting>().IgnoreIt();
-        }
-        else
-        {
-            filler.Setup()
-                .OnType<MotionState>().Use(state)
-                .OnType<Meeting>().IgnoreIt();
-        }
-        
+        filler.Setup().OnType<Meeting>().IgnoreIt();
+
         return filler;
     }
 
