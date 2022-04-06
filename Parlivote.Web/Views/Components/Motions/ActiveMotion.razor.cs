@@ -39,7 +39,9 @@ public partial class ActiveMotion : ComponentBase
             InvokeAsync(StateHasChanged);
         });
 
-        await this.hubConnection.StartAsync();
+        await LoadActiveMotionAsnyc();
+
+        await this.hubConnetion.StartAsync();
     }
 
     private async Task LoadActiveMotionAsync()
@@ -51,7 +53,7 @@ public partial class ActiveMotion : ComponentBase
         }
         catch (Exception e)
         {
-            
+            Console.WriteLine(e.Message);
         }
     }
 }
