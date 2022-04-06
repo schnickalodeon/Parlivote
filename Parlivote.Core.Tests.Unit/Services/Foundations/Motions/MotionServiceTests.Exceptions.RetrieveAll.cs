@@ -35,7 +35,7 @@ public partial class MotionServiceTests
                 .Throws(sqlException);
 
         // Act
-        Action retrieveAllAction = () => this.pollService.RetrieveAll();
+        Action retrieveAllAction = () => this.motionService.RetrieveAll();
 
         // Assert
         Assert.Throws<MotionDependencyException>(retrieveAllAction);
@@ -71,7 +71,7 @@ public partial class MotionServiceTests
             .Throws(serviceException);
 
         // Act
-        Action retrieveAllAction = () => this.pollService.RetrieveAll();
+        Action retrieveAllAction = () => this.motionService.RetrieveAll();
 
         // Assert
         Assert.Throws<MotionServiceException>(retrieveAllAction);

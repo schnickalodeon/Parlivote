@@ -14,14 +14,14 @@ public partial class MotionServiceTests
 {
     private Mock<ILoggingBroker> loggingBrokerMock;
     private Mock<IStorageBroker> storageBrokerMock;
-    private IMotionService pollService;
+    private IMotionService motionService;
 
     public MotionServiceTests()
     {
         this.loggingBrokerMock = new Mock<ILoggingBroker>();
         this.storageBrokerMock = new Mock<IStorageBroker>();
 
-        this.pollService = new MotionService(
+        this.motionService = new MotionService(
             this.loggingBrokerMock.Object,
             this.storageBrokerMock.Object);
     }

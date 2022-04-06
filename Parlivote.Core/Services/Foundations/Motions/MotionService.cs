@@ -30,4 +30,9 @@ public partial class MotionService : IMotionService
         {
             return this.storageBroker.SelectAllMotions();
         });
+
+    public Task<Motion> ModifyAsync(Motion motion)
+    {
+        throw new System.NotImplementedException();
+    }
 }

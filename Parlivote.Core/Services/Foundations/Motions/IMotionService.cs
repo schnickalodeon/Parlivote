@@ -9,4 +9,5 @@ public interface IMotionService
 {
     Task<Motion> AddAsync(Motion motion);
     IQueryable<Motion> RetrieveAll();
+    Task<Motion> ModifyAsync(Motion motion);
 }

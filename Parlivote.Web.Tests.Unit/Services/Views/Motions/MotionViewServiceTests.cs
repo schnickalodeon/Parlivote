@@ -27,11 +27,11 @@ public partial class MotionViewServiceTests
 
     private static MotionState GetRandomState()
     {
-        int studentGenderCount =
+        int motionStateCount =
             Enum.GetValues(typeof(MotionState)).Length;
 
         int randomStateValue =
-            new IntRange(min: 0, max: studentGenderCount).GetValue();
+            new IntRange(min: 0, max: motionStateCount - 1).GetValue();
 
         return (MotionState)randomStateValue;
     }
