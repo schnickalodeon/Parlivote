@@ -1,16 +1,14 @@
 ﻿@using PrettyBlazor
 <div class="d-flex flex-row justify-content-center align-items-center w-100">
-    <span class="h4 mb-0 me-2">Active Motion:</span>
+    
     <Condition Evaluation="activeMotion != null">
         <Match>
+            <span class="h4 mb-0 me-2">Active Motion:</span>
             <div class="d-flex flex-row justify-content-center align-items-center p-1 border border-3 rounded border-warning">
                 <span class="me-2 mb-0 h3">@activeMotion.Text</span>
                 <span class="mb-0 badge rounded-pill bg-primary fs-5">7/10</span>
             </div>
         </Match>
-        <NotMatch>
-            No Active Motion
-        </NotMatch>
     </Condition>
 
 </div>

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Parlivote.Shared.Models.Motions;
 using Parlivote.Web.Models.Views.Meetings;
 using Parlivote.Web.Models.Views.Motions;
 
@@ -11,4 +12,6 @@ public interface IMotionViewService
     Task<List<MotionView>> GetAllAsync();
     Task<MotionView> GetActiveAsync();
     Task<MotionView> UpdateAsync(MotionView motionView);
+    Task<MotionView> SetState(MotionView motionView, MotionState state);
+    Task<MotionView> SetActive(MotionView motionView);
 }

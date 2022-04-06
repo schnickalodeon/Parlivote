@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.SignalR.Client;
 using Parlivote.Shared.Models.Motions;
 using Parlivote.Web.Hubs;
 using Parlivote.Web.Models.Views.Motions;
+using Parlivote.Web.Services.Views.Meetings;
+using Parlivote.Web.Services.Views.Motions;
 using Syncfusion.Blazor.Diagrams;
 
 namespace Parlivote.Web.Views.Components.Motions;
@@ -15,6 +17,9 @@ public partial class MotionListItem : ComponentBase
     [Inject]
     public NavigationManager NavigationManager { get; set; }
 
+    [Inject]
+    public IMotionViewService MotionViewService { get; set; }
+
     [Parameter]
     public MotionView Motion { get; set; }
 
@@ -22,23 +27,38 @@ public partial class MotionListItem : ComponentBase
     public EventCallback OnMotionChanged { get; set; }
 
     private string statusPillCss = "";
-    private HubConnection hubConnetion;
+    private HubConnection hubConnection;
     private EditMotionComponent editMotionComponent;
-    private bool IsConnected => this.hubConnetion.State == HubConnectionState.Connected;
+    private bool existsActiveMeeting = false;
+    private bool IsConnected => this.hubConnection.State == HubConnectionState.Connected;
 
     protected override async Task OnInitializedAsync()
     {
-        this.hubConnetion = new HubConnectionBuilder()
+        await ConnectToMotionHub();
+        await GetActiveMotion();
+    }
+
+    private async Task GetActiveMotion()
+    {
+        MotionView activeMotion =
+            await this.MotionViewService.GetActiveAsync();
+
+        this.existsActiveMeeting = activeMotion is not null;
+    }
+
+    private async Task ConnectToMotionHub()
+    {
+        this.hubConnection = new HubConnectionBuilder()
             .WithUrl(NavigationManager.ToAbsoluteUri("/motionhub"))
             .Build();
 
-        this.hubConnetion.On<string>(MotionHub.SetActiveMotionMethod, (motion) =>
+        this.hubConnection.On<MotionView>(MotionHub.SetActiveMotionMethod, motionView =>
         {
-            Console.WriteLine(motion);
-            StateHasChanged();
+            this.existsActiveMeeting = true;
+            InvokeAsync(StateHasChanged);
         });
 
-        await this.hubConnetion.StartAsync();
+        await this.hubConnection.StartAsync();
     }
 
     protected override void OnParametersSet()
@@ -60,9 +80,12 @@ public partial class MotionListItem : ComponentBase
 
     private async void SetActive()
     {
-        if (IsConnected)
+        if (IsConnected && !this.existsActiveMeeting)
         {
-            await this.hubConnetion.SendAsync(MotionHub.SetActiveMotionMethod, Motion);
+            await this.hubConnection.SendAsync(MotionHub.SetActiveMotionMethod, Motion);
+            Motion.State = MotionState.Pending.GetValue();
+            this.statusPillCss = GetPillCssByStatus();
+            await InvokeAsync(StateHasChanged);
         }
     }
 }

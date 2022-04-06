@@ -51,7 +51,7 @@ public partial class ActiveMotion : ComponentBase
         }
         catch (Exception e)
         {
-            
+            Console.WriteLine(e.Message);
         }
     }
 }
