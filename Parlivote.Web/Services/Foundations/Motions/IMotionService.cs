@@ -8,4 +8,5 @@ public interface IMotionService
 {
     Task<Motion> AddAsync(Motion poll);
     Task<List<Motion>> RetrieveAllAsync();
+    Task<Motion> RetrieveActiveAsync();
 }

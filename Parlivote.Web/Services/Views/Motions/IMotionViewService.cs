@@ -8,4 +8,5 @@ public interface IMotionViewService
 {
     Task<MotionView> AddAsync(MotionView pollView);
     Task<List<MotionView>> GetAllAsync();
+    Task<MotionView> GetActiveAsync();
 }
