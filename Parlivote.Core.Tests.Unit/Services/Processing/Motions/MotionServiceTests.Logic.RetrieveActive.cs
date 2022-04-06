@@ -44,4 +44,32 @@ public partial class MotionServiceTests
         this.motionServiceMock.VerifyNoOtherCalls();
         this.loggingBrokerMock.VerifyNoOtherCalls();
     }
+
+    [Fact]
+    public async Task ShouldRetrieveNullIfNoMotionIsActive()
+    {
+        // Arrange
+        List<Motion> someMotions = GetRandomMotions(MotionState.Declined).ToList();
+        IQueryable<Motion> storageMotions = someMotions.BuildMock();
+
+        Motion nullMotion = null;
+
+        this.motionServiceMock.Setup(broker =>
+                broker.RetrieveAll())
+            .Returns(storageMotions);
+
+        // Act
+        Motion? actualMotion =
+            await this.motionProcessingService.RetrieveActiveAsync();
+
+        // Assert
+        actualMotion.Should().BeEquivalentTo(nullMotion);
+
+        this.motionServiceMock.Verify(broker =>
+            broker.RetrieveAll(),
+            Times.Once);
+
+        this.motionServiceMock.VerifyNoOtherCalls();
+        this.loggingBrokerMock.VerifyNoOtherCalls();
+    }
 }
