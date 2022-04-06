@@ -32,7 +32,7 @@ public class MotionProcessingService : IMotionProcessingService
         return this.motionService.RetrieveAll();
     }
 
-    public Task<Motion?> RetrieveActiveAsync()
+    public Task<Motion> RetrieveActiveAsync()
     {
         IQueryable<Motion> allMotions =
             this.motionService.RetrieveAll();
@@ -40,9 +40,9 @@ public class MotionProcessingService : IMotionProcessingService
         Expression<Func<Motion,bool>> activeMotionExpression =
             m => m.State == MotionState.Pending;
 
-        Task<Motion?> activeMotion =
-            allMotions.FirstOrDefaultAsync(activeMotionExpression);
+        Task<Motion> maybeActiveMotion =
+            allMotions.SingleOrDefaultAsync(activeMotionExpression);
 
-        return activeMotion;
+        return maybeActiveMotion;
     }
 }
