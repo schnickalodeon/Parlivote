@@ -31,11 +31,12 @@ public partial class MotionService : IMotionService
             return this.storageBroker.SelectAllMotions();
         });
 
-    public async Task<Motion> ModifyAsync(Motion motion)
-    {
-        Motion maybeMotion =
-            await this.storageBroker.SelectMotionById(motion.Id);
+    public Task<Motion> ModifyAsync(Motion motion) =>
+        TryCatch(async () =>
+        {
+            Motion maybeMotion =
+                await this.storageBroker.SelectMotionById(motion.Id);
 
-        return await this.storageBroker.UpdateMotionAsync(motion);
-    }
+            return await this.storageBroker.UpdateMotionAsync(motion);
+        });
 }
