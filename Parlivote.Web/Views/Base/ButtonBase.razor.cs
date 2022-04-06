@@ -12,6 +12,9 @@ namespace Parlivote.Web.Views.Base
 
         [Parameter] public string CustomCss { get; set; }
 
+        [Parameter]
+        public bool Disabled { get; set; } = false;
+
         private string css;
         protected override void OnParametersSet()
         {

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.SignalR.Client;
 using Parlivote.Web.Models;
 using Parlivote.Web.Models.Views.Meetings;
 using Parlivote.Web.Services.Views.Meetings;
@@ -14,6 +15,7 @@ public partial class MeetingList : ComponentBase
     public IMeetingViewService MeetingViewService { get; set; }
 
     private AddMeetingComponent addMeetingComponent;
+    private HubConnection hubConnection;
     private ComponentState state;
     private List<MeetingView> meetings;
     private string error;
