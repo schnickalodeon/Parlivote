@@ -22,13 +22,13 @@ public partial class MotionServiceTests
 {
     private readonly Mock<ILoggingBroker> loggingBrokerMock;
     private readonly Mock<IApiBroker> apiBrokerMock;
-    private readonly IMotionService pollService;
+    private readonly IMotionService motionService;
     public MotionServiceTests()
     {
         this.loggingBrokerMock = new Mock<ILoggingBroker>();
         this.apiBrokerMock = new Mock<IApiBroker>();
 
-        this.pollService = new MotionService(
+        this.motionService = new MotionService(
             this.loggingBrokerMock.Object,
             this.apiBrokerMock.Object);
     }

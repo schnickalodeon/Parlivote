@@ -24,6 +24,14 @@ public partial class MotionService
             throw new NullMotionException();
         }
     }
+
+    private void ValidateStorageMotion(Motion maybeMotion, Guid motionId)
+    {
+        if (maybeMotion is null)
+        {
+            throw new NotFoundMotionException(motionId);
+        }
+    }
     private static dynamic IsInvalid(Guid id) => new
     {
         Condition = id == Guid.Empty,

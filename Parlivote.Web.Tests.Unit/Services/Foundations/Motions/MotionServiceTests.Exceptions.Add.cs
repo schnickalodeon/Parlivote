@@ -33,7 +33,7 @@ namespace Parlivote.Web.Tests.Unit.Services.Foundations.Motions
 
             // Act
             Task<Motion> addMotionTask =
-                this.pollService.AddAsync(someMotion);
+                this.motionService.AddAsync(someMotion);
 
             // Assert
             await Assert.ThrowsAsync<MotionDependencyValidationException>(() => addMotionTask);
@@ -68,7 +68,7 @@ namespace Parlivote.Web.Tests.Unit.Services.Foundations.Motions
 
             // Act
             Task<Motion> addMotionTask =
-                this.pollService.AddAsync(someMotion);
+                this.motionService.AddAsync(someMotion);
 
             // Assert
             await Assert.ThrowsAsync<MotionDependencyException>(() => addMotionTask);
@@ -104,7 +104,7 @@ namespace Parlivote.Web.Tests.Unit.Services.Foundations.Motions
 
             // Act
             Task<Motion> addMotionTask =
-                this.pollService.AddAsync(someMotion);
+                this.motionService.AddAsync(someMotion);
 
             // Assert
             await Assert.ThrowsAsync<MotionDependencyException>(() => addMotionTask);
@@ -140,7 +140,7 @@ namespace Parlivote.Web.Tests.Unit.Services.Foundations.Motions
                     .ThrowsAsync(serviceException);
 
             //Act
-            Task<Motion> addMotionTask = this.pollService.AddAsync(someMotion);
+            Task<Motion> addMotionTask = this.motionService.AddAsync(someMotion);
 
             //Assert
             await Assert.ThrowsAsync<MotionServiceException>(() => addMotionTask);

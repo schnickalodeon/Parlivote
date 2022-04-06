@@ -34,4 +34,17 @@ public partial class MotionService : IMotionService
     {
         return await this.apiBroker.GetActiveMotion();
     }
+
+    public Task<Motion> ModifyAsync(Motion motion) =>
+        TryCatch(async () =>
+        {
+            ValidateMotion(motion);
+
+            Motion maybeMotion =
+                await this.apiBroker.GetMotionById(motion.Id);
+
+            ValidateStorageMotion(maybeMotion, motion.Id);
+
+            return await this.apiBroker.PutMotionAsync(motion);
+        });
 }

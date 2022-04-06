@@ -23,7 +23,7 @@ public partial class MotionServiceTests
             new MotionValidationException(nullMotionException);
 
         // Act
-        Task<Motion> addMotionTask = this.pollService.AddAsync(nullMotion);
+        Task<Motion> addMotionTask = this.motionService.AddAsync(nullMotion);
          
         // Assert
         await Assert.ThrowsAsync<MotionValidationException>(() => addMotionTask);
@@ -68,7 +68,7 @@ public partial class MotionServiceTests
             = new MotionValidationException(invalidMotionException);
 
         // Act
-        Task<Motion> addMotionTask = this.pollService.AddAsync(invalidMotion);
+        Task<Motion> addMotionTask = this.motionService.AddAsync(invalidMotion);
 
         // Assert
         await Assert.ThrowsAsync<MotionValidationException>(() => addMotionTask);
