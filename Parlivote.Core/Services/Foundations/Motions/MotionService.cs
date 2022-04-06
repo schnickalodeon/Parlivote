@@ -34,8 +34,11 @@ public partial class MotionService : IMotionService
     public Task<Motion> ModifyAsync(Motion motion) =>
         TryCatch(async () =>
         {
+            ValidateMotion(motion);
             Motion maybeMotion =
                 await this.storageBroker.SelectMotionById(motion.Id);
+
+            ValidateStorageMotion(maybeMotion, motion.Id);
 
             return await this.storageBroker.UpdateMotionAsync(motion);
         });

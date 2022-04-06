@@ -17,7 +17,8 @@ public partial class MotionService
 
         Validate(
             (IsInvalid(poll.Id), nameof(Motion.Id)),
-            (IsInvalid(poll.Text), nameof(Motion.Text))
+            (IsInvalid(poll.Text), nameof(Motion.Text)),
+            (IsInvalid(poll.Version), nameof(Motion.Version))
             );
     }
 
@@ -26,6 +27,14 @@ public partial class MotionService
         if (poll is null)
         {
             throw new NullMotionException();
+        }
+    }
+
+    private void ValidateStorageMotion(Motion maybeMotion, Guid motionId)
+    {
+        if (maybeMotion is null)
+        {
+            throw new NotFoundMotionException(motionId);
         }
     }
 
@@ -39,6 +48,12 @@ public partial class MotionService
     {
         Condition = String.IsNullOrWhiteSpace(text),
         Message = ExceptionMessages.INVALID_STRING
+    };
+
+    private static dynamic IsInvalid(int version) => new
+    {
+        Condition = version < 1,
+        Message = ExceptionMessages.Motions.INVALID_VERSION
     };
 
     private static void Validate(params (dynamic Rule, string Parameter)[] validations)
@@ -57,4 +72,5 @@ public partial class MotionService
 
         invalidPostException.ThrowIfContainsErrors();
     }
+
 }

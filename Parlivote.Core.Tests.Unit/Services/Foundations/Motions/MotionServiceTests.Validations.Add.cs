@@ -68,6 +68,10 @@ public partial class MotionServiceTests
             key: nameof(Motion.Text),
             values: ExceptionMessages.INVALID_STRING);
 
+        invalidMotionException.AddData(
+            key: nameof(Motion.Version),
+            values: ExceptionMessages.Motions.INVALID_VERSION);
+
         var expectedMotionValidationException
             = new MotionValidationException(invalidMotionException);
 

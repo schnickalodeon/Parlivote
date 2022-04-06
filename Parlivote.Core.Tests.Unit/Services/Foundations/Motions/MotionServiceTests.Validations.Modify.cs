@@ -9,6 +9,7 @@ using Parlivote.Shared.Models.Motions;
 using Parlivote.Shared.Models.Motions.Exceptions;
 using Tynamix.ObjectFiller;
 using Xunit;
+using Xunit.Sdk;
 
 namespace Parlivote.Core.Tests.Unit.Services.Foundations.Motions;
 
@@ -87,7 +88,7 @@ public partial class MotionServiceTests
             expectedMotionValidationException);
 
         this.storageBrokerMock.Verify(broker =>
-                broker.InsertMotionAsync(It.IsAny<Motion>()),
+            broker.InsertMotionAsync(It.IsAny<Motion>()),
             Times.Never);
 
         this.loggingBrokerMock.VerifyNoOtherCalls();
