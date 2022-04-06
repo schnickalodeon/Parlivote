@@ -16,28 +16,33 @@ public partial class ActiveMotion : ComponentBase
     [Inject]
     public IMotionViewService MotionViewService { get; set; }
 
-    //TODO Get ActiveNotion from DB
-
     private MotionView activeMotion;
-    private HubConnection hubConnetion;
-    public bool IsConnected => hubConnetion.State == HubConnectionState.Connected; 
+    private HubConnection hubConnection;
+    public bool IsConnected => 
+        this.hubConnection.State == HubConnectionState.Connected; 
 
     protected override async Task OnInitializedAsync()
     {
-        this.hubConnetion = new HubConnectionBuilder()
+        await ConnectToMotionHub();
+        await LoadActiveMotionAsync();
+    }
+
+    private async Task ConnectToMotionHub()
+    {
+        this.hubConnection = new HubConnectionBuilder()
             .WithUrl(NavigationManager.ToAbsoluteUri("/motionhub"))
             .Build();
 
-        this.hubConnetion.On<MotionView>(MotionHub.SetActiveMotionMethod, (motion) =>
+        this.hubConnection.On<MotionView>(MotionHub.SetActiveMotionMethod, (motion) =>
         {
             this.activeMotion = motion;
             InvokeAsync(StateHasChanged);
         });
 
-        await this.hubConnetion.StartAsync();
+        await this.hubConnection.StartAsync();
     }
 
-    private async Task LoadActiveMotionAsnyc()
+    private async Task LoadActiveMotionAsync()
     {
         try
         {

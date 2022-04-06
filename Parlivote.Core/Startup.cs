@@ -8,6 +8,7 @@ using Parlivote.Core.Brokers.Logging;
 using Parlivote.Core.Brokers.Storage;
 using Parlivote.Core.Services.Foundations.Meetings;
 using Parlivote.Core.Services.Foundations.Motions;
+using Parlivote.Core.Services.Processing;
 
 namespace Parlivote.Core
 {
@@ -41,6 +42,9 @@ namespace Parlivote.Core
             //Foundation Services
             services.AddTransient<IMotionService, MotionService>();
             services.AddTransient<IMeetingService, MeetingService>();
+
+            //Processing Service
+            services.AddTransient<IMotionProcessingService, MotionProcessingService>();
         }
 
         private static void AddBrokers(IServiceCollection services)
