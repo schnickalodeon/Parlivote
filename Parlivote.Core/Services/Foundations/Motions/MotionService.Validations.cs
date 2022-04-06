@@ -30,6 +30,10 @@ public partial class MotionService
         }
     }
 
+    private void ValidateMotionId(Guid motionId)
+    {
+        Validate((IsInvalid(motionId), nameof(Motion.Id)));
+    }
     private void ValidateStorageMotion(Motion maybeMotion, Guid motionId)
     {
         if (maybeMotion is null)
@@ -72,5 +76,4 @@ public partial class MotionService
 
         invalidPostException.ThrowIfContainsErrors();
     }
-
 }
