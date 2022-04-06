@@ -45,4 +45,9 @@ public class MotionProcessingService : IMotionProcessingService
 
         return maybeActiveMotion;
     }
+
+    public async Task<Motion> ModifyAsync(Motion motion)
+    {
+        return await this.motionService.ModifyAsync(motion);
+    }
 }

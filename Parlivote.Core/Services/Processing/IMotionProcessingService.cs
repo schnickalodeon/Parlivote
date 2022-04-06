@@ -9,4 +9,5 @@ public interface IMotionProcessingService
     Task<Motion> AddAsync(Motion motion);
     IQueryable<Motion> RetrieveAll();
     Task<Motion> RetrieveActiveAsync();
+    Task<Motion> ModifyAsync(Motion motion);
 }
