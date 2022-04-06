@@ -18,8 +18,12 @@ public partial class MotionListItem : ComponentBase
     [Parameter]
     public MotionView Motion { get; set; }
 
+    [Parameter]
+    public EventCallback OnMotionChanged { get; set; }
+
     private string statusPillCss = "";
     private HubConnection hubConnetion;
+    private EditMotionComponent editMotionComponent;
     private bool IsConnected => this.hubConnetion.State == HubConnectionState.Connected;
 
     protected override async Task OnInitializedAsync()

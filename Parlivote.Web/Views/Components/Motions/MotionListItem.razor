@@ -7,11 +7,17 @@
                 @Motion.State
             </span>
         </div>
-        <div class="d-flex align-items-center justify-content-center h-100">
+        <div class="d-flex align-items-center justify-content-between h-100">
             <ButtonBase 
-                CustomCss="btn btn-primary btn-lg" 
+                CustomCss="btn btn-primary btn-lg mx-2" 
+                Text="Edit"
+                OnClick="@(() => editMotionComponent.Show(Motion))"/>
+            <ButtonBase
+                CustomCss="btn btn-primary btn-lg mx-2"
                 Text="Start"
                 OnClick="SetActive"/>
         </div>
     </Additional>
 </ListGroupItem>
+
+<EditMotionComponent @ref="this.editMotionComponent" OnMotionSaved="@this.OnMotionChanged" />

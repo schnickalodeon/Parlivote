@@ -18,6 +18,9 @@ public partial class MotionList : ComponentBase
     [Parameter]
     public List<MotionView> Motions { get; set; } = null;
 
+    [Parameter]
+    public EventCallback OnMotionsChanged { get; set; }
+
     private string error;
 
     protected override async Task OnParametersSetAsync()

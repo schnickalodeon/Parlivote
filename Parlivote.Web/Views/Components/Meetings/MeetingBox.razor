@@ -25,7 +25,7 @@
 
     <ListGroup>
         <Iterations Items="@Meeting.Motions">
-            <MotionListItem Motion="@context"/>
+            <MotionListItem Motion="@context" OnMotionChanged="OnMeetingChanged"/>
         </Iterations>
     </ListGroup>
     </Body>
