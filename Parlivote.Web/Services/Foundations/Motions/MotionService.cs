@@ -29,4 +29,9 @@ public partial class MotionService : IMotionService
         {
             return await this.apiBroker.GetAllMotionsAsync();
         });
+
+    public async Task<Motion> RetrieveActiveAsync()
+    {
+        return await this.apiBroker.GetActiveMotion();
+    }
 }

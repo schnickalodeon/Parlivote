@@ -1,13 +1,16 @@
 using System;
+using System.Linq;
 using System.Net.Http;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Parlivote.Web.Brokers.API;
 using Parlivote.Web.Brokers.Logging;
 using Parlivote.Web.Configurations;
+using Parlivote.Web.Hubs;
 using Parlivote.Web.Services.Foundations.Meetings;
 using Parlivote.Web.Services.Foundations.Motions;
 using Parlivote.Web.Services.Views.Meetings;
@@ -31,6 +34,10 @@ namespace Parlivote.Web
 
             services.AddRazorPages(options => options.RootDirectory = "/Views/Pages");
             services.AddServerSideBlazor();
+            services.AddResponseCompression(options =>
+            {
+                options.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(new[] {"application/octet-stream"});
+            });
             
             LocalConfigurations localConfigurations = 
                 Configuration.Get<LocalConfigurations>();
@@ -88,10 +95,10 @@ namespace Parlivote.Web
             app.UseStaticFiles();
 
             app.UseRouting();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapBlazorHub();
+                endpoints.MapHub<MotionHub>("/motionhub");
                 endpoints.MapFallbackToPage("/_Host");
             });
         }

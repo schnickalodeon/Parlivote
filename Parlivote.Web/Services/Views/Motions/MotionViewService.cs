@@ -11,10 +11,10 @@ namespace Parlivote.Web.Services.Views.Motions;
 
 public class MotionViewService : IMotionViewService
 {
-    private readonly IMotionService pollService;
-    public MotionViewService(IMotionService pollService)
+    private readonly IMotionService motionService;
+    public MotionViewService(IMotionService motionService)
     {
-        this.pollService = pollService;
+        this.motionService = motionService;
     }
     public async Task<MotionView> AddAsync(MotionView pollView)
     {
@@ -28,7 +28,7 @@ public class MotionViewService : IMotionViewService
         };
 
             Motion storageMotion = 
-            await this.pollService.AddAsync(mappedMotion);
+            await this.motionService.AddAsync(mappedMotion);
 
         MotionView mappedMotionView = 
             MapToMotionView(storageMotion);
@@ -39,9 +39,17 @@ public class MotionViewService : IMotionViewService
     public async Task<List<MotionView>> GetAllAsync()
     {
         List<Motion> polls = 
-            await this.pollService.RetrieveAllAsync();
+            await this.motionService.RetrieveAllAsync();
 
         return polls.Select(AsMotionView).ToList();
+    }
+
+    public async Task<MotionView> GetActiveAsync()
+    {
+        Motion activeMotion =
+            await this.motionService.RetrieveActiveAsync();
+
+        return MapToMotionView(activeMotion);
     }
 
     private static Motion MapToMotion(MotionView pollView)

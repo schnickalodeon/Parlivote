@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Parlivote.Core.Services.Foundations.Motions;
+using Parlivote.Core.Services.Processing;
 using Parlivote.Shared.Models.Motions;
 using Parlivote.Shared.Models.Motions.Exceptions;
 using RESTFulSense.Controllers;
@@ -13,10 +14,10 @@ namespace Parlivote.Core.Controllers;
 [Route("api/v1/[controller]")]
 public class MotionsController : RESTFulController
 {
-    private readonly IMotionService pollService;
-    public MotionsController(IMotionService pollService)
+    private readonly IMotionProcessingService motionProcessingService;
+    public MotionsController(IMotionProcessingService motionProcessingService)
     {
-        this.pollService = pollService;
+        this.motionProcessingService = motionProcessingService;
     }
 
     [HttpPost]
@@ -25,7 +26,7 @@ public class MotionsController : RESTFulController
         try
         {
             Motion createdMotion =
-                await this.pollService.AddAsync(poll);
+                await this.motionProcessingService.AddAsync(poll);
 
             return Created(createdMotion);
         }
@@ -53,7 +54,7 @@ public class MotionsController : RESTFulController
     {
         try
         {
-            IQueryable<Motion> polls = this.pollService.RetrieveAll();
+            IQueryable<Motion> polls = this.motionProcessingService.RetrieveAll();
             return Ok(polls);
         }
         catch (MotionDependencyException pollDependencyException)
@@ -65,4 +66,25 @@ public class MotionsController : RESTFulController
             return InternalServerError(pollServiceException);
         }
     }
+
+    [HttpGet("Active")]
+    public async Task<ActionResult<Motion>> GetActiveMotionAsync()
+    {
+        try
+        {
+            Motion activeMotion =
+                await this.motionProcessingService.RetrieveActiveAsync();
+
+            return Ok(activeMotion);
+        }
+        catch (MotionDependencyException pollDependencyException)
+        {
+            return InternalServerError(pollDependencyException);
+        }
+        catch (MotionServiceException pollServiceException)
+        {
+            return InternalServerError(pollServiceException);
+        }
+    }
+
 }

@@ -41,6 +41,7 @@ namespace Parlivote.Shared.Models.Motions
         Submitted,
         Pending,
         Accepted,
-        Declined
+        Declined,
+        Unset
     }
 }

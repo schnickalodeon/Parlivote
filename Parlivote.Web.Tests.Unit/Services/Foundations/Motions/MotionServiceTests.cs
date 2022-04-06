@@ -46,8 +46,7 @@ public partial class MotionServiceTests
     {
         var filler = new Filler<Motion>();
 
-        filler.Setup()
-            .OnType<Meeting>().IgnoreIt();
+        filler.Setup().OnType<Meeting>().IgnoreIt();
 
         return filler;
     }
