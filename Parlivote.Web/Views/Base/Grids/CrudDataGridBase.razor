@@ -1,0 +1,13 @@
+﻿@typeparam TDataItem
+<TableBase>
+    <Header>
+        <tr>
+            @this.HeaderTemplate
+        </tr>
+    </Header>
+    <Body>
+        <Iterations Items="this.DataItems">
+            <CrudDataGridBaseRow DataItem="context" OnEdit="OnEditClicked" OnDelete="OnDeleteClicked"/>
+        </Iterations>
+    </Body>
+</TableBase>

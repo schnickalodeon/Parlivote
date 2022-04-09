@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using Parlivote.Shared.Models.Meetings;
 using Parlivote.Shared.Models.Motions;
 using Parlivote.Web.Brokers.Logging;
 using Parlivote.Web.Models.Views.Motions;
+using Parlivote.Web.Services.Foundations.Meetings;
 using Parlivote.Web.Services.Foundations.Motions;
 
 namespace Parlivote.Web.Services.Views.Motions;
@@ -12,9 +15,13 @@ namespace Parlivote.Web.Services.Views.Motions;
 public class MotionViewService : IMotionViewService
 {
     private readonly IMotionService motionService;
-    public MotionViewService(IMotionService motionService)
+    private readonly IMeetingService meetingService;
+    public MotionViewService(
+        IMotionService motionService, 
+        IMeetingService meetingService)
     {
         this.motionService = motionService;
+        this.meetingService = meetingService;
     }
     public async Task<MotionView> AddAsync(MotionView pollView)
     {
@@ -31,17 +38,28 @@ public class MotionViewService : IMotionViewService
             await this.motionService.AddAsync(mappedMotion);
 
         MotionView mappedMotionView = 
-            MapToMotionView(storageMotion);
+            await MapToMotionView(storageMotion);
 
         return mappedMotionView;
     }
 
     public async Task<List<MotionView>> GetAllAsync()
     {
-        List<Motion> polls = 
+        List<Motion> motions = 
             await this.motionService.RetrieveAllAsync();
 
-        return polls.Select(AsMotionView).ToList();
+        return await MapToMotionViews(motions);
+    }
+
+    public async Task<List<MotionView>> GetAllWithMeetingAsync()
+    {
+        List<Motion> motions =
+            await this.motionService.RetrieveAllAsync();
+
+        List<MotionView> motionViews =
+            await MapToMotionViews(motions);
+
+        return motionViews;
     }
 
     public async Task<MotionView> GetActiveAsync()
@@ -52,7 +70,7 @@ public class MotionViewService : IMotionViewService
         if (activeMotion is null)
             return null;
 
-        return MapToMotionView(activeMotion);
+        return await MapToMotionView(activeMotion);
     }
 
     public async Task<MotionView> UpdateAsync(MotionView motionView)
@@ -62,7 +80,7 @@ public class MotionViewService : IMotionViewService
         Motion updatedMotion =
             await this.motionService.ModifyAsync(mappedMotion);
 
-        return MapToMotionView(updatedMotion);
+        return await MapToMotionView(updatedMotion);
     }
 
     private static Motion MapToMotion(MotionView motionView)
@@ -77,16 +95,39 @@ public class MotionViewService : IMotionViewService
         };
     }
 
-    private static Func<Motion, MotionView> AsMotionView => MapToMotionView;
-    private static MotionView MapToMotionView(Motion motion)
+    private Func<Motion, Task<MotionView>> AsMotionView => MapToMotionView;
+
+    private async Task<List<MotionView>> MapToMotionViews(List<Motion> motions)
     {
+        var motionViews = new List<MotionView>();
+        foreach (Motion motion in motions)
+        {
+            MotionView motionView = await MapToMotionView(motion);
+            motionViews.Add(motionView);
+        }
+
+        return motionViews;
+    }
+    private async Task<MotionView> MapToMotionView(Motion motion)
+    {
+        string meetingName = "";
+
+        if (motion.MeetingId.HasValue)
+        {
+            Meeting meeting =
+                await this.meetingService.RetrieveByIdAsync(motion.MeetingId.Value);
+
+            meetingName = meeting?.Description ?? "";
+        }
+
         return new MotionView
         {
             MotionId = motion.Id,
             Version = motion.Version,
             MeetingId = motion.MeetingId,
             State = motion.State.GetValue(),
-            Text = motion.Text
+            Text = motion.Text,
+            MeetingName = meetingName
         };
     }
 }

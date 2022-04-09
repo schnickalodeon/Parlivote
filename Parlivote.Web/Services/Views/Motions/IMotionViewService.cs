@@ -10,6 +10,7 @@ public interface IMotionViewService
 {
     Task<MotionView> AddAsync(MotionView pollView);
     Task<List<MotionView>> GetAllAsync();
+    Task<List<MotionView>> GetAllWithMeetingAsync();
     Task<MotionView> GetActiveAsync();
     Task<MotionView> UpdateAsync(MotionView motionView);
 }

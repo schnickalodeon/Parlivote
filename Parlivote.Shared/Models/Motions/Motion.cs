@@ -8,6 +8,7 @@ namespace Parlivote.Shared.Models.Motions
         public Guid Id { get; set; }
         public int Version { get; set; }
         public Guid? MeetingId { get; set; }
+
         [JsonIgnore]
         public Meeting? Meeting { get; set; }
         public MotionState State { get; set; }

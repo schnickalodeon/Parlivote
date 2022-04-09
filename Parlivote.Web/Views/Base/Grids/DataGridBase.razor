@@ -1,0 +1,11 @@
+﻿@typeparam TDataItem
+<TableBase>
+    <tr>
+        @this.HeaderTemplate
+    </tr>
+    
+    <Iterations Items="this.DataItems" >
+        <DataGridBaseRow DataItem="context" />
+    </Iterations>
+
+</TableBase>
