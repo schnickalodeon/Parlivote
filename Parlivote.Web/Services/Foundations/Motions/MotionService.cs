@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Parlivote.Shared.Models.Motions;
 using Parlivote.Web.Brokers.API;
 using Parlivote.Web.Brokers.Logging;
+using Parlivote.Web.Models.Views.Motions;
 
 namespace Parlivote.Web.Services.Foundations.Motions;
 
@@ -46,5 +48,12 @@ public partial class MotionService : IMotionService
             ValidateStorageMotion(maybeMotion, motion.Id);
 
             return await this.apiBroker.PutMotionAsync(motion);
+        });
+
+    public Task<Motion> RemoveByIdAsync(Guid motionIdToDelete) =>
+        TryCatch(async () =>
+        {
+            ValidateMotionId(motionIdToDelete);
+            return await this.apiBroker.DeleteMotionById(motionIdToDelete);
         });
 }

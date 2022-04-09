@@ -83,6 +83,14 @@ public class MotionViewService : IMotionViewService
         return await MapToMotionView(updatedMotion);
     }
 
+    public async Task<MotionView> RemoveByIdAsync(Guid motionIdToDelete)
+    {
+        Motion deletedMotion =
+            await this.motionService.RemoveByIdAsync(motionIdToDelete);
+
+        return await MapToMotionView(deletedMotion);
+    }
+
     private static Motion MapToMotion(MotionView motionView)
     {
         return new Motion

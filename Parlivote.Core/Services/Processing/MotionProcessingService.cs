@@ -55,4 +55,9 @@ public class MotionProcessingService : IMotionProcessingService
     {
         return await this.motionService.ModifyAsync(motion);
     }
+
+    public async Task<Motion> DeleteMotionById(Guid motionId)
+    {
+        return await this.motionService.RemoveByIdAsync(motionId);
+    }
 }
