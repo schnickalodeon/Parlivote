@@ -14,6 +14,12 @@ public partial class StorageBroker : EFxceptionsContext, IStorageBroker
         //this.Database.Migrate();
     }
 
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+        SetMeetingReference(modelBuilder);
+    }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         string connectionString = this.configuration
