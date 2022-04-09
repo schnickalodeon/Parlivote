@@ -1,0 +1,10 @@
+﻿@typeparam TDataItem
+<tr>
+    <Iterations Items="@this.properties">
+        <DataGridBaseColumn Data="@GetValue(@context)"/>
+    </Iterations>
+    <td>
+        <ButtonBase Text="Bearbeiten" OnClick="(() => EditClicked())" />
+        <ButtonBase CustomCss="btn btn-danger" Text="Löschen" OnClick="(async() => await DeleteClicked())" />
+    </td>
+</tr>

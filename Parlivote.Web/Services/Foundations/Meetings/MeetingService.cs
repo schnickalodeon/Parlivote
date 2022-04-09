@@ -32,6 +32,13 @@ public partial class MeetingService : IMeetingService
             return await this.apiBroker.GetAllMeetingsAsync();
         });
 
+    public Task<Meeting> RetrieveByIdAsync(Guid meetingId) =>
+        TryCatch(async () =>
+        {
+            ValidateMeetingId(meetingId);
+            return await this.apiBroker.GetMeetingById(meetingId);
+        });
+
     public Task<List<Meeting>> RetrieveAllWithMotionsAsync() =>
         TryCatch(async () =>
         {

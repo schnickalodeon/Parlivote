@@ -1,0 +1,24 @@
+﻿@page "/motions"
+
+
+<StateEvaluation State="@this.state">
+    <Loading>
+        <SpinnerBase Value="Meeting Data" IsVisible="true" />
+    </Loading>
+
+    <Content>
+        <CrudDataGridBase DataItems="Motions">
+            <HeaderTemplate>
+                <th>Beschreibung</th>
+                <th>Version</th>
+                <th>Status</th>
+                <th>Meeting</th>
+            </HeaderTemplate>
+        </CrudDataGridBase>
+    </Content>
+    
+    <Error>
+        <ErrorBase ErrorMessage="@this.error" />
+    </Error>
+</StateEvaluation>
+
