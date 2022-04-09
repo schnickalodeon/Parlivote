@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.SignalR.Client;
 using Parlivote.Shared.Models.Motions;
 using Parlivote.Web.Hubs;
 using Parlivote.Web.Models.Views.Motions;
+using Parlivote.Web.Services.Views.Motions;
 using Parlivote.Web.Views.Base;
 
 namespace Parlivote.Web.Views.Components.Motions;
@@ -14,6 +15,9 @@ public partial class ChangeMotionStateDialog : ComponentBase
 {
     [Inject]
     public NavigationManager NavigationManager { get; set; }
+
+    [Inject]
+    public IMotionViewService MotionViewService { get; set; }
 
     private MotionView motion;
     private MotionState stateToUpdate;
@@ -26,14 +30,16 @@ public partial class ChangeMotionStateDialog : ComponentBase
     private bool submittedButtonEnabled;
     private bool pendingButtonEnabled;
     private bool cancelledButtonEnabled;
+    private bool existsActiveMotion;
 
     private HubConnection hubConnection;
     private bool IsConnected => this.hubConnection.State == HubConnectionState.Connected;
 
-    public void Show(MotionView motionView)
+    public async Task Show(MotionView motionView)
     {
         this.motion = motionView;
         this.stateToUpdate = MotionStateConverter.FromString(this.motion.State);
+        await LoadActiveMotion();
         SetButtonEnabled();
         this.dialog.Show();
     }
@@ -43,13 +49,29 @@ public partial class ChangeMotionStateDialog : ComponentBase
         await ConnectToMotionHub();
     }
 
+    private async Task LoadActiveMotion()
+    {
+        try
+        {
+            MotionView activeMotion =
+                await this.MotionViewService.GetActiveAsync();
+
+            this.existsActiveMotion = activeMotion is not null;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+
     private void SetButtonEnabled()
     {
         switch (this.stateToUpdate)
         {
             case MotionState.Submitted: 
                 this.submittedButtonEnabled = false;
-                this.pendingButtonEnabled = true;
+                this.pendingButtonEnabled = !this.existsActiveMotion;
                 this.cancelledButtonEnabled = true;
                 break;
 
