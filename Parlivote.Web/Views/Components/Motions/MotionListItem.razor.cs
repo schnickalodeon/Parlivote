@@ -29,6 +29,7 @@ public partial class MotionListItem : ComponentBase
     private string statusPillCss = "";
     private HubConnection hubConnection;
     private EditMotionComponent editMotionComponent;
+    private ChangeMotionStateDialog changeMotionStateDialog;
     private bool existsActiveMeeting = false;
     private bool IsConnected => this.hubConnection.State == HubConnectionState.Connected;
 
@@ -52,9 +53,10 @@ public partial class MotionListItem : ComponentBase
             .WithUrl(NavigationManager.ToAbsoluteUri("/motionhub"))
             .Build();
 
-        this.hubConnection.On<MotionView>(MotionHub.SetActiveMotionMethod, motionView =>
+        this.hubConnection.On<MotionView>(MotionHub.SetStateMethod, motionView =>
         {
-            this.existsActiveMeeting = true;
+            this.existsActiveMeeting = (motionView.State == MotionStateConverter.Pending);
+            this.statusPillCss = GetPillCssByStatus();
             InvokeAsync(StateHasChanged);
         });
 
@@ -73,19 +75,9 @@ public partial class MotionListItem : ComponentBase
             MotionState.Submitted => "bg-primary",
             MotionState.Pending => "bg-warning",
             MotionState.Accepted => "bg-success",
+            MotionState.Cancelled => "bg-secondary",
             MotionState.Declined => "bg-danger",
             _ => ""
         };
-    }
-
-    private async void SetActive()
-    {
-        if (IsConnected && !this.existsActiveMeeting)
-        {
-            await this.hubConnection.SendAsync(MotionHub.SetActiveMotionMethod, Motion);
-            Motion.State = MotionState.Pending.GetValue();
-            this.statusPillCss = GetPillCssByStatus();
-            await InvokeAsync(StateHasChanged);
-        }
     }
 }

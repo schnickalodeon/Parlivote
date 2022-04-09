@@ -65,30 +65,6 @@ public class MotionViewService : IMotionViewService
         return MapToMotionView(updatedMotion);
     }
 
-    public async Task<MotionView> SetState(MotionView motionView, MotionState state)
-    {
-        Motion mappedMotion = MapToMotion(motionView);
-
-        mappedMotion.State = state;
-
-        Motion updatedMotion =
-            await this.motionService.ModifyAsync(mappedMotion);
-
-        return MapToMotionView(updatedMotion);
-
-    }
-
-    public async Task<MotionView> SetActive(MotionView motionView)
-    {
-        MotionView activeMotion =
-            await this.GetActiveAsync();
-
-        if (activeMotion != null)
-            return null;
-
-        return await SetState(motionView, MotionState.Pending);
-    }
-
     private static Motion MapToMotion(MotionView motionView)
     {
         return new Motion

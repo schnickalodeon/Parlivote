@@ -12,6 +12,4 @@ public interface IMotionViewService
     Task<List<MotionView>> GetAllAsync();
     Task<MotionView> GetActiveAsync();
     Task<MotionView> UpdateAsync(MotionView motionView);
-    Task<MotionView> SetState(MotionView motionView, MotionState state);
-    Task<MotionView> SetActive(MotionView motionView);
 }

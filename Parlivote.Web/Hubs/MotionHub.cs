@@ -16,12 +16,11 @@ public class MotionHub : Hub
         this.motionViewService = motionViewService;
     }
 
-    public const string SetActiveMotionMethod = "ActiveMotionSet";
+    public const string SetStateMethod = "SetState";
 
-    public async Task ActiveMotionSet(MotionView activeMotion)
+    public async Task SetState(MotionView motionView)
     {
-        
-        await this.motionViewService.SetActive(activeMotion);
-        await Clients.All.SendAsync(SetActiveMotionMethod, activeMotion);
+        await this.motionViewService.UpdateAsync(motionView);
+        await Clients.All.SendAsync(SetStateMethod, motionView);
     }
 }
