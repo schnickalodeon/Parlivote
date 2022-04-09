@@ -21,7 +21,8 @@ public partial class MotionViewServiceTests
             MeetingId = someMotionViewInput.MeetingId,
             State = ((MotionState)someMotionViewInput.State).GetValue(),
             Text = someMotionViewInput.Text,
-            Version = someMotionViewInput.Version
+            Version = someMotionViewInput.Version,
+            MeetingName = ""
         };
 
         MotionView inputMotionView = someMotionView;
@@ -33,7 +34,8 @@ public partial class MotionViewServiceTests
             MeetingId = someMotionViewInput.MeetingId,
             State = someMotionViewInput.State,
             Text = someMotionViewInput.Text,
-            Version = someMotionViewInput.Version
+            Version = someMotionViewInput.Version,
+            Meeting = null
         };
 
         Motion expectedInputMotion = someMotion;

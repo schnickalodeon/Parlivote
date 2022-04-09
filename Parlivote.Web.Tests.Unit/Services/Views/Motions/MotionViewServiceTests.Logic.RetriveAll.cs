@@ -25,7 +25,9 @@ public partial class MotionViewServiceTests
                     Id = property.Id,
                     Version = property.Version,
                     State = property.State,
-                    Text = property.Text
+                    Text = property.Text,
+                    Meeting = null,
+                    MeetingId = null,
                 }).ToList();
 
         List<Motion> retrievedMotions = randomMotions;
@@ -37,7 +39,8 @@ public partial class MotionViewServiceTests
                     MotionId = property.Id,
                     Version = property.Version,
                     State = ((MotionState)property.State).GetValue(),
-                    Text = property.Text
+                    Text = property.Text,
+                    MeetingName = "",
                 }).ToList();
 
         List<MotionView> expectedMotionViews = randomMotionViews;

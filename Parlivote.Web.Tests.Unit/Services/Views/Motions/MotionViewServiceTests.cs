@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using Parlivote.Web.Services.Foundations.Meetings;
 using Tynamix.ObjectFiller;
 
 namespace Parlivote.Web.Tests.Unit.Services.Views.Motions;
@@ -14,15 +15,18 @@ namespace Parlivote.Web.Tests.Unit.Services.Views.Motions;
 public partial class MotionViewServiceTests
 {
     private readonly Mock<IMotionService> motionServiceMock;
+    private readonly Mock<IMeetingService> meetingServiceMock;
     private readonly IMotionViewService motionViewService;
     private readonly ICompareLogic compareLogic;
 
     public MotionViewServiceTests()
     {
         this.motionServiceMock = new Mock<IMotionService>();
+        this.meetingServiceMock = new Mock<IMeetingService>();
 
         this.motionViewService = new MotionViewService(
-            this.motionServiceMock.Object);
+            this.motionServiceMock.Object,
+            this.meetingServiceMock.Object);
 
         var compareConfig = new ComparisonConfig();
         compareConfig.IgnoreProperty<Motion>(motion => motion.Id);
