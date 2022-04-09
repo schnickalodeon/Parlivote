@@ -1,0 +1,16 @@
+﻿@using Parlivote.Web.Models.Views.Meetings
+<StateEvaluation State="@this.state">
+    <Loading>
+        <ControlSpinnerBase Value="Meeting" />
+    </Loading>
+    <Content>
+        <DropDownBase
+            TEntity="MeetingView"
+            TValue="Guid?"
+            @bind-Value="@this.BoundValue"
+            ValueProperty="Id"
+            TextProperty="Description"
+            Items="@meetings"
+            Placeholder="[Choose Meeting]"/>
+    </Content>
+</StateEvaluation>

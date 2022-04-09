@@ -30,7 +30,7 @@ public partial class MeetingBox : ComponentBase
     {
         try
         {
-            await this.MeetingViewService.DeleteByIdAsync(Meeting.Id);
+            await this.MeetingViewService.DeleteByIdAsync(Meeting.Id.Value);
             await OnMeetingChanged.InvokeAsync();
         }
         catch (Exception e)

@@ -82,7 +82,7 @@ public class MeetingViewService : IMeetingViewService
     {
         return new Meeting
         {
-            Id = meetingView.Id,
+            Id = meetingView.Id.Value,
             Description = meetingView.Description,
             Start = meetingView.Start
         };

@@ -1,0 +1,20 @@
+﻿@using Syncfusion.Blazor.DropDowns
+@typeparam TEntity
+@typeparam TValue
+
+
+<SfDropDownList TValue=@TValue
+                TItem=@TEntity
+                @bind-value="@Value"
+                DataSource=@Items
+                Enabled=@IsEnabled
+                Placeholder="@Placeholder">
+    
+    <DropDownListFieldSettings 
+        Value="@ValueProperty" 
+        Text="@TextProperty" />
+
+    <DropDownListEvents TValue=@TValue
+                        TItem=@TEntity
+                        ValueChange=@OnValueChanged/>
+</SfDropDownList>

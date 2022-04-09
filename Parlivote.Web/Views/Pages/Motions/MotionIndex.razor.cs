@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Components;
 using Parlivote.Web.Models;
 using Parlivote.Web.Models.Views.Motions;
 using Parlivote.Web.Services.Views.Motions;
+using Parlivote.Web.Views.Components.Motions;
 
 namespace Parlivote.Web.Views.Pages.Motions;
 
@@ -14,6 +15,7 @@ public partial class MotionIndex : ComponentBase
     public IMotionViewService MotionViewService { get; set; }
 
     private ComponentState state;
+    private EditMotionComponent editMotionComponent;
 
     [Parameter]
     public List<MotionView> Motions { get; set; } = null;

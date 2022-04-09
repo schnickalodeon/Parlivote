@@ -1,13 +1,17 @@
 ﻿@page "/motions"
-
+@using Parlivote.Web.Views.Components.Motions
+@using Parlivote.Web.Models.Views.Motions
 
 <StateEvaluation State="@this.state">
     <Loading>
-        <SpinnerBase Value="Meeting Data" IsVisible="true" />
+        <SpinnerBase Value="Motions" IsVisible="true" />
     </Loading>
 
     <Content>
-        <CrudDataGridBase DataItems="Motions">
+        <CrudDataGridBase 
+            DataItems="Motions" 
+            OnEditClicked="@((MotionView view) => editMotionComponent.Show(view))"
+            >
             <HeaderTemplate>
                 <th>Beschreibung</th>
                 <th>Version</th>
@@ -21,4 +25,6 @@
         <ErrorBase ErrorMessage="@this.error" />
     </Error>
 </StateEvaluation>
+
+<EditMotionComponent @ref="editMotionComponent" OnMotionSaved="LoadMotions"/>
 

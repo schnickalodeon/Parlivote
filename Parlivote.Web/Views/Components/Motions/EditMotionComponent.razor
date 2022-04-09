@@ -1,4 +1,5 @@
-﻿<DialogBase @ref="@this.dialog"
+﻿@using Parlivote.Web.Views.Components.Meetings
+<DialogBase @ref="@this.dialog"
             Title="Edit Motion"
             SubmitButtonText="Save"
             CancelButtonText="Cancel"
@@ -8,6 +9,11 @@
     @*Text*@
     <FormControlBase LabelText="Beschreibung">
         <TextBoxBase @bind-Value="motionView.Text"/>
+    </FormControlBase>
+    
+    @*Meeting*@
+    <FormControlBase LabelText="Meeting">
+        <MeetingDropDown @bind-MeetingId="motionView.MeetingId"/>
     </FormControlBase>
 
     <Condition Evaluation="@(this.error.IsNullOrWhitespace() == false)">
