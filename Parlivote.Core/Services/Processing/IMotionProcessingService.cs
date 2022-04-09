@@ -12,4 +12,5 @@ public interface IMotionProcessingService
     Task<Motion> RetrieveActiveAsync();
     Task<Motion> RetrieveByIdAsync(Guid motionId);
     Task<Motion> ModifyAsync(Motion motion);
+    Task<Motion> DeleteMotionById(Guid motionId);
 }

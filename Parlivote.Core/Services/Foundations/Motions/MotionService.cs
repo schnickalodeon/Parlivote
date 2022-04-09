@@ -50,4 +50,15 @@ public partial class MotionService : IMotionService
 
             return await this.storageBroker.UpdateMotionAsync(motion);
         });
+
+    public Task<Motion> RemoveByIdAsync(Guid motionId) =>
+        TryCatch(async () =>
+        {
+            ValidateMotionId(motionId);
+
+            Motion motionToDelete =
+                await this.storageBroker.SelectMotionById(motionId);
+
+            return await this.storageBroker.DeleteMotionAsync(motionToDelete);
+        });
 }

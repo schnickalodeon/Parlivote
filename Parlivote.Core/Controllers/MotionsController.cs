@@ -142,4 +142,21 @@ public class MotionsController : RESTFulController
         }
     }
 
+    [HttpDelete("{motionId}")]
+    public async Task<ActionResult<Motion>> DeleteMotionById(Guid motionId)
+    {
+        try
+        {
+            Motion deletedMotion =
+                await this.motionProcessingService.DeleteMotionById(motionId);
+
+            return Ok(deletedMotion);
+        }
+        catch (Exception e)
+        {
+            //TODO Handle Excpetions
+            return InternalServerError(e);
+        }
+    }
+
 }

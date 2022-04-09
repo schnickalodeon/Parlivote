@@ -11,7 +11,7 @@
         <CrudDataGridBase 
             DataItems="Motions" 
             OnEditClicked="@((MotionView view) => editMotionComponent.Show(view))"
-            >
+            OnDeleteClicked="@((MotionView view) => deleteMotionComponent.Show(view))">
             <HeaderTemplate>
                 <th>Beschreibung</th>
                 <th>Version</th>
@@ -27,4 +27,5 @@
 </StateEvaluation>
 
 <EditMotionComponent @ref="editMotionComponent" OnMotionSaved="LoadMotions"/>
+<DeleteMotionDialog @ref="deleteMotionComponent" OnDeleted="LoadMotions"/>
 

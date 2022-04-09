@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Parlivote.Shared.Models.Meetings;
 using Parlivote.Shared.Models.Motions;
@@ -11,4 +12,5 @@ public interface IMotionService
     Task<List<Motion>> RetrieveAllAsync();
     Task<Motion> RetrieveActiveAsync();
     Task<Motion> ModifyAsync(Motion motion);
+    Task<Motion> RemoveByIdAsync(Guid motionIdToDelete);
 }

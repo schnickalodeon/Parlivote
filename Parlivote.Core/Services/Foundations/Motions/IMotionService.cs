@@ -12,4 +12,5 @@ public interface IMotionService
     IQueryable<Motion> RetrieveAll();
     Task<Motion> RetrieveByIdAsync(Guid motionId);
     Task<Motion> ModifyAsync(Motion motion);
+    Task<Motion> RemoveByIdAsync(Guid motionId);
 }

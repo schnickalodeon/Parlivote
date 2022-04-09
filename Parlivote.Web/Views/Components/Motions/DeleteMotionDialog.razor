@@ -1,0 +1,4 @@
+﻿@using Parlivote.Shared.Models.Motions
+<ConfirmationDialog @ref="confirmationDialog" Title="Confirm Delete" OnDelete="DeleteMotion">
+    @($"Do you really want to delete {this.motionViewToDelete.Text}?")
+</ConfirmationDialog>

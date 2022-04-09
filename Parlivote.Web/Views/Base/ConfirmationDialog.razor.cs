@@ -24,4 +24,9 @@ public partial class ConfirmationDialog : ComponentBase
     {
         this.dialog.Show();
     }
+
+    public void Hide()
+    {
+        this.dialog.Hide();
+    }
 }

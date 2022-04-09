@@ -16,6 +16,7 @@ public partial class MotionIndex : ComponentBase
 
     private ComponentState state;
     private EditMotionComponent editMotionComponent;
+    private DeleteMotionDialog deleteMotionComponent;
 
     [Parameter]
     public List<MotionView> Motions { get; set; } = null;

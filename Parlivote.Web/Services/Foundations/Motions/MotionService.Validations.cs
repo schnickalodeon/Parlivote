@@ -25,6 +25,10 @@ public partial class MotionService
             throw new NullMotionException();
         }
     }
+    private void ValidateMotionId(Guid motionIdToDelete)
+    {
+        Validate((IsInvalid(motionIdToDelete), nameof(Motion.Id)));
+    }
 
     private void ValidateStorageMotion(Motion maybeMotion, Guid motionId)
     {
@@ -68,4 +72,5 @@ public partial class MotionService
         invalidPostException.ThrowIfContainsErrors();
     }
 
+   
 }
