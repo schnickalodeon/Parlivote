@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR.Client;
+using Parlivote.Shared.Models.Motions;
 using Parlivote.Web.Hubs;
 using Parlivote.Web.Models.Views.Motions;
 using Parlivote.Web.Services.Views.Motions;
@@ -33,9 +34,13 @@ public partial class ActiveMotion : ComponentBase
             .WithUrl(NavigationManager.ToAbsoluteUri("/motionhub"))
             .Build();
 
-        this.hubConnection.On<MotionView>(MotionHub.SetActiveMotionMethod, (motion) =>
+        this.hubConnection.On<MotionView>(MotionHub.SetStateMethod, (motion) =>
         {
-            this.activeMotion = motion;
+
+            this.activeMotion = (motion.State == MotionStateConverter.Pending)
+                ? motion
+                : null;
+
             InvokeAsync(StateHasChanged);
         });
 

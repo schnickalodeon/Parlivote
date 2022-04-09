@@ -1,9 +1,10 @@
-﻿<ListGroupItem>
+﻿@using Parlivote.Shared.Models.Motions
+<ListGroupItem>
     <Title>@Motion.Text</Title>
     <Body>@($"Version {Motion.Version}")</Body>
     <Additional>
         <div class="d-flex align-items-center justify-content-center h-100 me-4">
-            <span class="badge @this.statusPillCss rounded-pill" style="font-size: 1em;">
+            <span class="badge @this.statusPillCss rounded-pill" style="font-size: 1em;" @onclick="(() => changeMotionStateDialog.Show(this.Motion))">
                 @Motion.State
             </span>
         </div>
@@ -12,13 +13,9 @@
                 CustomCss="btn btn-primary btn-lg mx-2" 
                 Text="Edit"
                 OnClick="@(() => editMotionComponent.Show(Motion))"/>
-            <ButtonBase
-                CustomCss="btn btn-primary btn-lg mx-2"
-                Text="Start"
-                Disabled="existsActiveMeeting"
-                OnClick="SetActive"/>
         </div>
     </Additional>
 </ListGroupItem>
 
 <EditMotionComponent @ref="this.editMotionComponent" OnMotionSaved="@this.OnMotionChanged" />
+<ChangeMotionStateDialog @ref="changeMotionStateDialog"/>

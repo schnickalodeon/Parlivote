@@ -16,6 +16,7 @@ namespace Parlivote.Shared.Models.Motions
                 MotionState.Pending => MotionStateConverter.Pending,
                 MotionState.Accepted => MotionStateConverter.Accepted,
                 MotionState.Declined => MotionStateConverter.Declined,
+                MotionState.Cancelled => MotionStateConverter.Cancelled,
                 _ => throw new ArgumentOutOfRangeException(nameof(state), state, null)
             };
     }
@@ -25,6 +26,7 @@ namespace Parlivote.Shared.Models.Motions
         public const string Pending = "Ausstehend";
         public const string Accepted = "Angenommen";
         public const string Declined = "Abgelehnt";
+        public const string Cancelled = "Abgebrochen";
 
         public static MotionState FromString(string motionState) =>
             motionState switch
@@ -33,6 +35,7 @@ namespace Parlivote.Shared.Models.Motions
                     Pending => MotionState.Pending,
                     Accepted => MotionState.Accepted,
                     Declined => MotionState.Declined,
+                    Cancelled => MotionState.Cancelled,
                     _ => throw new ArgumentNullException(nameof(motionState),"Invalid string for state"),
                 };
     }
@@ -42,6 +45,7 @@ namespace Parlivote.Shared.Models.Motions
         Pending,
         Accepted,
         Declined,
+        Cancelled,
         Unset
     }
 }
