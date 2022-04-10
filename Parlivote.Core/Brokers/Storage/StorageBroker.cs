@@ -1,10 +1,14 @@
-﻿using EFxceptions;
+﻿using System;
+using EFxceptions;
+using EFxceptions.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Parlivote.Shared.Models.Identity;
 
 namespace Parlivote.Core.Brokers.Storage;
 
-public partial class StorageBroker : EFxceptionsContext, IStorageBroker
+public partial class StorageBroker : EFxceptionsIdentityContext<User, Role, Guid>, IStorageBroker
 {
     private readonly IConfiguration configuration;
 
