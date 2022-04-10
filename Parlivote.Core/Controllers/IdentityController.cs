@@ -62,5 +62,26 @@ namespace Parlivote.Core.Controllers
             }
           
         }
+
+        [HttpPost("refresh")]
+        public async Task<IActionResult> Login([FromBody] RefreshTokenRequest request)
+        {
+            try
+            {
+                AuthSuccessResponse authResponse =
+                    await this.identityService.RefreshTokenAsync(request.Token, request.RefreshToken);
+
+                return Ok(authResponse);
+            }
+            catch (InvalidEmailException invalidEmailException)
+            {
+                return BadRequest(invalidEmailException.Message);
+            }
+            catch (InvalidEmailPasswordCombinationException invalidEmailPasswordCombinationException)
+            {
+                return BadRequest(invalidEmailPasswordCombinationException.Message);
+            }
+
+        }
     }
 }
