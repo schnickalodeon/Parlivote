@@ -1,7 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Parlivote.Core.Services.Identity;
 using Parlivote.Shared.Models.Identity;
+using Parlivote.Shared.Models.Identity.Exceptions;
 
 namespace Parlivote.Core.Controllers
 {
@@ -19,41 +21,46 @@ namespace Parlivote.Core.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] UserRegistration userRegistration)
         {
-            AuthenticationResult authResponse = 
-                await this.identityService.RegisterAsync(userRegistration.Email, userRegistration.Password);
-
-            if (!authResponse.Success)
+            try
             {
-                return BadRequest(new AuthFailedResponse
-                {
-                    Errors = authResponse.ErrorMessages
-                });
+                AuthSuccessResponse authSuccessResponse =
+                    await this.identityService.RegisterAsync(userRegistration.Email, userRegistration.Password);
+
+                return Ok(authSuccessResponse);
             }
-
-            return Ok(new AuthSuccessResponse
+            catch (UserAlreadyExistsException userAlreadyExistsException)
             {
-                Token = authResponse.Token
-            });
+                return BadRequest(userAlreadyExistsException.Message);
+            }
+            catch (InvalidEmailException invalidEmailException)
+            {
+                return BadRequest(invalidEmailException.Message);
+            }
+            catch (UserRegistrationException userRegistrationException)
+            {
+                return BadRequest(userRegistrationException.Errors);
+            }
         }
 
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] UserLogin userLogin)
         {
-            AuthenticationResult authResponse =
-                await this.identityService.LoginAsync(userLogin.Email, userLogin.Password);
-
-            if (!authResponse.Success)
+            try
             {
-                return BadRequest(new AuthFailedResponse
-                {
-                    Errors = authResponse.ErrorMessages
-                });
+                AuthSuccessResponse authResponse =
+                    await this.identityService.LoginAsync(userLogin.Email, userLogin.Password);
+
+                return Ok(authResponse);
             }
-
-            return Ok(new AuthSuccessResponse
+            catch (InvalidEmailException invalidEmailException)
             {
-                Token = authResponse.Token
-            });
+                return BadRequest(invalidEmailException.Message);
+            }
+            catch (InvalidEmailPasswordCombinationException invalidEmailPasswordCombinationException)
+            {
+                return BadRequest(invalidEmailPasswordCombinationException.Message);
+            }
+          
         }
     }
 }

@@ -11,7 +11,7 @@ using Parlivote.Shared.Models.Identity;
 
 namespace Parlivote.Core.Services.Identity;
 
-public class IdentityService : IIdentityService
+public partial class IdentityService : IIdentityService
 {
     private readonly UserManager<User> userManager;
     private readonly JwtSettings jwtSettings;
@@ -22,64 +22,49 @@ public class IdentityService : IIdentityService
         this.jwtSettings = jwtSettings;
     }
 
-    public async Task<AuthenticationResult> RegisterAsync(string userRegistrationEmail, string userRegistrationPassword)
+    public async Task<AuthSuccessResponse> RegisterAsync(string email, string password)
     {
-        User existingUser = 
-            await this.userManager.FindByEmailAsync(userRegistrationEmail);
+        ValidateEmailAddress(email);
 
-        if (existingUser is not null)
-        {
-            return new AuthenticationResult
-            {
-                ErrorMessages = new[] {"User with this email address already exists"}
-            };
-        }
+        await ValidateUserDoesNotExist(email);
 
         var newUser = new User
         {
-            Email = userRegistrationEmail,
-            UserName = userRegistrationEmail
+            Email = email,
+            UserName = email
         };
 
         IdentityResult createdUserResult =
-            await this.userManager.CreateAsync(newUser, userRegistrationPassword);
+            await this.userManager.CreateAsync(newUser, password);
 
-        if (!createdUserResult.Succeeded)
+        ValidateCreatedUser(createdUserResult);
+
+        AuthenticationResult authenticationResult =
+            GenerateAuthenticationResultForUser(newUser);
+
+        return new AuthSuccessResponse
         {
-            return new AuthenticationResult
-            {
-                ErrorMessages = createdUserResult.Errors.Select(x => x.Description)
-            };
-        }
-
-        return GenerateAuthenticationResultForUser(newUser);
+            Token = authenticationResult.Token
+        };
     }
 
-    public async Task<AuthenticationResult> LoginAsync(string email, string password)
+    public async Task<AuthSuccessResponse> LoginAsync(string email, string password)
     {
+        ValidateEmailAddress(email);
+
         User user =
             await this.userManager.FindByEmailAsync(email);
 
-        if (user is null)
+        ValidateStorageUser(user);
+
+        await ValidatePassword(user, password);
+
+        AuthenticationResult result = GenerateAuthenticationResultForUser(user);
+
+        return new AuthSuccessResponse
         {
-            return new AuthenticationResult
-            {
-                ErrorMessages = new[] { "User/Password combination is wrong" }
-            };
-        }
-
-        bool userHasValidPassword =
-            await this.userManager.CheckPasswordAsync(user, password);
-
-        if (!userHasValidPassword)
-        {
-            return new AuthenticationResult
-            {
-                ErrorMessages = new[] { "User/password combination is wrong" }
-            };
-        }
-
-        return GenerateAuthenticationResultForUser(user);
+            Token = result.Token
+        };
     }
 
     private AuthenticationResult GenerateAuthenticationResultForUser(User newUser)
