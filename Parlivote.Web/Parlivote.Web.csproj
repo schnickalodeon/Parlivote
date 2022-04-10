@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Areas\Identity\Pages\Shared\" />
     <Folder Include="Configurations\" />
     <Folder Include="Hubs\" />
   </ItemGroup>
