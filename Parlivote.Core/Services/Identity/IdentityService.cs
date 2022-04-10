@@ -52,6 +52,38 @@ public class IdentityService : IIdentityService
             };
         }
 
+        return GenerateAuthenticationResultForUser(newUser);
+    }
+
+    public async Task<AuthenticationResult> LoginAsync(string email, string password)
+    {
+        User user =
+            await this.userManager.FindByEmailAsync(email);
+
+        if (user is null)
+        {
+            return new AuthenticationResult
+            {
+                ErrorMessages = new[] { "User/Password combination is wrong" }
+            };
+        }
+
+        bool userHasValidPassword =
+            await this.userManager.CheckPasswordAsync(user, password);
+
+        if (!userHasValidPassword)
+        {
+            return new AuthenticationResult
+            {
+                ErrorMessages = new[] { "User/password combination is wrong" }
+            };
+        }
+
+        return GenerateAuthenticationResultForUser(user);
+    }
+
+    private AuthenticationResult GenerateAuthenticationResultForUser(User newUser)
+    {
         var tokenHandler = new JwtSecurityTokenHandler();
         byte[] key = Encoding.ASCII.GetBytes(this.jwtSettings.Secret);
         var tokenDescriptor = new SecurityTokenDescriptor
@@ -75,6 +107,7 @@ public class IdentityService : IIdentityService
             Success = true,
             Token = tokenHandler.WriteToken(token)
         };
-
     }
+
+   
 }

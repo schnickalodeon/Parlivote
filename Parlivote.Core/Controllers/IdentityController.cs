@@ -35,5 +35,25 @@ namespace Parlivote.Core.Controllers
                 Token = authResponse.Token
             });
         }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] UserLogin userLogin)
+        {
+            AuthenticationResult authResponse =
+                await this.identityService.LoginAsync(userLogin.Email, userLogin.Password);
+
+            if (!authResponse.Success)
+            {
+                return BadRequest(new AuthFailedResponse
+                {
+                    Errors = authResponse.ErrorMessages
+                });
+            }
+
+            return Ok(new AuthSuccessResponse
+            {
+                Token = authResponse.Token
+            });
+        }
     }
 }
