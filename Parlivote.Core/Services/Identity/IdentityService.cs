@@ -54,11 +54,7 @@ public partial class IdentityService : IIdentityService
         AuthenticationResult authenticationResult =
             await GenerateAuthenticationResultForUserAsync(newUser);
 
-        return new AuthSuccessResponse
-        {
-            Token = authenticationResult.Token,
-            RefreshToken = authenticationResult.RefreshToken
-        };
+        return new AuthSuccessResponse(authenticationResult.Token, authenticationResult.RefreshToken);
     }
 
     public async Task<AuthSuccessResponse> LoginAsync(string email, string password)
@@ -74,11 +70,7 @@ public partial class IdentityService : IIdentityService
 
         AuthenticationResult result = await GenerateAuthenticationResultForUserAsync(user);
 
-        return new AuthSuccessResponse
-        {
-            Token = result.Token,
-            RefreshToken = result.RefreshToken
-        };
+        return new AuthSuccessResponse(result.Token, result.RefreshToken);
     }
 
     public async Task<AuthSuccessResponse> RefreshTokenAsync(string token, string refreshToken)
@@ -140,11 +132,7 @@ public partial class IdentityService : IIdentityService
         AuthenticationResult authenticationResult =
             await GenerateAuthenticationResultForUserAsync(user);
 
-        return new AuthSuccessResponse
-        {
-            Token = authenticationResult.Token,
-            RefreshToken = authenticationResult.RefreshToken
-        };
+        return new AuthSuccessResponse(authenticationResult.Token, authenticationResult.RefreshToken);
     }
 
     private bool IsJwtWithValidSecurityAlgorithm(SecurityToken validatedToken)
@@ -180,8 +168,8 @@ public partial class IdentityService : IIdentityService
         {
             Subject = new ClaimsIdentity(new[]
             {
-                new Claim(JwtRegisteredClaimNames.Sub, user.Email),
-                new Claim(JwtRegisteredClaimNames.Email, user.Email),
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.Name, user.Email),
                 new Claim("id", user.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             }),

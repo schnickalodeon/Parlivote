@@ -1,7 +1,10 @@
 ﻿namespace Parlivote.Shared.Models.Identity;
 
-public class AuthSuccessResponse
+public class AuthSuccessResponse : AuthenticationResult
 {
-    public string Token { get; set; }
-    public string RefreshToken { get; set; }
+    public AuthSuccessResponse(string token, string refreshToken)
+    {
+        this.Success = true;
+        this.Token = token;
+    }
 }

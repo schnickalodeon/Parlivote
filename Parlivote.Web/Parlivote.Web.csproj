@@ -5,14 +5,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\Identity\Pages\Shared\" />
     <Folder Include="Configurations\" />
     <Folder Include="Hubs\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="bootstrap" Version="5.1.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="7.0.0-preview.2.22153.2" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.2" />
     <PackageReference Include="PrettyBlazor" Version="1.2.0" />
     <PackageReference Include="RESTFulSense" Version="2.4.0" />
     <PackageReference Include="Syncfusion.Blazor" Version="19.4.0.56" />

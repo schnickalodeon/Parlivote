@@ -19,7 +19,7 @@ namespace Parlivote.Core.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] UserRegistration userRegistration)
+        public async Task<ActionResult<AuthenticationResult>> Register([FromBody] UserRegistration userRegistration)
         {
             try
             {
@@ -30,20 +30,23 @@ namespace Parlivote.Core.Controllers
             }
             catch (UserAlreadyExistsException userAlreadyExistsException)
             {
-                return BadRequest(userAlreadyExistsException.Message);
+                var authFailedResponse = new AuthFailedResponse(userAlreadyExistsException.Message);
+                return BadRequest(authFailedResponse);
             }
             catch (InvalidEmailException invalidEmailException)
             {
-                return BadRequest(invalidEmailException.Message);
+                var authFailedResponse = new AuthFailedResponse(invalidEmailException.Message);
+                return BadRequest(authFailedResponse);
             }
             catch (UserRegistrationException userRegistrationException)
             {
-                return BadRequest(userRegistrationException.Errors);
+                var authFailedResponse = new AuthFailedResponse(userRegistrationException.Message);
+                return BadRequest(authFailedResponse);
             }
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] UserLogin userLogin)
+        public async Task<ActionResult<AuthenticationResult>> Login([FromBody] UserLogin userLogin)
         {
             try
             {
@@ -54,17 +57,19 @@ namespace Parlivote.Core.Controllers
             }
             catch (InvalidEmailException invalidEmailException)
             {
-                return BadRequest(invalidEmailException.Message);
+                var authFailedResponse = new AuthFailedResponse(invalidEmailException.Message);
+                return BadRequest(authFailedResponse);
             }
             catch (InvalidEmailPasswordCombinationException invalidEmailPasswordCombinationException)
             {
-                return BadRequest(invalidEmailPasswordCombinationException.Message);
+                var authFailedResponse = new AuthFailedResponse(invalidEmailPasswordCombinationException.Message);
+                return BadRequest(authFailedResponse);
             }
           
         }
 
         [HttpPost("refresh")]
-        public async Task<IActionResult> Login([FromBody] RefreshTokenRequest request)
+        public async Task<ActionResult<AuthenticationResult>> Refresh([FromBody] RefreshTokenRequest request)
         {
             try
             {
@@ -75,11 +80,13 @@ namespace Parlivote.Core.Controllers
             }
             catch (InvalidEmailException invalidEmailException)
             {
-                return BadRequest(invalidEmailException.Message);
+                var authFailedResponse = new AuthFailedResponse(invalidEmailException.Message);
+                return BadRequest(authFailedResponse);
             }
             catch (InvalidEmailPasswordCombinationException invalidEmailPasswordCombinationException)
             {
-                return BadRequest(invalidEmailPasswordCombinationException.Message);
+                var authFailedResponse = new AuthFailedResponse(invalidEmailPasswordCombinationException.Message);
+                return BadRequest(authFailedResponse);
             }
 
         }

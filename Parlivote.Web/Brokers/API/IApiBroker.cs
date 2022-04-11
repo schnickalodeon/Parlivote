@@ -1,3 +1,7 @@
-﻿namespace Parlivote.Web.Brokers.API;
+﻿using System.Net.Http.Headers;
 
-public partial interface IApiBroker { }
+namespace Parlivote.Web.Brokers.API;
+
+public partial interface IApiBroker
+{
+}

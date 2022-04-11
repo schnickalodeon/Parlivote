@@ -1,7 +1,10 @@
 using System;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Components.Server;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.Configuration;
@@ -11,6 +14,7 @@ using Parlivote.Web.Brokers.API;
 using Parlivote.Web.Brokers.Logging;
 using Parlivote.Web.Configurations;
 using Parlivote.Web.Hubs;
+using Parlivote.Web.Services.Authentication;
 using Parlivote.Web.Services.Foundations.Meetings;
 using Parlivote.Web.Services.Foundations.Motions;
 using Parlivote.Web.Services.Views.Meetings;
@@ -38,12 +42,20 @@ namespace Parlivote.Web
             {
                 options.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(new[] {"application/octet-stream"});
             });
+
+
+            services.AddScoped<IAuthenticationService, AuthenticationService>();
+            services.AddScoped<AuthenticationStateProvider, AuthStateProvider>();
             
             LocalConfigurations localConfigurations = 
                 Configuration.Get<LocalConfigurations>();
 
             services.AddHttpClient<IRESTFulApiFactoryClient, RESTFulApiFactoryClient>(
-                client => client.BaseAddress = new Uri(localConfigurations.ApiConfigurations.Url));
+                client =>
+                {
+                    client.BaseAddress = new Uri(localConfigurations.ApiConfigurations.Url);
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", "flonk");
+                });
 
             AddSyncfusionBlazor(services);
 
@@ -77,6 +89,8 @@ namespace Parlivote.Web
             //Foundation Services
             services.AddTransient<IMotionService, MotionService>();
             services.AddTransient<IMeetingService, MeetingService>();
+
+            
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -95,6 +109,10 @@ namespace Parlivote.Web
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapBlazorHub();

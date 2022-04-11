@@ -1,27 +1,12 @@
 ﻿@page "/"
+@using Parlivote.Shared.Models.Identity
 
-<button @onclick="LogUsername">Log username</button>
-
-<p>@_authMessage</p>
-
-@code {
-    [CascadingParameter]
-    private Task<AuthenticationState> authenticationStateTask { get; set; }
-
-    private string _authMessage;
-
-    private async Task LogUsername()
-    {
-        var authState = await authenticationStateTask;
-        var user = authState.User;
-
-        if (user.Identity.IsAuthenticated)
-        {
-            _authMessage = $"{user.Identity.Name} is authenticated.";
-        }
-        else
-        {
-            _authMessage = "The user is NOT authenticated.";
-        }
-    }
-}
+<h2>Parlivote</h2>
+<AuthorizeView>
+    <Authorized>
+        <h4>Welcome @context.User.Identity.Name</h4>
+    </Authorized>
+    <NotAuthorized>
+        <h4>Please <a href="/Identity/Account/Login">Login</a></h4>
+    </NotAuthorized>
+</AuthorizeView>

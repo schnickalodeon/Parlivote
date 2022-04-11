@@ -1,0 +1,24 @@
+﻿@page "/Identity/Account/Login"
+<StateEvaluation 
+    State="@this.state" 
+    LoadingText="Logging in"
+    ErrorMessage="@this.error">
+    <Content>
+        <h2>Login</h2>
+
+        <FormControlBase LabelText="E-Mail">
+            <TextBoxBase @bind-Value="login.Email"/>
+        </FormControlBase>
+
+        <FormControlBase LabelText="Passwort">
+            <TextBoxBase @bind-Value="login.Password"/>
+        </FormControlBase>
+        
+        <Success Visible="@this.loginSuccessful">
+            Login Successful!
+        </Success>
+
+        <ButtonBase Text="Login" OnClick="LoginAsync"/>
+    </Content>
+</StateEvaluation>
+
