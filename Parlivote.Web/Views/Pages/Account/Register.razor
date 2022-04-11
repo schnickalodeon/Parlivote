@@ -1,0 +1,30 @@
+﻿@page "/Identity/Account/Register"
+<StateEvaluation 
+    State="@this.state" 
+    LoadingText="Register"
+    ErrorMessage="@this.error">
+    <Content>
+        <h2>Register</h2>
+
+        <FormControlBase LabelText="E-Mail">
+            <TextBoxBase @bind-Value="registration.Email"/>
+        </FormControlBase>
+        
+        <FormControlBase LabelText="Confirm Email">
+            <TextBoxBase @bind-Value="registration.EmailConfirmation"/>
+        </FormControlBase>
+
+        <FormControlBase LabelText="Passwort">
+            <TextBoxBase @bind-Value="registration.Password"/>
+        </FormControlBase>
+        
+        <Success Visible="@this.registrationSuccessul">
+            Registration Successful, logging in!
+        </Success>
+        
+        <ErrorBase ErrorMessage="@this.error" ValidationErrors="@this.validationErrors" />
+
+        <ButtonBase Text="Register" OnClick="RegisterAsync"/>
+    </Content>
+</StateEvaluation>
+

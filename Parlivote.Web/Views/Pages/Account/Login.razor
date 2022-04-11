@@ -17,6 +17,8 @@
         <Success Visible="@this.loginSuccessful">
             Login Successful!
         </Success>
+        
+        <ErrorBase ErrorMessage="@this.error" ValidationErrors="@this.validationErrors" />
 
         <ButtonBase Text="Login" OnClick="LoginAsync"/>
     </Content>

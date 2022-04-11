@@ -5,8 +5,8 @@ namespace Parlivote.Web.Services.Authentication
 {
     public interface IAuthenticationService
     {
-        Task<AuthenticationResult> LoginAsync(UserLogin userForAuth);
+        Task<AuthenticationResult> LoginAsync(UserLogin login);
+        Task<AuthenticationResult> RegisterAsync(UserRegistration registration);
         Task LogoutAsync();
-        //Task<AuthenticationResult> Register(UserRegistration user);
     }
 }

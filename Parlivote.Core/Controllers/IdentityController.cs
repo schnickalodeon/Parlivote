@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Parlivote.Core.Services.Identity;
@@ -40,7 +41,7 @@ namespace Parlivote.Core.Controllers
             }
             catch (UserRegistrationException userRegistrationException)
             {
-                var authFailedResponse = new AuthFailedResponse(userRegistrationException.Message);
+                var authFailedResponse = new AuthFailedResponse(userRegistrationException.Errors.ToList());
                 return BadRequest(authFailedResponse);
             }
         }

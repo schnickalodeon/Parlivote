@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using System.Collections;
+using Microsoft.AspNetCore.Components;
 
 namespace Parlivote.Web.Views.Base
 {
@@ -6,5 +7,8 @@ namespace Parlivote.Web.Views.Base
     {
         [Parameter] 
         public string ErrorMessage { get; set; }
+
+        [Parameter]
+        public IDictionary ValidationErrors { get; set; } = null;
     }
 }

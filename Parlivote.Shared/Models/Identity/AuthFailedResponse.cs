@@ -2,6 +2,11 @@
 
 public class AuthFailedResponse : AuthenticationResult
 {
+    public AuthFailedResponse()
+    {
+        
+    }
+
     public AuthFailedResponse(string error)
     {
         Success = false;

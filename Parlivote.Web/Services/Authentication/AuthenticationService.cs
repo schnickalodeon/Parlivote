@@ -10,10 +10,11 @@ using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using Microsoft.Extensions.Configuration;
 using Parlivote.Shared.Models.Identity;
 using Parlivote.Web.Brokers.API;
+using RESTFulSense.Exceptions;
 
 namespace Parlivote.Web.Services.Authentication
 {
-    public class AuthenticationService : IAuthenticationService
+    public partial class AuthenticationService : IAuthenticationService
     {
         private readonly HttpClient httpClient;
         private readonly IApiBroker apiBroker;
@@ -32,51 +33,59 @@ namespace Parlivote.Web.Services.Authentication
             this.authStateProvider = authStateProvider;
         }
 
-        public async Task<AuthenticationResult> LoginAsync(UserLogin userForAuth)
+        public async Task<AuthenticationResult> LoginAsync(UserLogin login)
         {
-            AuthenticationResult authResult = await this.apiBroker.PostLoginAsync(userForAuth);
-
-            if (authResult.Success == false)
+            try
             {
+                ValidateLogin(login);
+
+                AuthenticationResult authResult = await this.apiBroker.PostLoginAsync(login);
+
+                if (authResult.Success == false)
+                {
+                    return authResult;
+                }
+
+                await this.localStorage.SetAsync(this.authTokenStorageKey, authResult.Token);
+
+                ((AuthStateProvider)this.authStateProvider).NotifyUserAuthentication(authResult.Token);
+
                 return authResult;
             }
-
-            await this.localStorage.SetAsync(this.authTokenStorageKey, authResult.Token);
-
-            ((AuthStateProvider) this.authStateProvider).NotifyUserAuthentication(authResult.Token);
-
-            return authResult;
+            catch (HttpResponseBadRequestException badRequestException)
+            {
+                return DeserializeMessage(badRequestException.Message);
+            }
         }
 
-        //public async Task<AuthenticationResult> Register(UserRegistrationRequest user)
-        //{
-        //    var host = configuration["uris:web-api-host"];
-        //    var url = host + ApiRoutes.Identity.Register;
-        //    var response = await httpClient.PostAsJsonAsync(url, user);
+        public async Task<AuthenticationResult> RegisterAsync(UserRegistration registration)
+        {
+            try
+            {
+                ValidateRegistration(registration);
 
-        //    var respContent = await response.Content.ReadAsStringAsync();
+                AuthenticationResult authenticationResult =
+                    await this.apiBroker.PostRegisterAsync(registration);
 
-        //    if (response.IsSuccessStatusCode == false)
-        //    {
-        //        var failedResponse = JsonSerializer.Deserialize<AuthFailedResponse>(respContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                if (authenticationResult.Success == false)
+                {
+                    return authenticationResult;
+                }
 
-        //        return new AuthenticationResult
-        //        {
-        //            Success = false,
-        //            ErrorMessages = failedResponse.Errors
-        //        };
-        //    }
+                return new AuthSuccessResponse(authenticationResult.Token, authenticationResult.RefreshToken);
+            }
+            catch (HttpResponseBadRequestException badRequestException)
+            {
+                return DeserializeMessage(badRequestException.Message);
+            }
+        }
 
-        //    var successResponse = JsonSerializer.Deserialize<AuthSuccessResponse>(respContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-        //    return new AuthenticationResult
-        //    {
-        //        Success = true,
-        //        ErrorMessages = null,
-        //        UserName = successResponse.UserName,
-        //        Access_Token = successResponse.Access_Token
-        //    };
+        private AuthFailedResponse DeserializeMessage(string message)
+        {
+            var options = new JsonSerializerOptions {PropertyNameCaseInsensitive = true};
+            return JsonSerializer.Deserialize<AuthFailedResponse>(message, options);
 
-        //}
+        }
 
         public async Task LogoutAsync()
         {

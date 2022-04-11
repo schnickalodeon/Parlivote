@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
 using Parlivote.Shared.Models.Identity;
 using Parlivote.Shared.Models.Identity.Exceptions;
 using Parlivote.Web.Models;
 using Parlivote.Web.Services.Authentication;
+using System;
+using System.Collections;
+using System.Threading.Tasks;
 
 namespace Parlivote.Web.Views.Pages.Account
 {
-    public partial class Login
+    public partial class Register
     {
         [Inject]
         public IAuthenticationService AuthenticationService { get; set; }
@@ -17,11 +17,11 @@ namespace Parlivote.Web.Views.Pages.Account
         [Inject]
         public NavigationManager NavigationManager { get; set; }
 
-        private readonly UserLogin login = new();
+        private readonly UserRegistration registration = new();
         private ComponentState state = ComponentState.Content;
-        private string error;
+        private string error = "";
+        private bool registrationSuccessul = false;
         private IDictionary validationErrors;
-        private bool loginSuccessful = false;
 
         protected override void OnAfterRender(bool firstRender)
         {
@@ -31,15 +31,16 @@ namespace Parlivote.Web.Views.Pages.Account
             }
         }
 
-        private async void LoginAsync()
+        private async Task LoginAsync()
         {
             try
             {
                 this.validationErrors = null;
                 this.state = ComponentState.Loading;
+                var login = new UserLogin(this.registration.Email, this.registration.Password);
 
                 AuthenticationResult result =
-                    await this.AuthenticationService.LoginAsync(this.login);
+                    await this.AuthenticationService.LoginAsync(login);
 
                 this.state = ComponentState.Content;
                 if (result.Success)
@@ -49,6 +50,38 @@ namespace Parlivote.Web.Views.Pages.Account
                 else
                 {
                     this.error = string.Join(",", result.ErrorMessages);
+                    this.state = ComponentState.Error;
+                }
+
+            }
+            catch (Exception e)
+            {
+                this.error = e.Message;
+                this.state = ComponentState.Error;
+            }
+        }
+
+        private async void RegisterAsync()
+        {
+            try
+            {
+                this.validationErrors = null;
+
+                this.state = ComponentState.Loading;
+
+                AuthenticationResult result =
+                    await this.AuthenticationService.RegisterAsync(this.registration);
+
+                this.state = ComponentState.Content;
+                if (result.Success)
+                {
+                    this.registrationSuccessul = true;
+                    await InvokeAsync(StateHasChanged);
+                    await LoginAsync();
+                }
+                else
+                {
+                    this.error = String.Join(",", result.ErrorMessages);
                 }
 
             }
