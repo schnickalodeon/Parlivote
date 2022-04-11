@@ -5,6 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Brokers\LocalStorage\" />
+    <Folder Include="Brokers\Authentications\" />
     <Folder Include="Configurations\" />
     <Folder Include="Hubs\" />
   </ItemGroup>

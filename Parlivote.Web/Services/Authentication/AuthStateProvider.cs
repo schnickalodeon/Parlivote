@@ -16,13 +16,11 @@ namespace Parlivote.Web.Services.Authentication
         private readonly ProtectedLocalStorage localStorage;
         private readonly AuthenticationState anonymous;
         private readonly string authTokenStorageKey;
-        private readonly IApiBroker apiBroker;
 
-        public AuthStateProvider(HttpClient httpClient, IConfiguration configuration, ProtectedLocalStorage localStorage, IApiBroker apiBroker)
+        public AuthStateProvider(HttpClient httpClient, IConfiguration configuration, ProtectedLocalStorage localStorage)
         {
             this.httpClient = httpClient;
             this.localStorage = localStorage;
-            this.apiBroker = apiBroker;
             this.anonymous = new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
             this.authTokenStorageKey = "authToken";
         }

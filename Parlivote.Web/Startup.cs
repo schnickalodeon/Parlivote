@@ -11,6 +11,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Parlivote.Web.Brokers.API;
+using Parlivote.Web.Brokers.Authentications;
+using Parlivote.Web.Brokers.LocalStorage;
 using Parlivote.Web.Brokers.Logging;
 using Parlivote.Web.Configurations;
 using Parlivote.Web.Hubs;
@@ -26,9 +28,12 @@ namespace Parlivote.Web
 {
     public class Startup
     {
+
+        private readonly LocalConfigurations localConfigurations;
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            this.localConfigurations = configuration.Get<LocalConfigurations>();
         }
 
         public IConfiguration Configuration { get; }
@@ -43,44 +48,30 @@ namespace Parlivote.Web
                 options.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(new[] {"application/octet-stream"});
             });
 
-
-            services.AddScoped<IAuthenticationService, AuthenticationService>();
-            services.AddScoped<AuthenticationStateProvider, AuthStateProvider>();
-            
-            LocalConfigurations localConfigurations = 
-                Configuration.Get<LocalConfigurations>();
-
             services.AddHttpClient<IRESTFulApiFactoryClient, RESTFulApiFactoryClient>(
-                client =>
-                {
-                    client.BaseAddress = new Uri(localConfigurations.ApiConfigurations.Url);
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", "flonk");
-                });
+                client => { client.BaseAddress = new Uri(this.localConfigurations.ApiConfigurations.Url); });
 
             AddSyncfusionBlazor(services);
-
-          
 
             AddServices(services);
         }
 
         private void AddSyncfusionBlazor(IServiceCollection services)
         {
-
-            LocalConfigurations localConfigurations =
-                Configuration.Get<LocalConfigurations>();
-
-            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(localConfigurations.SyncfusionApiKey);
+            string apiKey = this.localConfigurations.SyncfusionApiKey;
+            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(apiKey);
 
             services.AddSyncfusionBlazor(options => options.IgnoreScriptIsolation = true);
-
         }
 
         private static void AddServices(IServiceCollection services)
         {
             //Brokers
             services.AddTransient<IApiBroker, ApiBroker>();
+            services.AddScoped<AuthenticationStateProvider, AuthStateProvider>();
+            services.AddTransient<IAuthenticationBroker, AuthenticationBroker>();
             services.AddTransient<ILoggingBroker, LoggingBroker>();
+            services.AddTransient<ILocalStorageBroker, LocalStorageBroker>();
 
             //View Services
             services.AddTransient<IMotionViewService, MotionViewService>();
@@ -90,6 +81,7 @@ namespace Parlivote.Web
             services.AddTransient<IMotionService, MotionService>();
             services.AddTransient<IMeetingService, MeetingService>();
 
+            services.AddScoped<IAuthenticationService, AuthenticationService>();
             
         }
 

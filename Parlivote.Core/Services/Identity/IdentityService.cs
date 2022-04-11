@@ -51,10 +51,13 @@ public partial class IdentityService : IIdentityService
 
         ValidateCreatedUser(createdUserResult);
 
-        AuthenticationResult authenticationResult =
+        AuthenticationResult authResult =
             await GenerateAuthenticationResultForUserAsync(newUser);
 
-        return new AuthSuccessResponse(authenticationResult.Token, authenticationResult.RefreshToken);
+        return new AuthSuccessResponse(
+            authResult.Token, 
+            authResult.Token_Expiration, 
+            authResult.RefreshToken);
     }
 
     public async Task<AuthSuccessResponse> LoginAsync(string email, string password)
@@ -70,7 +73,10 @@ public partial class IdentityService : IIdentityService
 
         AuthenticationResult result = await GenerateAuthenticationResultForUserAsync(user);
 
-        return new AuthSuccessResponse(result.Token, result.RefreshToken);
+        return new AuthSuccessResponse(
+            result.Token,
+            result.Token_Expiration,
+            result.RefreshToken);
     }
 
     public async Task<AuthSuccessResponse> RefreshTokenAsync(string token, string refreshToken)
@@ -132,7 +138,10 @@ public partial class IdentityService : IIdentityService
         AuthenticationResult authenticationResult =
             await GenerateAuthenticationResultForUserAsync(user);
 
-        return new AuthSuccessResponse(authenticationResult.Token, authenticationResult.RefreshToken);
+        return new AuthSuccessResponse(
+            authenticationResult.Token,
+            authenticationResult.Token_Expiration,
+            authenticationResult.RefreshToken);
     }
 
     private bool IsJwtWithValidSecurityAlgorithm(SecurityToken validatedToken)
@@ -164,6 +173,8 @@ public partial class IdentityService : IIdentityService
     {
         var tokenHandler = new JwtSecurityTokenHandler();
         byte[] key = Encoding.ASCII.GetBytes(this.jwtSettings.Secret);
+
+        DateTime expiration = DateTime.UtcNow.Add(this.jwtSettings.TokenLifeTime);
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(new[]
@@ -173,7 +184,7 @@ public partial class IdentityService : IIdentityService
                 new Claim("id", user.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             }),
-            Expires = DateTime.UtcNow.Add(jwtSettings.TokenLifeTime),
+            Expires = expiration,
             SigningCredentials =
                 new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
         };
@@ -194,6 +205,7 @@ public partial class IdentityService : IIdentityService
         {
             Success = true,
             Token = tokenHandler.WriteToken(token),
+            Token_Expiration = expiration,
             RefreshToken = refreshToken.Token
         };
     }

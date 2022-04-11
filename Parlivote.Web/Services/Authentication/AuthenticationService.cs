@@ -5,31 +5,32 @@ using System.Net.Http.Json;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Web;
+using FluentAssertions.Equivalency;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using Microsoft.Extensions.Configuration;
 using Parlivote.Shared.Models.Identity;
 using Parlivote.Web.Brokers.API;
+using Parlivote.Web.Brokers.Authentications;
+using Parlivote.Web.Brokers.LocalStorage;
+using Parlivote.Web.Configurations;
 using RESTFulSense.Exceptions;
 
 namespace Parlivote.Web.Services.Authentication
 {
     public partial class AuthenticationService : IAuthenticationService
     {
-        private readonly HttpClient httpClient;
-        private readonly IApiBroker apiBroker;
-        private readonly ProtectedLocalStorage localStorage;
+        private readonly IAuthenticationBroker authenticationBroker;
+        private readonly ILocalStorageBroker localStorageBroker;
         private readonly AuthenticationStateProvider authStateProvider;
-        private readonly string authTokenStorageKey = "authToken";
 
         public AuthenticationService(
-            HttpClient httpClient, 
-            AuthenticationStateProvider authStateProvider, 
-            IApiBroker apiBroker, ProtectedLocalStorage localStorage)
+            AuthenticationStateProvider authStateProvider,
+            IAuthenticationBroker authenticationBroker, 
+            ILocalStorageBroker localStorageBroker)
         {
-            this.httpClient = httpClient;
-            this.apiBroker = apiBroker;
-            this.localStorage = localStorage;
+            this.authenticationBroker = authenticationBroker;
+            this.localStorageBroker = localStorageBroker;
             this.authStateProvider = authStateProvider;
         }
 
@@ -39,14 +40,14 @@ namespace Parlivote.Web.Services.Authentication
             {
                 ValidateLogin(login);
 
-                AuthenticationResult authResult = await this.apiBroker.PostLoginAsync(login);
+                AuthenticationResult authResult = await this.authenticationBroker.PostLoginAsync(login);
 
                 if (authResult.Success == false)
                 {
                     return authResult;
                 }
 
-                await this.localStorage.SetAsync(this.authTokenStorageKey, authResult.Token);
+                await SaveJwtToLocalStorage(authResult);
 
                 ((AuthStateProvider)this.authStateProvider).NotifyUserAuthentication(authResult.Token);
 
@@ -57,7 +58,6 @@ namespace Parlivote.Web.Services.Authentication
                 return DeserializeMessage(badRequestException.Message);
             }
         }
-
         public async Task<AuthenticationResult> RegisterAsync(UserRegistration registration)
         {
             try
@@ -65,14 +65,17 @@ namespace Parlivote.Web.Services.Authentication
                 ValidateRegistration(registration);
 
                 AuthenticationResult authenticationResult =
-                    await this.apiBroker.PostRegisterAsync(registration);
+                    await this.authenticationBroker.PostRegisterAsync(registration);
 
                 if (authenticationResult.Success == false)
                 {
                     return authenticationResult;
                 }
 
-                return new AuthSuccessResponse(authenticationResult.Token, authenticationResult.RefreshToken);
+                return new AuthSuccessResponse(
+                    authenticationResult.Token, 
+                    authenticationResult.Token_Expiration,
+                    authenticationResult.RefreshToken);
             }
             catch (HttpResponseBadRequestException badRequestException)
             {
@@ -86,12 +89,22 @@ namespace Parlivote.Web.Services.Authentication
             return JsonSerializer.Deserialize<AuthFailedResponse>(message, options);
 
         }
-
+        private async Task SaveJwtToLocalStorage(AuthenticationResult authResult)
+        {
+            await this.localStorageBroker.SetTokenAsync(authResult.Token);
+            await this.localStorageBroker.SetTokenExpirationAsync(authResult.Token_Expiration);
+            await this.localStorageBroker.SetRefreshTokenAsync(authResult.RefreshToken);
+        }
+        private async Task DeleteJwtStorageData()
+        {
+            await this.localStorageBroker.DeleteTokenAsync();
+            await this.localStorageBroker.DeleteTokenExpirationAsync();
+            await this.localStorageBroker.DeleteRefreshTokenAsync();
+        }
         public async Task LogoutAsync()
         {
-            await this.localStorage.DeleteAsync(this.authTokenStorageKey);
+            await DeleteJwtStorageData();
             ((AuthStateProvider)this.authStateProvider).NotifyUserLogout();
-
         }
 
         //public async Task<ChangePasswordResponse> ChangePassword(ChangePasswordRequest request)
