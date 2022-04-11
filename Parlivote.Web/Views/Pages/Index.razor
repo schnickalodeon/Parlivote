@@ -1,2 +1,12 @@
 ﻿@page "/"
-<h1 class="mb-5">Welcome to Parlivote</h1>
+@using Parlivote.Shared.Models.Identity
+
+<h2>Parlivote</h2>
+<AuthorizeView>
+    <Authorized>
+        <h4>Welcome @context.User.Identity.Name</h4>
+    </Authorized>
+    <NotAuthorized>
+        <h4>Please <a href="/Identity/Account/Login">Login</a></h4>
+    </NotAuthorized>
+</AuthorizeView>

@@ -9,7 +9,16 @@
             <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
             <div>
                 @ErrorMessage
+                
+                <Condition Evaluation="@(this.ValidationErrors != null)">
+                    <Match>
+                        <ValidationSummaryBase ValidationErrors="@this.ValidationErrors" />
+                    </Match>
+                </Condition>
+
             </div>
         </div>
+        
+
     </Match>
 </Condition>

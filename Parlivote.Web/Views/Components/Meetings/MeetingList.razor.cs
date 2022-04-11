@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR.Client;
@@ -11,6 +12,9 @@ namespace Parlivote.Web.Views.Components.Meetings;
 
 public partial class MeetingList : ComponentBase
 {
+    [Inject]
+    public HttpClient Client { get; set; }
+
     [Inject]
     public IMeetingViewService MeetingViewService { get; set; }
 
@@ -30,6 +34,8 @@ public partial class MeetingList : ComponentBase
     {
         try
         {
+            Console.WriteLine(Client?.DefaultRequestHeaders?.Authorization?.ToString());
+
             this.meetings =
                 await this.MeetingViewService.GetAllWithMotionsAsync();
 

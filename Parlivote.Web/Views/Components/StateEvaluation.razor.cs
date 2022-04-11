@@ -9,11 +9,17 @@ public partial class StateEvaluation : ComponentBase
     public ComponentState State { get; set; }
 
     [Parameter]
-    public RenderFragment Loading { get; set; }
+    public RenderFragment Loading { get; set; } = null;
+
+    [Parameter]
+    public string LoadingText { get; set; }
 
     [Parameter]
     public RenderFragment Content { get; set; }
 
     [Parameter]
-    public RenderFragment Error { get; set; }
+    public RenderFragment Error { get; set; } = null;
+
+    [Parameter]
+    public string ErrorMessage { get; set; } = null;
 }
