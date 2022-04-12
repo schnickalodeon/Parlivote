@@ -22,10 +22,13 @@ public partial class ActiveMotion : ComponentBase
     public bool IsConnected => 
         this.hubConnection.State == HubConnectionState.Connected; 
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        await ConnectToMotionHub();
-        await LoadActiveMotionAsync();
+        if (firstRender)
+        {
+            await ConnectToMotionHub();
+            await LoadActiveMotionAsync();
+        }
     }
 
     private async Task ConnectToMotionHub()

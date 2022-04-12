@@ -39,14 +39,17 @@ public partial class ChangeMotionStateDialog : ComponentBase
     {
         this.motion = motionView;
         this.stateToUpdate = MotionStateConverter.FromString(this.motion.State);
-        await LoadActiveMotion();
         SetButtonEnabled();
         this.dialog.Show();
     }
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        await ConnectToMotionHub();
+        if (firstRender)
+        {
+            await ConnectToMotionHub();
+            await LoadActiveMotion();
+        }
     }
 
     private async Task LoadActiveMotion()
@@ -137,8 +140,9 @@ public partial class ChangeMotionStateDialog : ComponentBase
     {
         if (IsConnected)
         {
-            motion.State = this.stateToUpdate.GetValue();
-            await this.hubConnection.SendAsync(MotionHub.SetStateMethod, motion);
+            this.motion.State = this.stateToUpdate.GetValue();
+            await this.MotionViewService.UpdateAsync(this.motion);
+            await this.hubConnection.SendAsync(MotionHub.SetStateMethod, this.motion);
             this.dialog.Hide();
         }
     }

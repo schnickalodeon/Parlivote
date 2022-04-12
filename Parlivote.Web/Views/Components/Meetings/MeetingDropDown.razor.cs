@@ -34,9 +34,12 @@ public partial class MeetingDropDown : ComponentBase
     private string error;
     private List<MeetingView> meetings;
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        await LoadMeetings();
+        if (firstRender)
+        {
+            await LoadMeetings();
+        }
     }
 
     private async Task LoadMeetings()
@@ -57,6 +60,7 @@ public partial class MeetingDropDown : ComponentBase
             this.error = e.Message;
             this.state = ComponentState.Error;
         }
+        await InvokeAsync(StateHasChanged);
     }
 
     private void AddNullMeeting()

@@ -20,10 +20,13 @@ public partial class MeetingDetails : ComponentBase
     private string error;
     private ComponentState state;
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        this.state = ComponentState.Loading;
-        await LoadMeetingDataAsync();
+        if (firstRender)
+        {
+            this.state = ComponentState.Loading;
+            await LoadMeetingDataAsync();
+        }
     }
 
     private async Task LoadMeetingDataAsync()

@@ -33,10 +33,13 @@ public partial class MotionListItem : ComponentBase
     private bool existsActiveMeeting = false;
     private bool IsConnected => this.hubConnection.State == HubConnectionState.Connected;
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        await ConnectToMotionHub();
-        await GetActiveMotion();
+        if (firstRender)
+        {
+            await ConnectToMotionHub();
+            await GetActiveMotion();
+        }
     }
 
     private async Task GetActiveMotion()
@@ -45,6 +48,7 @@ public partial class MotionListItem : ComponentBase
             await this.MotionViewService.GetActiveAsync();
 
         this.existsActiveMeeting = activeMotion is not null;
+        await InvokeAsync(StateHasChanged);
     }
 
     private async Task ConnectToMotionHub()

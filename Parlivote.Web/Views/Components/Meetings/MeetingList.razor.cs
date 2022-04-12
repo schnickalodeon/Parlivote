@@ -24,10 +24,13 @@ public partial class MeetingList : ComponentBase
     private List<MeetingView> meetings;
     private string error;
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        this.state = ComponentState.Loading;
-        await LoadMeetings();
+        if (firstRender)
+        {
+            this.state = ComponentState.Loading;
+            await LoadMeetings();
+        }
     }
 
     public async Task LoadMeetings()
@@ -40,6 +43,7 @@ public partial class MeetingList : ComponentBase
                 await this.MeetingViewService.GetAllWithMotionsAsync();
 
             this.state = ComponentState.Content;
+            await InvokeAsync(StateHasChanged);
         }
         catch (Exception e)
         {
