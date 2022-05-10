@@ -3,12 +3,3 @@ silent: false
 branchName: '${issue.number}-${issue.title,}'
 gitSafeReplacementChar: '-'
 autoCloseIssue: true
-branches:
-  - label: question
-    skip: true
-  - label: enhancement
-    prefix: feature/
-  - label: enhancement
-    prefix: feature/
-  - label: bug
-    prefix: bugfix/
