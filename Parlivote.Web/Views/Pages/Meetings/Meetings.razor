@@ -1,4 +1,8 @@
 ﻿@page "/meetings"
 @attribute [Authorize]
 @using Parlivote.Web.Views.Components.Meetings
+@using Parlivote.Web.Views.Components.Motions
+
+<ActiveMotion />
+
 <MeetingList />
