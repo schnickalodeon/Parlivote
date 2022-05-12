@@ -40,8 +40,6 @@ public partial class VoteServiceTests
     {
         var filler = new Filler<Vote>();
 
-        var voteValue = new IntRange(0, 2);
-
         filler.Setup()
             .OnProperty(vote => vote.User).IgnoreIt()
             .OnProperty(vote => vote.Motion).IgnoreIt()

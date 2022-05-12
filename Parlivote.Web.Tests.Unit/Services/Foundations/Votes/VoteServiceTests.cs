@@ -39,7 +39,9 @@ public partial class VoteServiceTests
         var filler = new Filler<Vote>();
 
         filler.Setup()
-            .OnType<DateTimeOffset>().Use(dates);
+            .OnProperty(vote => vote.User).IgnoreIt()
+            .OnProperty(vote => vote.Motion).IgnoreIt()
+            .OnType<int>().Use(new IntRange(0, 2));
 
         return filler;
     }
