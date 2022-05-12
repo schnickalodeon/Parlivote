@@ -15,4 +15,9 @@ public static class ExceptionMessages
     {
         public const string INVALID_EMAIL = "The E-Mail address has an invalid format!";
     }
+
+    public static class Vote
+    {
+        public const string INVALID_VALUE = "The vote value is not valid: Use For, Against or Abstention";
+    }
 }
