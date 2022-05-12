@@ -9,6 +9,7 @@
     <Folder Include="Brokers\Authentications\" />
     <Folder Include="Configurations\" />
     <Folder Include="Hubs\" />
+    <Folder Include="Models\Views\Votes\" />
   </ItemGroup>
 
   <ItemGroup>
