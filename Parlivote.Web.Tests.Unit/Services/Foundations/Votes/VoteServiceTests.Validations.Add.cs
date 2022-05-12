@@ -1,17 +1,13 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Moq;
-using Parlivote.Core.Brokers.Logging;
-using Parlivote.Core.Brokers.Storage;
-using Parlivote.Core.Services.Foundations.Votes;
 using Parlivote.Shared.Models;
 using Parlivote.Shared.Models.Votes;
 using Parlivote.Shared.Models.Votes.Exceptions;
 using Parlivote.Shared.Models.VoteValues;
-using Tynamix.ObjectFiller;
 using Xunit;
 
-namespace Parlivote.Core.Tests.Unit.Services.Foundations.Votes;
+namespace Parlivote.Web.Tests.Unit.Services.Foundations.Votes;
 
 public partial class VoteServiceTests
 {
@@ -33,8 +29,8 @@ public partial class VoteServiceTests
         // Assert
         await Assert.ThrowsAsync<VoteValidationException>(() => addVoteTask);
 
-        this.storageBrokerMock.Verify(broker =>
-            broker.InsertVoteAsync(It.IsAny<Vote>()),
+        this.apiBrokerMock.Verify(broker =>
+            broker.PostVoteAsync(It.IsAny<Vote>()),
             Times.Never);
 
         Tests.VerifyExceptionLogged(
@@ -42,11 +38,14 @@ public partial class VoteServiceTests
             expectedVoteValidationException);
 
         this.loggingBrokerMock.VerifyNoOtherCalls();
-        this.storageBrokerMock.VerifyNoOtherCalls();
+        this.apiBrokerMock.VerifyNoOtherCalls();
     }
 
-    [Fact]
-    public async Task ShouldThrowValidationExceptionOnAddIfVoteIsInvalidAndLogItAsync()
+    [Theory]
+    [InlineData(null)]
+    [InlineData("")]
+    [InlineData(" ")]
+    public async Task ShouldThrowValidationExceptionOnAddIfVoteIsInvalidAndLogItAsync(string invalidText)
     {
         // Arrange
         var invalidVote = new Vote
@@ -89,11 +88,12 @@ public partial class VoteServiceTests
             this.loggingBrokerMock,
             expectedVoteValidationException);
 
-        this.storageBrokerMock.Verify(broker =>
-            broker.InsertVoteAsync(It.IsAny<Vote>()),
+        this.apiBrokerMock.Verify(broker =>
+            broker.PostVoteAsync(It.IsAny<Vote>()),
             Times.Never);
 
         this.loggingBrokerMock.VerifyNoOtherCalls();
-        this.storageBrokerMock.VerifyNoOtherCalls();
+        this.apiBrokerMock.VerifyNoOtherCalls();
     }
+
 }
