@@ -87,7 +87,6 @@ public class MotionsController : RESTFulController
         }
     }
 
-
     [HttpGet("Active")]
     public async Task<ActionResult<Motion>> GetActiveMotionAsync()
     {
