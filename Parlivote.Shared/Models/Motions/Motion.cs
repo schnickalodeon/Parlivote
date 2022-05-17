@@ -1,5 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 using Parlivote.Shared.Models.Meetings;
+using Parlivote.Shared.Models.Votes;
 
 namespace Parlivote.Shared.Models.Motions
 {
@@ -13,5 +14,7 @@ namespace Parlivote.Shared.Models.Motions
         public Meeting? Meeting { get; set; }
         public MotionState State { get; set; }
         public string Text { get; set; }
+
+        public ICollection<Vote>? Votes { get; set; }
     }
 }

@@ -16,11 +16,14 @@ using Parlivote.Web.Brokers.LocalStorage;
 using Parlivote.Web.Brokers.Logging;
 using Parlivote.Web.Configurations;
 using Parlivote.Web.Hubs;
+using Parlivote.Web.Models.Views.Votes;
 using Parlivote.Web.Services.Authentication;
 using Parlivote.Web.Services.Foundations.Meetings;
 using Parlivote.Web.Services.Foundations.Motions;
+using Parlivote.Web.Services.Foundations.Votes;
 using Parlivote.Web.Services.Views.Meetings;
 using Parlivote.Web.Services.Views.Motions;
+using Parlivote.Web.Services.Views.Votes;
 using RESTFulSense.Clients;
 using Syncfusion.Blazor;
 
@@ -76,10 +79,12 @@ namespace Parlivote.Web
             //View Services
             services.AddTransient<IMotionViewService, MotionViewService>();
             services.AddTransient<IMeetingViewService, MeetingViewService>();
+            services.AddTransient<IVoteViewService, VoteViewService>();
 
             //Foundation Services
             services.AddTransient<IMotionService, MotionService>();
             services.AddTransient<IMeetingService, MeetingService>();
+            services.AddTransient<IVoteService, VoteService>();
 
             services.AddScoped<IAuthenticationService, AuthenticationService>();
             

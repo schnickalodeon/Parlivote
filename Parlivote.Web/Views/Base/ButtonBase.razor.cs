@@ -22,5 +22,17 @@ namespace Parlivote.Web.Views.Base
                 ? "btn btn-primary"
                 : CustomCss;
         }
+
+        public void SetCss(string css)
+        {
+            this.css = css;
+            StateHasChanged();
+        }
+
+        public void SetEnabled(bool enabled)
+        {
+            this.Disabled = !enabled;
+            StateHasChanged();
+        }
     }
 }

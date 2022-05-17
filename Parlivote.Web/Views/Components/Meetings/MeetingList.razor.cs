@@ -37,7 +37,6 @@ public partial class MeetingList : ComponentBase
     {
         try
         {
-            Console.WriteLine(Client?.DefaultRequestHeaders?.Authorization?.ToString());
 
             this.meetings =
                 await this.MeetingViewService.GetAllWithMotionsAsync();

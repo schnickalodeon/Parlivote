@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Parlivote.Core.Services.Foundations.Motions;
 using Parlivote.Core.Services.Processing;
 using Parlivote.Shared.Models.Motions;
@@ -54,8 +55,11 @@ public class MotionsController : RESTFulController
     {
         try
         {
-            IQueryable<Motion> polls = this.motionProcessingService.RetrieveAll();
-            return Ok(polls);
+            IQueryable<Motion> motions = this.motionProcessingService
+                .RetrieveAll()
+                .Include(motion => motion.Votes);
+
+            return Ok(motions);
         }
         catch (MotionDependencyException pollDependencyException)
         {

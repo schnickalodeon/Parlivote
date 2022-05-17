@@ -5,8 +5,10 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Parlivote.Shared.Models.Meetings;
 using Parlivote.Shared.Models.Motions;
+using Parlivote.Shared.Models.Votes;
 using Parlivote.Web.Brokers.Logging;
 using Parlivote.Web.Models.Views.Motions;
+using Parlivote.Web.Models.Views.Votes;
 using Parlivote.Web.Services.Foundations.Meetings;
 using Parlivote.Web.Services.Foundations.Motions;
 
@@ -104,7 +106,21 @@ public class MotionViewService : IMotionViewService
     }
 
     private Func<Motion, Task<MotionView>> AsMotionView => MapToMotionView;
+    private Func<Vote, VoteView> AsVoteView => MapToVoteView;
 
+    private VoteView MapToVoteView(Vote vote)
+    {
+        var voteView = new VoteView
+        {
+            VoteId = vote.Id,
+            UserId = vote.UserId,
+            MotionId = vote.MotionId,
+            Value = vote.Value,
+        };
+
+        return voteView;
+    }
+   
     private async Task<List<MotionView>> MapToMotionViews(List<Motion> motions)
     {
         var motionViews = new List<MotionView>();
@@ -135,7 +151,8 @@ public class MotionViewService : IMotionViewService
             MeetingId = motion.MeetingId,
             State = motion.State.GetValue(),
             Text = motion.Text,
-            MeetingName = meetingName
+            MeetingName = meetingName,
+            VoteViews = motion.Votes?.Select(AsVoteView).ToList()
         };
     }
 }

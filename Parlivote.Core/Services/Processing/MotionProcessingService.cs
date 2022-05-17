@@ -35,7 +35,8 @@ public class MotionProcessingService : IMotionProcessingService
     public Task<Motion> RetrieveActiveAsync()
     {
         IQueryable<Motion> allMotions =
-            this.motionService.RetrieveAll();
+            this.motionService.RetrieveAll()
+                .Include(motion => motion.Votes);
 
         Expression<Func<Motion,bool>> activeMotionExpression =
             m => m.State == MotionState.Pending;

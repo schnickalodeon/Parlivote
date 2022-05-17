@@ -4,9 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Parlivote.Shared.Models.Meetings;
 using Parlivote.Shared.Models.Motions;
+using Parlivote.Shared.Models.Votes;
 using Parlivote.Web.Brokers.Logging;
 using Parlivote.Web.Models.Views.Meetings;
 using Parlivote.Web.Models.Views.Motions;
+using Parlivote.Web.Models.Views.Votes;
 using Parlivote.Web.Services.Foundations.Meetings;
 
 namespace Parlivote.Web.Services.Views.Meetings;
@@ -94,8 +96,22 @@ public class MeetingViewService : IMeetingViewService
             Id = meeting.Id,
             Description = meeting.Description,
             Start = meeting.Start,
-            Motions = meeting.Motions?.Select(AsMotionView).ToList() ?? new List<MotionView>()
+            Motions = meeting.Motions?.Select(AsMotionView).ToList() ?? new List<MotionView>(),
         };
+    }
+
+    private static Func<Vote, VoteView> AsVoteView => MapToVoteView;
+    private static VoteView MapToVoteView(Vote vote)
+    {
+        var voteView = new VoteView
+        {
+            VoteId = vote.Id,
+            UserId = vote.UserId,
+            MotionId = vote.MotionId,
+            Value = vote.Value,
+        };
+
+        return voteView;
     }
     private static MotionView MapToMotionView(Motion motion)
     {
@@ -105,7 +121,8 @@ public class MeetingViewService : IMeetingViewService
             Version = motion.Version,
             State = motion.State.GetValue(),
             MeetingId = motion.MeetingId,
-            Text = motion.Text
+            Text = motion.Text,
+            VoteViews = motion.Votes?.Select(AsVoteView).ToList() ?? new List<VoteView>()
         };
     }
 }
