@@ -41,7 +41,8 @@ public partial class MotionServiceTests
         var filler = new Filler<Motion>();
 
         filler.Setup()
-            .OnProperty(motion => motion.Meeting).IgnoreIt();
+            .OnProperty(motion => motion.Meeting).IgnoreIt()
+            .OnProperty(motion => motion.Votes).IgnoreIt();
 
         return filler;
     }

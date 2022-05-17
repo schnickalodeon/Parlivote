@@ -58,9 +58,10 @@ public partial class MotionServiceTests
         var filler = new Filler<Motion>();
 
         filler.Setup()
-            .OnType<int>().Use(new IntRange(1,20))
+            .OnType<int>().Use(new IntRange(1, 20))
             .OnType<MotionState>().Use(GetRandomState)
-            .OnType<Meeting>().IgnoreIt();
+            .OnType<Meeting>().IgnoreIt()
+            .OnProperty(motion => motion.Votes).IgnoreIt();
 
         return filler;
     }
