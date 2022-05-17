@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using Parlivote.Web.Models.Views.Votes;
 
 namespace Parlivote.Web.Models.Views.Motions
 {
@@ -10,5 +12,6 @@ namespace Parlivote.Web.Models.Views.Motions
         public string State { get; set; }
         public Guid? MeetingId { get; set; }
         public string MeetingName { get; set; }
+        public List<VoteView> VoteViews { get; set; }
     }
 }

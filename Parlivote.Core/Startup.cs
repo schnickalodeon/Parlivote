@@ -15,6 +15,7 @@ using Parlivote.Core.Brokers.Storage;
 using Parlivote.Core.Configurations;
 using Parlivote.Core.Services.Foundations.Meetings;
 using Parlivote.Core.Services.Foundations.Motions;
+using Parlivote.Core.Services.Foundations.Votes;
 using Parlivote.Core.Services.Identity;
 using Parlivote.Core.Services.Processing;
 using Parlivote.Shared.Models.Identity;
@@ -116,6 +117,7 @@ namespace Parlivote.Core
             //Foundation Services
             services.AddTransient<IMotionService, MotionService>();
             services.AddTransient<IMeetingService, MeetingService>();
+            services.AddTransient<IVoteService, VoteService>();
 
             //Processing Service
             services.AddTransient<IMotionProcessingService, MotionProcessingService>();

@@ -1,0 +1,18 @@
+﻿<div class="card">
+    <h5 class="card-header d-flex">
+        <span class="flex-grow-1 align-self-center">Aktive Abstimmung</span>
+        <span class="mb-0 badge rounded-pill bg-primary fs-5">7/10</span>
+    </h5>
+    <div class="card-body">
+        <h5 class="card-title">@ActiveMotion.Text</h5>
+        <hr />
+        <div class="d-flex flex-row justify-content-center">
+            <ButtonBase CustomCss="mx-2 e-success" Text="Ja" OnClick="ForClicked" />
+            <ButtonBase CustomCss="mx-2 e-danger" Text="Nein" OnClick="AgainstClicked" />
+            <ButtonBase CustomCss="mx-2 e-warning" Text="Enthaltung" OnClick="AbstentionClicked" />
+        </div>
+    </div>
+    <div class="card-footer text-center">
+        <button class="@GetSubmitButtonCss()" @onclick="SubmitVoteAsync" >Bestätigen</button>
+    </div>
+</div>

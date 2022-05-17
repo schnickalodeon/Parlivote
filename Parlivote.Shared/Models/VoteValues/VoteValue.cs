@@ -4,5 +4,6 @@ public enum VoteValue
 {
     For,
     Against,
-    Abstention
+    Abstention,
+    NoValue
 }

@@ -8,7 +8,7 @@ namespace Parlivote.Web.Brokers.API;
 
 public partial class ApiBroker
 {
-    private const string VotesRelativeUrl = "/api/v1/votes";
+    private const string VotesRelativeUrl = "/api/v1/Votes";
 
     public async Task<Vote> PostVoteAsync(Vote vote) =>
         await this.PostAsync(VotesRelativeUrl, vote);

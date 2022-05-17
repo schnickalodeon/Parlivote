@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Parlivote.Shared.Models.Identity;
 using Parlivote.Shared.Models.Motions;
@@ -14,10 +15,12 @@ namespace Parlivote.Shared.Models.Votes
         public Guid Id { get; set; }
         
         public Guid MotionId { get; set; }
-        public Motion Motion { get; set; }
+
+        [JsonIgnore]
+        public Motion? Motion { get; set; }
 
         public Guid UserId { get; set; }
-        public User User { get; set; }
+        public User? User { get; set; }
 
         public VoteValue Value { get; set; }
     }
