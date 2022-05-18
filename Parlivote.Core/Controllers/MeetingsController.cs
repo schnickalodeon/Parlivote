@@ -107,6 +107,7 @@ public class MeetingsController : RESTFulController
         {
             IQueryable<Meeting> meetings = this.meetingService
                 .RetrieveAll()
+                .Include(meeting => meeting.AttendantUsers)
                 .Include(meeting => meeting.Motions)
                 .ThenInclude(motion => motion.Votes);
 
