@@ -40,7 +40,8 @@ public partial class MeetingServiceTests
 
         filler.Setup()
             .OnType<DateTimeOffset>().Use(dates)
-            .OnProperty(meeting => meeting.Motions).IgnoreIt();
+            .OnProperty(meeting => meeting.Motions).IgnoreIt()
+            .OnProperty(meeting => meeting.AttendantUsers).IgnoreIt();
 
         return filler;
     }
