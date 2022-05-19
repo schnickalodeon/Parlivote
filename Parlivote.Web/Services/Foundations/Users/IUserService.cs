@@ -9,4 +9,5 @@ namespace Parlivote.Web.Services.Foundations.Users;
 public interface IUserService
 {
     Task<List<User>> RetrieveAllAsync();
+    Task<User> RetrieveByIdAsync(Guid userId);
 }
