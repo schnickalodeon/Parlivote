@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Parlivote.Shared.Models.Identity.Users;
 using Parlivote.Shared.Models.Identity.Users.Exceptions;
@@ -24,21 +25,37 @@ public partial class UserService
         {
             throw CreateAndLogValidationException(nullUserException);
         }
-        catch (NotFoundUserException notFoundUserException)
+        catch (HttpResponseNotFoundException httpResponseNotFoundException)
         {
-            throw CreateAndLogValidationException(notFoundUserException);
+            var notFoundUserException =
+                new NotFoundUserException(httpResponseNotFoundException);
+
+            throw CreateAndLogDependencyValidationException(notFoundUserException);
         }
         catch (InvalidUserException invalidUserException)
         {
             throw CreateAndLogValidationException(invalidUserException);
         }
+        catch (HttpRequestException requestException)
+        {
+            var failedUserDependencyException =
+                new FailedUserDependencyException(requestException);
+
+            throw CreateAndLogCriticalDependencyException(failedUserDependencyException);
+        }
         catch (HttpResponseUrlNotFoundException httpResponseUrlNotFoundException)
         {
-            throw CreateAndLogCriticalDependencyException(httpResponseUrlNotFoundException);
+            var failedUserDependencyException =
+                new FailedUserDependencyException(httpResponseUrlNotFoundException);
+
+            throw CreateAndLogCriticalDependencyException(failedUserDependencyException);
         }
         catch (HttpResponseUnauthorizedException httpUnauthorizedException)
         {
-            throw CreateAndLogCriticalDependencyException(httpUnauthorizedException);
+            var failedUserDependencyException =
+                new FailedUserDependencyException(httpUnauthorizedException);
+
+            throw CreateAndLogCriticalDependencyException(failedUserDependencyException);
         }
         catch (HttpResponseConflictException httpConflictException)
         {
@@ -46,7 +63,12 @@ public partial class UserService
         }
         catch (HttpResponseBadRequestException httpBadRequestException)
         {
-            throw CreateAndLogDependencyValidationException(httpBadRequestException);
+            var invalidUserException =
+                new InvalidUserException(
+                    httpBadRequestException,
+                    httpBadRequestException.Data);
+
+            throw CreateAndLogDependencyValidationException(invalidUserException);
         }
         catch (HttpResponseInternalServerErrorException httpInternalServerErrorException)
         {
@@ -54,7 +76,10 @@ public partial class UserService
         }
         catch (HttpResponseException httpResponseException)
         {
-            throw CreateAndLogDependencyException(httpResponseException);
+            var failedUserDependencyException =
+                new FailedUserDependencyException(httpResponseException);
+
+            throw CreateAndLogDependencyException(failedUserDependencyException);
         }
         catch (Exception exception)
         {

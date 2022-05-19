@@ -11,4 +11,7 @@ public partial class ApiBroker
     private const string UsersRelativeUrl = "/api/v1/users";
     public async Task<List<User>> GetAllUsersAsync() =>
         await this.GetAsync<List<User>>(UsersRelativeUrl);
+
+    public async Task<User> GetUserByIdAsync(Guid userId) =>
+        await this.GetAsync<User>($"{UsersRelativeUrl}/{userId}");
 }

@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Parlivote.Core.Services.Foundations.Users;
 using Parlivote.Shared.Models.Identity.Users;
@@ -25,6 +27,24 @@ namespace Parlivote.Core.Controllers
             {
                 IQueryable<User> users = this.userService.RetrieveAll();
                 return Ok(users);
+            }
+            catch (UserDependencyException pollDependencyException)
+            {
+                return InternalServerError(pollDependencyException);
+            }
+            catch (UserServiceException pollServiceException)
+            {
+                return InternalServerError(pollServiceException);
+            }
+        }
+
+        [HttpGet("{userId}")]
+        public async Task<ActionResult<User>> GetUserById(Guid userId)
+        {
+            try
+            {
+                User user = await this.userService.RetrieveByIdAsync(userId);
+                return Ok(user);
             }
             catch (UserDependencyException pollDependencyException)
             {
