@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Parlivote.Shared.Models.Identity;
+using Parlivote.Shared.Models.Identity.Users;
 
 namespace Parlivote.Core.Brokers.UserManagements
 {
@@ -17,11 +19,11 @@ namespace Parlivote.Core.Brokers.UserManagements
 
         public IQueryable<User> SelectAllUsers() => this.userManagement.Users;
 
-        public async Task<User> SelectUserByIdAsync(string userId)
+        public async Task<User> SelectUserByIdAsync(Guid userId)
         {
             var broker = new UserManagementBroker(this.userManagement);
 
-            return await broker.userManagement.FindByIdAsync(userId);
+            return await broker.userManagement.FindByIdAsync(userId.ToString());
         }
 
         public async Task<List<User>> SelectUserByRoleAsync(string role)
