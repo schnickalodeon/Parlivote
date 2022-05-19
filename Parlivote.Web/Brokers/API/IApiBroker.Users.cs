@@ -10,4 +10,5 @@ namespace Parlivote.Web.Brokers.API;
 public partial interface IApiBroker
 {
     Task<List<User>>GetAllUsersAsync();
+    Task<User> GetUserByIdAsync(Guid userId);
 }
