@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics.Contracts;
 using Microsoft.EntityFrameworkCore;
 using Parlivote.Shared.Models.Identity;
+using Parlivote.Shared.Models.Identity.Users;
 using Parlivote.Shared.Models.Meetings;
 
 namespace Parlivote.Core.Brokers.Storage;

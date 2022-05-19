@@ -12,13 +12,16 @@ using Microsoft.OpenApi.Models;
 using Microsoft.VisualBasic;
 using Parlivote.Core.Brokers.Logging;
 using Parlivote.Core.Brokers.Storage;
+using Parlivote.Core.Brokers.UserManagements;
 using Parlivote.Core.Configurations;
 using Parlivote.Core.Services.Foundations.Meetings;
 using Parlivote.Core.Services.Foundations.Motions;
+using Parlivote.Core.Services.Foundations.Users;
 using Parlivote.Core.Services.Foundations.Votes;
 using Parlivote.Core.Services.Identity;
 using Parlivote.Core.Services.Processing;
 using Parlivote.Shared.Models.Identity;
+using Parlivote.Shared.Models.Identity.Users;
 
 namespace Parlivote.Core
 {
@@ -118,6 +121,7 @@ namespace Parlivote.Core
             services.AddTransient<IMotionService, MotionService>();
             services.AddTransient<IMeetingService, MeetingService>();
             services.AddTransient<IVoteService, VoteService>();
+            services.AddTransient<IUserService, UserService>();
 
             //Processing Service
             services.AddTransient<IMotionProcessingService, MotionProcessingService>();
@@ -127,6 +131,7 @@ namespace Parlivote.Core
         {
             services.AddTransient<ILoggingBroker, LoggingBroker>();
             services.AddTransient<IStorageBroker, StorageBroker>();
+            services.AddTransient<IUserManagementBroker, UserManagementBroker>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

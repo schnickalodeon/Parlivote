@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Parlivote.Shared.Models.Identity;
 using Parlivote.Shared.Models.Identity.Exceptions;
+using Parlivote.Shared.Models.Identity.Users;
 
 namespace Parlivote.Core.Services.Identity;
 

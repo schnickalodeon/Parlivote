@@ -1,4 +1,5 @@
 ﻿using Parlivote.Shared.Models.Identity;
+using Parlivote.Shared.Models.Identity.Users;
 using Parlivote.Shared.Models.Motions;
 
 namespace Parlivote.Shared.Models.Meetings;
