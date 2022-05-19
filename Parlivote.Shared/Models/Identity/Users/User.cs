@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
+﻿using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Identity;
 using Parlivote.Shared.Models.Meetings;
 
-namespace Parlivote.Shared.Models.Identity
+namespace Parlivote.Shared.Models.Identity.Users
 {
     public class User : IdentityUser<Guid>
     {

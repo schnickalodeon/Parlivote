@@ -11,6 +11,7 @@ using Microsoft.IdentityModel.Tokens;
 using Parlivote.Core.Brokers.Storage;
 using Parlivote.Core.Configurations;
 using Parlivote.Shared.Models.Identity;
+using Parlivote.Shared.Models.Identity.Users;
 
 namespace Parlivote.Core.Services.Identity;
 

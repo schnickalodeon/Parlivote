@@ -5,6 +5,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Parlivote.Shared.Models.Identity;
+using Parlivote.Shared.Models.Identity.Users;
 using Parlivote.Shared.Models.Motions;
 using Parlivote.Shared.Models.VoteValues;
 

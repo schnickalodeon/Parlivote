@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Parlivote.Shared.Models.Identity;
+using Parlivote.Shared.Models.Identity.Users;
 
 namespace Parlivote.Core.Brokers.Storage;
 

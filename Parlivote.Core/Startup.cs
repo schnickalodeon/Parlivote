@@ -19,6 +19,7 @@ using Parlivote.Core.Services.Foundations.Votes;
 using Parlivote.Core.Services.Identity;
 using Parlivote.Core.Services.Processing;
 using Parlivote.Shared.Models.Identity;
+using Parlivote.Shared.Models.Identity.Users;
 
 namespace Parlivote.Core
 {
