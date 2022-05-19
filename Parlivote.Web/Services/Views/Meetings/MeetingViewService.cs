@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Parlivote.Shared.Models.Identity.Users;
 using Parlivote.Shared.Models.Meetings;
 using Parlivote.Shared.Models.Motions;
 using Parlivote.Shared.Models.Votes;
@@ -39,9 +40,20 @@ public class MeetingViewService : IMeetingViewService
         return mappedMeetingView;
     }
 
-    public Task<MeetingView> AddAttendance(MeetingView meetingView, Guid userId)
+    public async Task<MeetingView> AddAttendance(MeetingView meetingView, Guid userId)
     {
-        
+        User user = await this.userService.RetrieveByIdAsync(userId);
+
+        meetingView.Attendances.Add(user);
+
+        return await UpdateAsync(meetingView);
+    }
+
+    public async Task<MeetingView> RemoveAttendance(MeetingView meetingView, Guid userId)
+    {
+        var removed = meetingView.Attendances.RemoveAll(user => user.Id == userId);
+
+        return await UpdateAsync(meetingView);
     }
 
     public async Task<List<MeetingView>> GetAllAsync()
@@ -94,7 +106,8 @@ public class MeetingViewService : IMeetingViewService
         {
             Id = meetingView.Id.Value,
             Description = meetingView.Description,
-            Start = meetingView.Start
+            Start = meetingView.Start,
+            AttendantUsers = meetingView.Attendances
         };
     }
     private static MeetingView MapToMeetingView(Meeting meeting)
@@ -105,6 +118,7 @@ public class MeetingViewService : IMeetingViewService
             Description = meeting.Description,
             Start = meeting.Start,
             Motions = meeting.Motions?.Select(AsMotionView).ToList() ?? new List<MotionView>(),
+            Attendances = meeting.AttendantUsers
         };
     }
 

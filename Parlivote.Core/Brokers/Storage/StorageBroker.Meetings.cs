@@ -35,8 +35,19 @@ public partial class StorageBroker
     {
         await using var broker = new StorageBroker(this.configuration);
 
+        Meeting meetingToUpdate = broker.Meetings
+            .Include(m => m.Motions)
+            .Include(m => m.AttendantUsers)
+            .First(dbMeeting => dbMeeting.Id == meeting.Id);
+
+        meetingToUpdate.Motions = meeting.Motions;
+        meetingToUpdate.AttendantUsers = meeting.AttendantUsers;
+        meetingToUpdate.Description = meeting.Description;
+        meetingToUpdate.Start = meeting.Start;
+        
+
         EntityEntry<Meeting> updatedEntityEntry =
-            broker.Meetings.Update(meeting);
+            broker.Meetings.Update(meetingToUpdate);
 
         await broker.SaveChangesAsync();
 

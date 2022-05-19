@@ -15,4 +15,5 @@ public interface IMeetingViewService
     Task<MeetingView> GetByIdWithMotions(Guid meetingId);
     Task<MeetingView> UpdateAsync(MeetingView meetingView);
     Task<Meeting> DeleteByIdAsync(Guid meetingId);
+    Task<MeetingView> RemoveAttendance(MeetingView meetingView, Guid userId);
 }

@@ -10,6 +10,7 @@ using Parlivote.Web.Brokers.API;
 using Parlivote.Web.Brokers.Logging;
 using Parlivote.Web.Models.Views.Meetings;
 using Parlivote.Web.Services.Foundations.Meetings;
+using Parlivote.Web.Services.Foundations.Users;
 using Parlivote.Web.Services.Views.Meetings;
 using Tynamix.ObjectFiller;
 
@@ -18,15 +19,18 @@ namespace Parlivote.Web.Tests.Unit.Services.Views.Meetings;
 public partial class MeetingViewServiceTests
 {
     private readonly Mock<IMeetingService> meetingServiceMock;
+    private readonly Mock<IUserService> userServiceMock;
     private readonly IMeetingViewService meetingViewService;
     private readonly ICompareLogic compareLogic;
 
     public MeetingViewServiceTests()
     {
         this.meetingServiceMock = new Mock<IMeetingService>();
+        this.userServiceMock = new Mock<IUserService>();
 
         this.meetingViewService = new MeetingViewService(
-            this.meetingServiceMock.Object);
+            this.meetingServiceMock.Object,
+            this.userServiceMock.Object);
 
         var compareConfig = new ComparisonConfig();
         compareConfig.IgnoreProperty<Meeting>(meeting => meeting.Id);
