@@ -10,15 +10,18 @@ using Parlivote.Web.Models.Views.Meetings;
 using Parlivote.Web.Models.Views.Motions;
 using Parlivote.Web.Models.Views.Votes;
 using Parlivote.Web.Services.Foundations.Meetings;
+using Parlivote.Web.Services.Foundations.Users;
 
 namespace Parlivote.Web.Services.Views.Meetings;
 
 public class MeetingViewService : IMeetingViewService
 {
     private readonly IMeetingService meetingService;
-    public MeetingViewService(IMeetingService meetingService)
+    private readonly IUserService userService;
+    public MeetingViewService(IMeetingService meetingService, IUserService userService)
     {
         this.meetingService = meetingService;
+        this.userService = userService;
     }
     public async Task<MeetingView> AddAsync(MeetingView meetingView)
     {
@@ -34,6 +37,11 @@ public class MeetingViewService : IMeetingViewService
             MapToMeetingView(storageMeeting);
 
         return mappedMeetingView;
+    }
+
+    public Task<MeetingView> AddAttendance(MeetingView meetingView, Guid userId)
+    {
+        
     }
 
     public async Task<List<MeetingView>> GetAllAsync()
