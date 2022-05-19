@@ -29,6 +29,11 @@ public partial class UsersServiceTests
         );
     }
 
+    private static User GetRandomUser()
+    {
+        return CreateUserFiller().Create();
+    }
+
     private static List<User> GetRandomUsers()
     {
         return CreateUserFiller()
