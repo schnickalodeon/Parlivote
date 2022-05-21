@@ -23,6 +23,7 @@ public partial class VoteService : IVoteService
         TryCatch(async () =>
         {
             ValidateVote(vote);
+            ValidateUserHasNotVoted(vote);
             return await this.storageBroker.InsertVoteAsync(vote);
         });
 

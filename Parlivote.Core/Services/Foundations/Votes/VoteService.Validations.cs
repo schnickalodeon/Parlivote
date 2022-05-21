@@ -45,6 +45,21 @@ public partial class VoteService
         }
     }
 
+    private void ValidateUserHasNotVoted(Vote maybeVote)
+    {
+        IQueryable<Vote> votes = RetrieveAll();
+
+        bool Predicate(Vote vote) =>
+            vote.MotionId == maybeVote.MotionId && vote.UserId == maybeVote.UserId;
+
+        bool userHasVoted = votes.Any(Predicate);
+
+        if (userHasVoted)
+        {
+            throw new AlreadyVotedException();
+        }
+    }
+
     private static dynamic IsInvalid(Guid id) => new
     {
         Condition = id == Guid.Empty,
