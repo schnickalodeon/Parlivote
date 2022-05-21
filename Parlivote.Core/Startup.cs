@@ -36,6 +36,7 @@ namespace Parlivote.Core
 
         public void ConfigureServices(IServiceCollection services)
         {
+            Microsoft.IdentityModel.Logging.IdentityModelEventSource.ShowPII = true;
             services.AddScoped<IIdentityService, IdentityService>();
             AddJwt(services);
 
