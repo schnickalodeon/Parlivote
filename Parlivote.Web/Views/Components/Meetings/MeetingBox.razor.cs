@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.SignalR.Client;
+using Parlivote.Web.Hubs;
 using Parlivote.Web.Models.Views.Meetings;
 using Parlivote.Web.Services.Views.Meetings;
 using Parlivote.Web.Views.Base;
@@ -25,6 +27,33 @@ public partial class MeetingBox : ComponentBase
     private ConfirmationDialog confirmationDialog;
     private AddMotionComponent addMotionComponent;
     private EditMeetingComponent editMeetingComponent;
+
+    private HubConnection hubConnection;
+    private bool IsConnected =>
+        this.hubConnection.State == HubConnectionState.Connected;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await ConnectToVoteHub();
+    }
+
+    private async Task ConnectToVoteHub()
+    {
+        this.hubConnection = new HubConnectionBuilder()
+            .WithUrl(NavigationManager.ToAbsoluteUri("/votehub"))
+            .Build();
+
+        this.hubConnection.On<MeetingView>(VoteHub.AttendanceUpdatedMethod, async (meetingView) =>
+        {
+            if (this.Meeting.Id == meetingView.Id)
+            {
+                this.Meeting = meetingView;
+                await InvokeAsync(StateHasChanged);
+            }
+        });
+
+        await this.hubConnection.StartAsync();
+    }
 
     private async void DeleteMeeting()
     {

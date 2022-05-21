@@ -1,7 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using FluentAssertions;
 using Moq;
 using Parlivote.Shared.Models.Meetings;
+using Parlivote.Shared.Models.Motions;
 using Parlivote.Web.Models.Views.Meetings;
 using Xunit;
 
@@ -19,7 +21,8 @@ public partial class MeetingViewServiceTests
         {
             Id = someMeetingViewInput.Id,
             Description = someMeetingViewInput.Description,
-            Start = someMeetingViewInput.Start
+            Start = someMeetingViewInput.Start,
+            Attendances = someMeetingViewInput.AttendantUsers
         };
 
         MeetingView inputMeetingView = someMeetingView;
@@ -30,7 +33,8 @@ public partial class MeetingViewServiceTests
             Id = someMeetingViewInput.Id,
             Description = someMeetingViewInput.Description,
             Start = someMeetingViewInput.Start,
-            Motions = null
+            Motions = new List<Motion>(),
+            AttendantUsers = someMeetingViewInput.AttendantUsers
         };
 
         Meeting expectedInputMeeting = someMeeting;

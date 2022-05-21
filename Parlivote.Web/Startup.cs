@@ -20,6 +20,7 @@ using Parlivote.Web.Models.Views.Votes;
 using Parlivote.Web.Services.Authentication;
 using Parlivote.Web.Services.Foundations.Meetings;
 using Parlivote.Web.Services.Foundations.Motions;
+using Parlivote.Web.Services.Foundations.Users;
 using Parlivote.Web.Services.Foundations.Votes;
 using Parlivote.Web.Services.Views.Meetings;
 using Parlivote.Web.Services.Views.Motions;
@@ -76,15 +77,16 @@ namespace Parlivote.Web
             services.AddTransient<ILoggingBroker, LoggingBroker>();
             services.AddTransient<ILocalStorageBroker, LocalStorageBroker>();
 
-            //View Services
-            services.AddTransient<IMotionViewService, MotionViewService>();
-            services.AddTransient<IMeetingViewService, MeetingViewService>();
-            services.AddTransient<IVoteViewService, VoteViewService>();
-
             //Foundation Services
             services.AddTransient<IMotionService, MotionService>();
             services.AddTransient<IMeetingService, MeetingService>();
             services.AddTransient<IVoteService, VoteService>();
+            services.AddTransient<IUserService, UserService>();
+
+            //View Services
+            services.AddTransient<IMotionViewService, MotionViewService>();
+            services.AddTransient<IMeetingViewService, MeetingViewService>();
+            services.AddTransient<IVoteViewService, VoteViewService>();
 
             services.AddScoped<IAuthenticationService, AuthenticationService>();
             
@@ -114,6 +116,7 @@ namespace Parlivote.Web
             {
                 endpoints.MapBlazorHub();
                 endpoints.MapHub<MotionHub>("/motionhub");
+                endpoints.MapHub<VoteHub>("/votehub");
                 endpoints.MapFallbackToPage("/_Host");
             });
         }

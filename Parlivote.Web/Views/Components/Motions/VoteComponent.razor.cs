@@ -3,7 +3,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.SignalR.Client;
 using Parlivote.Shared.Models.VoteValues;
+using Parlivote.Web.Hubs;
+using Parlivote.Web.Models.Views.Meetings;
 using Parlivote.Web.Models.Views.Motions;
 using Parlivote.Web.Models.Views.Votes;
 using Parlivote.Web.Services.Views.Votes;
@@ -18,13 +21,52 @@ public partial class VoteComponent: ComponentBase
     [Inject]
     public AuthenticationStateProvider AuthenticationStateProvider { get; set; }
 
+    [Inject]
+    public NavigationManager NavigationManager { get; set; }
+
     [Parameter]
     public EventCallback AfterVoted { get; set; }
 
     [Parameter]
     public MotionView ActiveMotion { get; set; }
 
+    private int attendanceCount = 0;
     private VoteValue selectedVoteValue = VoteValue.NoValue;
+    private HubConnection hubConnection;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await ConnectToVoteHub();
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        this.attendanceCount = ActiveMotion.MeetingAttendanceCount;
+    }
+
+    private async Task ConnectToVoteHub()
+    {
+        this.hubConnection = new HubConnectionBuilder()
+            .WithUrl(NavigationManager.ToAbsoluteUri("/voteHub"))
+            .Build();
+
+        this.hubConnection.On<MeetingView>(VoteHub.AttendanceUpdatedMethod, (meetingView) =>
+        {
+            if (ActiveMotion.MeetingId == meetingView.Id)
+            {
+                this.attendanceCount = meetingView.Attendances.Count;
+                InvokeAsync(StateHasChanged);
+            }
+        });
+
+        this.hubConnection.On(VoteHub.VoteUpdatedMethod, async () =>
+        {
+            await this.AfterVoted.InvokeAsync();
+            await InvokeAsync(StateHasChanged);
+        });
+
+        await this.hubConnection.StartAsync();
+    }
 
     private void ForClicked()
     {
@@ -67,7 +109,7 @@ public partial class VoteComponent: ComponentBase
         };
 
         await this.VoteViewService.AddAsync(voteView);
-        await this.AfterVoted.InvokeAsync();
+        await this.hubConnection.InvokeAsync(VoteHub.VoteUpdatedMethod);
     }
 
     private async Task<Guid> GetUserId()

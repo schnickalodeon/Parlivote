@@ -1,6 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using FluentAssertions;
 using Moq;
+using Parlivote.Shared.Models.Meetings;
 using Parlivote.Shared.Models.Motions;
 using Parlivote.Web.Models.Views.Motions;
 using Xunit;
@@ -22,7 +24,8 @@ public partial class MotionViewServiceTests
             State = ((MotionState)someMotionViewInput.State).GetValue(),
             Text = someMotionViewInput.Text,
             Version = someMotionViewInput.Version,
-            MeetingName = ""
+            MeetingName = someMotionViewInput.Meeting.Description,
+            MeetingAttendanceCount = someMotionViewInput.AttendanceCount
         };
 
         MotionView inputMotionView = someMotionView;
@@ -40,6 +43,11 @@ public partial class MotionViewServiceTests
 
         Motion expectedInputMotion = someMotion;
         Motion returnedMotion = expectedInputMotion;
+
+        Meeting someMeeting = someMotionViewInput.Meeting;
+        this.meetingServiceMock.Setup(service =>
+            service.RetrieveByIdWithMotionsAsync(It.IsAny<Guid>()))
+                .ReturnsAsync(someMeeting);
 
         this.motionServiceMock.Setup(service =>
             service.ModifyAsync(It.IsAny<Motion>()))

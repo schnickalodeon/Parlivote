@@ -7,6 +7,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using Parlivote.Shared.Models.Identity.Users;
+using Parlivote.Shared.Models.Meetings;
 using Parlivote.Web.Services.Foundations.Meetings;
 using Tynamix.ObjectFiller;
 
@@ -52,14 +54,43 @@ public partial class MotionViewServiceTests
 
     private static dynamic CreateRandomMotionView()
     {
+        Meeting randomMeeting = GetRandomMeeting();
+
         return new
         {
             Id = Guid.NewGuid(),
-            MeetingId = Guid.NewGuid(),
+            MeetingId = randomMeeting.Id,
             Version = Tests.GetRandomNumber(),
             State = GetRandomState(),
-            Text = Tests.GetRandomString()
+            Text = Tests.GetRandomString(),
+            Meeting = randomMeeting,
+            AttendanceCount = randomMeeting.AttendantUsers.Count
         };
+    }
+
+    private static Meeting GetRandomMeeting()
+    {
+        List<User> attendants = GetAttendantsList();
+        var randomMeeting = new Meeting()
+        {
+            Id = Guid.NewGuid(),
+            Description = Tests.GetRandomString(),
+            AttendantUsers = attendants
+        };
+
+        return randomMeeting;
+    }
+
+    private static List<User> GetAttendantsList()
+    {
+        var someUserCount = Tests.GetRandomNumber();
+        var attendants = new List<User>();
+        for (int i = 0; i < someUserCount; i++)
+        {
+            attendants.Add(new User());
+        }
+
+        return attendants;
     }
 
     private static List<dynamic> CreateRandomMotionViewCollections()

@@ -37,7 +37,6 @@ public partial class MeetingList : ComponentBase
     {
         try
         {
-
             this.meetings =
                 await this.MeetingViewService.GetAllWithMotionsAsync();
 
