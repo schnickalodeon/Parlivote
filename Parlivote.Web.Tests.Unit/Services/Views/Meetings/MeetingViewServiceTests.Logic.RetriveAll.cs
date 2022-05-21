@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Moq;
 using Parlivote.Shared.Models.Meetings;
+using Parlivote.Shared.Models.Motions;
 using Parlivote.Web.Models.Views.Meetings;
 using Parlivote.Web.Models.Views.Motions;
 using Xunit;
@@ -26,7 +27,8 @@ public partial class MeetingViewServiceTests
                     Id = property.Id,
                     Description = property.Description,
                     Start = property.Start,
-                    Motions = null
+                    Motions = new List<Motion>(),
+                    AttendantUsers = property.AttendantUsers
                 }).ToList();
 
         List<Meeting> retrievedMeetings = randomMeetings;
@@ -38,7 +40,8 @@ public partial class MeetingViewServiceTests
                     Id = property.Id,
                     Description = property.Description,
                     Start = property.Start,
-                    Motions = new List<MotionView>()
+                    Motions = new List<MotionView>(),
+                    Attendances = property.AttendantUsers
                 }).ToList();
 
         List<MeetingView> expectedMeetingViews = randomMeetingViews;

@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
 using KellermanSoftware.CompareNetObjects;
 using Moq;
+using Parlivote.Shared.Models.Identity.Users;
 using Parlivote.Shared.Models.Meetings;
 using Parlivote.Web.Brokers.API;
 using Parlivote.Web.Brokers.Logging;
@@ -45,12 +46,28 @@ public partial class MeetingViewServiceTests
 
     private static dynamic CreateRandomMeetingView()
     {
+        List<User> attendants = GetAttendantsList();
+
         return new
         {
             Id = Guid.NewGuid(),
             Description = Tests.GetRandomString(),
-            Start = Tests.GetRandomDateTimeOffset()
+            Start = Tests.GetRandomDateTimeOffset(),
+            AttendantUsers = attendants,
+            AttendantUsersCount = attendants.Count,
         };
+    }
+
+    private static List<User> GetAttendantsList()
+    {
+        var someUserCount = Tests.GetRandomNumber();
+        var attendants = new List<User>();
+        for (int i = 0; i < someUserCount; i++)
+        {
+            attendants.Add(new User());
+        }
+
+        return attendants;
     }
 
     private static List<dynamic> CreateRandomMeetingViewCollections()
@@ -59,11 +76,14 @@ public partial class MeetingViewServiceTests
 
         return Enumerable.Range(0, randomCount).Select(item =>
         {
+            List<User> attendants = GetAttendantsList();
             return new
             {
                 Id = Guid.NewGuid(),
                 Description = Tests.GetRandomString(),
-                Start = Tests.GetRandomDateTimeOffset()
+                Start = Tests.GetRandomDateTimeOffset(),
+                AttendantUsers = attendants,
+                AttendantUsersCount = attendants.Count,
             };
 
         }).ToList<dynamic>();
