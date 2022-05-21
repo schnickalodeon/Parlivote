@@ -1,7 +1,9 @@
 ﻿<div class="card">
     <h5 class="card-header d-flex">
         <span class="flex-grow-1 align-self-center">Aktive Abstimmung</span>
-        <span class="mb-0 badge rounded-pill bg-primary fs-5">7/10</span>
+        <span class="mb-0 badge rounded-pill bg-primary fs-5">
+            @($"{this.ActiveMotion.VoteViews.Count}/{attendanceCount}")
+        </span>
     </h5>
     <div class="card-body">
         <h5 class="card-title">@ActiveMotion.Text</h5>

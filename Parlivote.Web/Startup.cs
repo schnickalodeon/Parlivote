@@ -116,6 +116,7 @@ namespace Parlivote.Web
             {
                 endpoints.MapBlazorHub();
                 endpoints.MapHub<MotionHub>("/motionhub");
+                endpoints.MapHub<VoteHub>("/votehub");
                 endpoints.MapFallbackToPage("/_Host");
             });
         }

@@ -135,13 +135,15 @@ public class MotionViewService : IMotionViewService
     private async Task<MotionView> MapToMotionView(Motion motion)
     {
         string meetingName = "";
+        int meetingAttendance = 0;
 
         if (motion.MeetingId.HasValue)
         {
             Meeting meeting =
-                await this.meetingService.RetrieveByIdAsync(motion.MeetingId.Value);
+                await this.meetingService.RetrieveByIdWithMotionsAsync(motion.MeetingId.Value);
 
             meetingName = meeting?.Description ?? "";
+            meetingAttendance = meeting.AttendantUsers.Count;
         }
 
         return new MotionView
@@ -152,6 +154,7 @@ public class MotionViewService : IMotionViewService
             State = motion.State.GetValue(),
             Text = motion.Text,
             MeetingName = meetingName,
+            MeetingAttendanceCount = meetingAttendance,
             VoteViews = motion.Votes?.Select(AsVoteView).ToList()
         };
     }

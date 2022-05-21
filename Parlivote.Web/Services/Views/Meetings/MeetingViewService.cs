@@ -46,14 +46,18 @@ public class MeetingViewService : IMeetingViewService
 
         meetingView.Attendances.Add(user);
 
-        return await UpdateAsync(meetingView);
+        MeetingView view = await UpdateAsync(meetingView);
+
+        return view;
     }
 
     public async Task<MeetingView> RemoveAttendance(MeetingView meetingView, Guid userId)
     {
         var removed = meetingView.Attendances.RemoveAll(user => user.Id == userId);
 
-        return await UpdateAsync(meetingView);
+        MeetingView view = await UpdateAsync(meetingView);
+
+        return view;
     }
 
     public async Task<List<MeetingView>> GetAllAsync()
@@ -99,6 +103,7 @@ public class MeetingViewService : IMeetingViewService
 
     private static Func<Meeting, MeetingView> AsMeetingView => MapToMeetingView;
     private static Func<Motion, MotionView> AsMotionView => MapToMotionView;
+    private static Func<MotionView, Motion> AsMotion => MapToMotion;
 
     private static Meeting MapToMeeting(MeetingView meetingView)
     {
@@ -107,6 +112,7 @@ public class MeetingViewService : IMeetingViewService
             Id = meetingView.Id.Value,
             Description = meetingView.Description,
             Start = meetingView.Start,
+            Motions = meetingView.Motions?.Select(AsMotion).ToList() ?? new List<Motion>(),
             AttendantUsers = meetingView.Attendances
         };
     }
@@ -123,6 +129,7 @@ public class MeetingViewService : IMeetingViewService
     }
 
     private static Func<Vote, VoteView> AsVoteView => MapToVoteView;
+    private static Func<VoteView, Vote> AsVote => MapToVote;
     private static VoteView MapToVoteView(Vote vote)
     {
         var voteView = new VoteView
@@ -135,6 +142,19 @@ public class MeetingViewService : IMeetingViewService
 
         return voteView;
     }
+
+    private static Vote MapToVote(VoteView voteView)
+    {
+        var vote = new Vote()
+        {
+            Id = voteView.VoteId,
+            UserId = voteView.UserId,
+            MotionId = voteView.MotionId,
+            Value = voteView.Value,
+        };
+
+        return vote;
+    }
     private static MotionView MapToMotionView(Motion motion)
     {
         return new MotionView
@@ -145,6 +165,18 @@ public class MeetingViewService : IMeetingViewService
             MeetingId = motion.MeetingId,
             Text = motion.Text,
             VoteViews = motion.Votes?.Select(AsVoteView).ToList() ?? new List<VoteView>()
+        };
+    }
+    private static Motion MapToMotion(MotionView motionView)
+    {
+        return new Motion
+        {
+            Id = motionView.MotionId,
+            Version = motionView.Version,
+            State = MotionStateConverter.FromString(motionView.State),
+            MeetingId = motionView.MeetingId,
+            Text = motionView.Text,
+            Votes = motionView.VoteViews?.Select(AsVote).ToList() ?? new List<Vote>()
         };
     }
 }

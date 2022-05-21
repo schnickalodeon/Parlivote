@@ -10,6 +10,7 @@ using Parlivote.Shared.Models.VoteValues;
 using Parlivote.Web.Hubs;
 using Parlivote.Web.Models.Views.Motions;
 using Parlivote.Web.Models.Views.Votes;
+using Parlivote.Web.Services.Views.Meetings;
 using Parlivote.Web.Services.Views.Motions;
 using Parlivote.Web.Services.Views.Votes;
 using Parlivote.Web.Views.Base;
@@ -23,6 +24,9 @@ public partial class ActiveMotion : ComponentBase
 
     [Inject]
     public IMotionViewService MotionViewService { get; set; }
+
+    [Inject]
+    public IMeetingViewService MeetingViewService { get; set; }
 
     [Inject]
     public IVoteViewService VoteViewService { get; set; }
@@ -59,7 +63,7 @@ public partial class ActiveMotion : ComponentBase
             if (motion.State == MotionStateConverter.Pending)
             {
                 this.activeMotion = motion;
-                this.hasUserVoted = motion.VoteViews.Any(vote => vote.UserId == userId);
+                this.hasUserVoted = motion.VoteViews.Any(vote => vote.UserId == this.userId);
             }
             else
             {
@@ -101,9 +105,10 @@ public partial class ActiveMotion : ComponentBase
         return Guid.Parse(userId);
     }
 
-    private void SetVoted()
+    private async Task SetVoted()
     {
         this.hasUserVoted = true;
+        await LoadActiveMotionAsync();
         StateHasChanged();
     }
 }

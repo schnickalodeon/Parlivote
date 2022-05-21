@@ -48,7 +48,9 @@ public partial class MeetingService : IMeetingService
 
             ValidateStorageMeeting(maybeMeeting, meeting.Id);
 
-            return await this.storageBroker.UpdateMeetingAsync(meeting);
+            var updatedMeeting = await this.storageBroker.UpdateMeetingAsync(meeting);
+
+            return updatedMeeting;
         });
 
     public async Task<Meeting> DeleteMeetingById(Guid meetingId)

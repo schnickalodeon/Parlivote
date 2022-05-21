@@ -134,6 +134,7 @@ public class MeetingsController : RESTFulController
             Meeting meeting = await this.meetingService
                 .RetrieveAll()
                 .Include(meeting => meeting.Motions)
+                .Include(meeting => meeting.AttendantUsers)
                 .FirstOrDefaultAsync(meeting => meeting.Id == meetingId);
 
             return Ok(meeting);

@@ -3,8 +3,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Build.Framework;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Parlivote.Web.Hubs;
 using Parlivote.Web.Models.Views.Meetings;
 using Parlivote.Web.Services.Views.Meetings;
 
@@ -18,18 +20,44 @@ public partial class MeetingAttendanceComponent : ComponentBase
     [Inject]
     public AuthenticationStateProvider AuthenticationStateProvider { get; set; }
 
+    [Inject]
+    public NavigationManager NavigationManager { get; set; }
+
     [Parameter]
     public MeetingView MeetingView { get; set; }
+
+    private HubConnection hubConnection;
+    private bool IsConnected => 
+        this.hubConnection.State == HubConnectionState.Connected;
+
+    private Guid userId;
 
     private bool isAttendant;
     public bool IsAttendant
     {
         get => this.isAttendant;
+
         set
         {
             this.isAttendant = value;
             UpdateAttendance(value);
         }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        this.userId = await GetUserId();
+        this.isAttendant = MeetingView.Attendances.Any(attendance => attendance.Id == this.userId);
+        await ConnectToVoteHub();
+    }
+
+    private async Task ConnectToVoteHub()
+    {
+        this.hubConnection = new HubConnectionBuilder()
+            .WithUrl(NavigationManager.ToAbsoluteUri("/votehub"))
+            .Build();
+
+        await this.hubConnection.StartAsync();
     }
 
     private async void UpdateAttendance(bool attendance)
@@ -44,8 +72,18 @@ public partial class MeetingAttendanceComponent : ComponentBase
             attendanceFunction = this.MeetingViewService.RemoveAttendance;
         }
 
-        Guid userId = await GetUserId();
-        await attendanceFunction(this.MeetingView, userId);
+        MeetingView updatedMeetingView = 
+            await attendanceFunction(this.MeetingView, this.userId);
+
+        if (IsConnected)
+        {
+            await this.hubConnection.InvokeAsync(VoteHub.AttendanceUpdatedMethod, updatedMeetingView);
+        }
+        else
+        {
+            throw new Exception("Not Connected");
+        }
+        
     }
 
     private async Task<Guid> GetUserId()

@@ -2,8 +2,12 @@
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Parlivote.Shared.Models.Meetings;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Threading.Tasks;
+using Parlivote.Shared.Models.Identity.Users;
+using Parlivote.Shared.Models.Motions;
 
 namespace Parlivote.Core.Brokers.Storage;
 
@@ -33,25 +37,43 @@ public partial class StorageBroker
     }
     public async Task<Meeting> UpdateMeetingAsync(Meeting meeting)
     {
-        await using var broker = new StorageBroker(this.configuration);
+        try
+        {
+            await using var broker = new StorageBroker(this.configuration);
 
-        Meeting meetingToUpdate = broker.Meetings
-            .Include(m => m.Motions)
-            .Include(m => m.AttendantUsers)
-            .First(dbMeeting => dbMeeting.Id == meeting.Id);
+            Meeting dbMeeting = await broker.Meetings
+                .Include(m => m.Motions)
+                .Include(m => m.AttendantUsers)
+                .FirstAsync(dbMeeting => dbMeeting.Id == meeting.Id);
 
-        meetingToUpdate.Motions = meeting.Motions;
-        meetingToUpdate.AttendantUsers = meeting.AttendantUsers;
-        meetingToUpdate.Description = meeting.Description;
-        meetingToUpdate.Start = meeting.Start;
-        
+            dbMeeting.Description = meeting.Description;
+            dbMeeting.Start = meeting.Start;
 
-        EntityEntry<Meeting> updatedEntityEntry =
-            broker.Meetings.Update(meetingToUpdate);
+            List<Guid> motionIdsInDb = dbMeeting.Motions.Select(motion => motion.Id).ToList();
+            List<Guid> motionIdsToAdd = meeting.Motions.Select(motion => motion.Id).Except(motionIdsInDb).ToList();
+            List<Motion> motionsToAdd = await broker.Motions.Where(motion => motionIdsToAdd.Contains(motion.Id)).ToListAsync();
+            dbMeeting.Motions.AddRange(motionsToAdd);
 
-        await broker.SaveChangesAsync();
+            List<Guid> attendantUserIdsInDb = dbMeeting.AttendantUsers.Select(user => user.Id).ToList();
+            List<Guid> attendantsUserIdsToAdd = meeting.AttendantUsers.Select(user => user.Id).Except(attendantUserIdsInDb).ToList();
+            List<User> attendancesToAdd = await broker.Users.Where(dbUser => attendantsUserIdsToAdd.Contains(dbUser.Id)).ToListAsync();
+            List<User> attendantsToDelete = dbMeeting.AttendantUsers.Where(dbu => !meeting.AttendantUsers.Select(u => u.Id).Contains(dbu.Id)).ToList();
 
-        return updatedEntityEntry.Entity;
+            dbMeeting.AttendantUsers.AddRange(attendancesToAdd);
+            attendantsToDelete.ForEach(deleted => dbMeeting.AttendantUsers.Remove(deleted));
+
+            EntityEntry<Meeting> updatedEntityEntry =
+                broker.Meetings.Update(dbMeeting);
+
+            await broker.SaveChangesAsync();
+
+            return updatedEntityEntry.Entity;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
     public async Task<Meeting> DeleteMeetingAsync(Meeting meeting)
     {
