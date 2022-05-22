@@ -41,6 +41,10 @@ public partial class VoteServiceTests
         // Assert
         await Assert.ThrowsAsync<VoteDependencyException>(() => addVoteTask);
 
+        this.storageBrokerMock.Verify(broker => 
+            broker.SelectAllVotes(),
+            Times.Once);
+
         this.storageBrokerMock.Verify(broker =>
             broker.InsertVoteAsync(inputVote),
             Times.Once);
@@ -80,6 +84,10 @@ public partial class VoteServiceTests
         await Assert.ThrowsAsync<VoteDependencyValidationException>(() => addVoteTask);
 
         this.storageBrokerMock.Verify(broker =>
+            broker.SelectAllVotes(),
+            Times.Once);
+
+        this.storageBrokerMock.Verify(broker =>
             broker.InsertVoteAsync(alreadyExistingVote),
             Times.Once);
 
@@ -117,6 +125,10 @@ public partial class VoteServiceTests
         await Assert.ThrowsAsync<VoteDependencyException>(() => addVoteTask);
 
         this.storageBrokerMock.Verify(broker =>
+            broker.SelectAllVotes(),
+            Times.Once);
+
+        this.storageBrokerMock.Verify(broker =>
             broker.InsertVoteAsync(someVote),
             Times.Once());
 
@@ -151,6 +163,10 @@ public partial class VoteServiceTests
 
         //Assert
         await Assert.ThrowsAsync<VoteServiceException>(() => addVoteTask);
+
+        this.storageBrokerMock.Verify(broker =>
+            broker.SelectAllVotes(),
+            Times.Once);
 
         this.storageBrokerMock.Verify(broker =>
             broker.InsertVoteAsync(It.IsAny<Vote>()),
