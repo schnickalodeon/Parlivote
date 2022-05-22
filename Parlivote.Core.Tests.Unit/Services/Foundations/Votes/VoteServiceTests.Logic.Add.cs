@@ -1,4 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using FluentAssertions;
 using Force.DeepCloner;
 using Moq;
@@ -28,6 +31,10 @@ public partial class VoteServiceTests
 
         // Assert
         actualVote.Should().BeEquivalentTo(expectedVote);
+
+        this.storageBrokerMock.Verify(broker =>
+            broker.SelectAllVotes(),
+            Times.Once);
 
         this.storageBrokerMock.Verify(broker =>
             broker.InsertVoteAsync(inputVote),
