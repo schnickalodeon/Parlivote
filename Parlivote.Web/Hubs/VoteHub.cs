@@ -20,8 +20,8 @@ public class VoteHub : Hub
         await Clients.All.SendAsync(AttendanceUpdatedMethod, meetingView);
     }
 
-    public async Task VoteUpdated(VoteView vote)
+    public async Task VoteUpdated(VoteView voteView, bool votingIsFinished)
     {
-        await Clients.All.SendAsync(VoteUpdatedMethod, vote);
+        await Clients.All.SendAsync(VoteUpdatedMethod, voteView, votingIsFinished);
     }
 }

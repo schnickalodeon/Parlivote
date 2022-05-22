@@ -8,6 +8,17 @@
                 @Motion.State
             </span>
         </div>
+        <Condition Evaluation="@resultsAvailable">
+            <Match>
+                <div class="d-flex align-items-center justify-content-between h-100">
+                    <ButtonBase 
+                        CustomCss="btn btn-primary btn-lg mx-2" 
+                        Text="Result"
+                        OnClick="@(() => motionResultDialog.Show())"/>
+                </div>
+            </Match>
+        </Condition>
+        
         <div class="d-flex align-items-center justify-content-between h-100">
             <ButtonBase 
                 CustomCss="btn btn-primary btn-lg mx-2" 
@@ -19,3 +30,4 @@
 
 <EditMotionComponent @ref="this.editMotionComponent" OnMotionSaved="@this.OnMotionChanged" />
 <ChangeMotionStateDialog @ref="changeMotionStateDialog"/>
+<MotionResultDialog @ref="this.motionResultDialog" MotionView="Motion" />

@@ -5,7 +5,7 @@
                 <h3 class="card-header d-flex">
                     <span class="flex-grow-1 align-self-center">Aktive Abstimmung</span>
                     <span class="mb-0 badge rounded-pill bg-primary fs-5">
-                        @($"{this.activeMotion.VoteViews.Count}/{attendanceCount}")
+                        @($"{voteCount}/{attendanceCount}")
                     </span>
                 </h3>
                 <div class="card-body">
@@ -34,3 +34,10 @@
         </div>
     </Match>
 </Condition>
+
+<Condition Evaluation="isVotingFinished">
+    <Match>
+        <MotionResultDialog @ref="motionResultDialog" MotionView="@finishedMotion" IsVisible="true" />
+    </Match>
+</Condition>
+
