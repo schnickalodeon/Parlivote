@@ -29,11 +29,7 @@ public partial class VoteComponent: ComponentBase
     [Inject]
     public NavigationManager NavigationManager { get; set; }
 
-    [Parameter]
-    public EventCallback AfterVoted { get; set; }
-
     private MotionView activeMotion;
-
     private bool hasUserVoted;
     private Guid userId;
     private int attendanceCount = 0;
@@ -56,7 +52,7 @@ public partial class VoteComponent: ComponentBase
 
         this.voteHubHubConnection.On<MeetingView>(VoteHub.AttendanceUpdatedMethod, (meetingView) =>
         {
-            if (activeMotion.MeetingId == meetingView.Id)
+            if (this.activeMotion.MeetingId == meetingView.Id)
             {
                 this.attendanceCount = meetingView.Attendances.Count;
                 InvokeAsync(StateHasChanged);
@@ -66,7 +62,9 @@ public partial class VoteComponent: ComponentBase
         this.voteHubHubConnection.On<VoteView>(VoteHub.VoteUpdatedMethod, async (voteView) =>
         {
             this.hasUserVoted = voteView.UserId == this.userId;
-            await this.AfterVoted.InvokeAsync();
+
+            CheckVotingFinished();
+
             await InvokeAsync(StateHasChanged);
         });
 
@@ -109,6 +107,8 @@ public partial class VoteComponent: ComponentBase
             this.hasUserVoted =
                 this.activeMotion.VoteViews.Any(motion => motion.UserId == this.userId);
 
+            CheckVotingFinished();
+
             await InvokeAsync(StateHasChanged);
         }
         catch (Exception e)
@@ -145,6 +145,14 @@ public partial class VoteComponent: ComponentBase
             await this.VoteViewService.AddAsync(voteView);
 
         await this.voteHubHubConnection.InvokeAsync(VoteHub.VoteUpdatedMethod, submittedVote);
+    }
+
+    private void CheckVotingFinished()
+    {
+        if (this.activeMotion.VoteViews.Count == this.attendanceCount)
+        {
+            //TODO Call ResultComponent
+        }
     }
 
     private string GetSubmitButtonCss()
