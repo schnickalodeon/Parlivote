@@ -1,0 +1,20 @@
+﻿<InfoDialogBase @ref="infoDialog" Title="Abstimmungsergebnis" IsVisible="@IsVisible">
+    <h5>Abstimmung:</h5>
+    <h6>@MotionView.Text</h6>
+    <TableBase>
+        <Body>
+        <tr>
+            <td><strong>Dafür</strong></td>
+            <td>@yesCount</td>
+        </tr>
+        <tr>
+            <td><strong>Dagegen</strong></td>
+            <td>@noCount</td>
+        </tr>
+        <tr>
+            <td><strong>Enhtaltungen</strong></td>
+            <td>@abstentionCount</td>
+        </tr>
+        </Body>
+    </TableBase>
+</InfoDialogBase>

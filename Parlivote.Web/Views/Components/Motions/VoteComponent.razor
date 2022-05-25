@@ -1,20 +1,43 @@
-﻿<div class="card">
-    <h5 class="card-header d-flex">
-        <span class="flex-grow-1 align-self-center">Aktive Abstimmung</span>
-        <span class="mb-0 badge rounded-pill bg-primary fs-5">
-            @($"{this.ActiveMotion.VoteViews.Count}/{attendanceCount}")
-        </span>
-    </h5>
-    <div class="card-body">
-        <h5 class="card-title">@ActiveMotion.Text</h5>
-        <hr />
-        <div class="d-flex flex-row justify-content-center">
-            <ButtonBase CustomCss="mx-2 e-success" Text="Ja" OnClick="ForClicked" />
-            <ButtonBase CustomCss="mx-2 e-danger" Text="Nein" OnClick="AgainstClicked" />
-            <ButtonBase CustomCss="mx-2 e-warning" Text="Enthaltung" OnClick="AbstentionClicked" />
+﻿<Condition Evaluation="activeMotion != null">
+    <Match>
+        <div class="d-flex flex-row justify-content-center align-items-center w-100">
+            <div class="card">
+                <h3 class="card-header d-flex">
+                    <span class="flex-grow-1 align-self-center">Aktive Abstimmung</span>
+                    <span class="mb-0 badge rounded-pill bg-primary fs-5">
+                        @($"{voteCount}/{attendanceCount}")
+                    </span>
+                </h3>
+                <div class="card-body">
+                    <h5 class="card-title">@activeMotion.Text</h5>
+                    <hr/>
+                    <Condition Evaluation="@hasUserVoted">
+                        <Match>
+                            <div class="d-flex align-items-center">
+                                <strong class="me-2">Danke für Ihre Stimme - Abstimmung läuft noch</strong>
+                                <div class="spinner-border ms-auto" role="status" aria-hidden="true"></div>
+                            </div>
+                        </Match>
+                        <NotMatch>
+                            <div class="d-flex flex-row justify-content-center">
+                                <ButtonBase CustomCss="mx-2 e-success" Text="Ja" OnClick="ForClicked"/>
+                                <ButtonBase CustomCss="mx-2 e-danger" Text="Nein" OnClick="AgainstClicked"/>
+                                <ButtonBase CustomCss="mx-2 e-warning" Text="Enthaltung" OnClick="AbstentionClicked"/>
+                            </div>
+                        </NotMatch>
+                    </Condition>
+                </div>
+                <div class="card-footer text-center">
+                    <button class="@GetSubmitButtonCss()" @onclick="SubmitVoteAsync">Bestätigen</button>
+                </div>
+            </div>
         </div>
-    </div>
-    <div class="card-footer text-center">
-        <button class="@GetSubmitButtonCss()" @onclick="SubmitVoteAsync" >Bestätigen</button>
-    </div>
-</div>
+    </Match>
+</Condition>
+
+<Condition Evaluation="isVotingFinished">
+    <Match>
+        <MotionResultDialog @ref="motionResultDialog" MotionView="@finishedMotion" IsVisible="true" />
+    </Match>
+</Condition>
+

@@ -35,6 +35,10 @@ public partial class VoteService
         {
             throw CreateAndLogValidationException(invalidVoteException);
         }
+        catch (AlreadyVotedException alreadyVotedException)
+        {
+            throw CreateAndLogValidationException(alreadyVotedException);
+        }
         catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
         {
             var lockedVoteException =
