@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
+using Syncfusion.Blazor.Inputs;
 
 namespace Parlivote.Web.Views.Base;
 
@@ -10,6 +11,9 @@ public partial class TextBoxBase : ComponentBase
 
     [Parameter]
     public string Placeholder { get; set; }
+
+    [Parameter]
+    public InputType InputType { get; set; } = InputType.Text;
 
     [Parameter]
     public EventCallback<string> ValueChanged { get; set; }

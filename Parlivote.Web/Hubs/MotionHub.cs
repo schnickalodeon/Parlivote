@@ -20,7 +20,6 @@ public class MotionHub : Hub
 
     public async Task SetState(MotionView motionView)
     {
-        //await this.motionViewService.UpdateAsync(motionView);
         await Clients.All.SendAsync(SetStateMethod, motionView);
     }
 }

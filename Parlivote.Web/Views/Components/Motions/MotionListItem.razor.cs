@@ -30,7 +30,9 @@ public partial class MotionListItem : ComponentBase
     private HubConnection hubConnection;
     private EditMotionComponent editMotionComponent;
     private ChangeMotionStateDialog changeMotionStateDialog;
+    private MotionResultDialog motionResultDialog;
     private bool existsActiveMeeting = false;
+    private bool resultsAvailable = false;
     private bool IsConnected => this.hubConnection.State == HubConnectionState.Connected;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -40,6 +42,10 @@ public partial class MotionListItem : ComponentBase
             await ConnectToMotionHub();
             await GetActiveMotion();
         }
+
+        this.resultsAvailable =
+            (Motion is not null &&
+             (Motion.State is MotionStateConverter.Accepted or MotionStateConverter.Declined));
     }
 
     private async Task GetActiveMotion()
@@ -59,9 +65,13 @@ public partial class MotionListItem : ComponentBase
 
         this.hubConnection.On<MotionView>(MotionHub.SetStateMethod, motionView =>
         {
-            this.existsActiveMeeting = (motionView.State == MotionStateConverter.Pending);
-            this.statusPillCss = GetPillCssByStatus();
-            InvokeAsync(StateHasChanged);
+            if (this.Motion.MotionId == motionView.MotionId)
+            {
+                //this.existsActiveMeeting = (motionView.State == MotionStateConverter.Pending);
+                this.Motion.State = motionView.State;
+                this.statusPillCss = GetPillCssByStatus();
+                InvokeAsync(StateHasChanged);
+            }
         });
 
         await this.hubConnection.StartAsync();

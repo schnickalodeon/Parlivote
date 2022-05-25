@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR.Client;
+using Parlivote.Shared.Models.Motions;
 using Parlivote.Web.Hubs;
 using Parlivote.Web.Models.Views.Meetings;
+using Parlivote.Web.Models.Views.Motions;
 using Parlivote.Web.Services.Views.Meetings;
 using Parlivote.Web.Views.Base;
 using Parlivote.Web.Views.Components.Motions;
@@ -29,6 +32,7 @@ public partial class MeetingBox : ComponentBase
     private EditMeetingComponent editMeetingComponent;
 
     private HubConnection hubConnection;
+    private HubConnection motionHubConnection;
     private bool IsConnected =>
         this.hubConnection.State == HubConnectionState.Connected;
 
