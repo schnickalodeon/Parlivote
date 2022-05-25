@@ -83,9 +83,12 @@ public partial class ActiveMotion : ComponentBase
             this.activeMotion =
                 await MotionViewService.GetActiveAsync();
 
-            this.hasUserVoted = 
-                this.activeMotion.VoteViews.Any(vote => vote.UserId == this.userId);
-
+            if (this.activeMotion is not null)
+            {
+                this.hasUserVoted =
+                    this.activeMotion.VoteViews.Any(vote => vote.UserId == this.userId);
+            }
+            
             await InvokeAsync(StateHasChanged);
         }
         catch (Exception e)
