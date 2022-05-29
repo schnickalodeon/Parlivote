@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -12,11 +13,19 @@ namespace Parlivote.Core.Services.Identity;
 
 public partial class IdentityService
 {
-    private void ValidateStorageUser(User user)
+    private void ValidateEmailPasswordCombination(User user)
     {
         if (user is null)
         {
             throw new InvalidEmailPasswordCombinationException();
+        }
+    }
+
+    private void ValidateStorageUser(User user)
+    {
+        if (user is null)
+        {
+            throw new UserNotFoundException();
         }
     }
 
@@ -62,6 +71,14 @@ public partial class IdentityService
         {
             IEnumerable<string> errors = createdUserResult.Errors.Select(x => x.Description);
             throw new UserRegistrationException(errors);
+        }
+    }
+
+    private void ValidateUserId(Guid userId)
+    {
+        if (userId == Guid.Empty)
+        {
+            throw new InvalidUserIdException();
         }
     }
 }

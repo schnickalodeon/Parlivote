@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
@@ -8,6 +9,7 @@ using System.Web;
 using FluentAssertions.Equivalency;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Configuration;
 using Parlivote.Shared.Models.Identity;
 using Parlivote.Web.Brokers.API;
@@ -101,9 +103,10 @@ namespace Parlivote.Web.Services.Authentication
             await this.localStorageBroker.DeleteTokenExpirationAsync();
             await this.localStorageBroker.DeleteRefreshTokenAsync();
         }
-        public async Task LogoutAsync()
+        public async Task LogoutAsync(Guid userId)
         {
             await DeleteJwtStorageData();
+            await this.authenticationBroker.PostLogoutAsync(userId);
             ((AuthStateProvider)this.authStateProvider).NotifyUserLogout();
         }
 

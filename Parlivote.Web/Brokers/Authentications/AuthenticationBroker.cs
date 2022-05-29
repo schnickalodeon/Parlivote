@@ -38,6 +38,9 @@ public class AuthenticationBroker : IAuthenticationBroker
     public async Task<AuthenticationResult> PostLoginAsync(UserLogin userLogin) =>
         await this.apiClient.PostContentAsync<UserLogin, AuthenticationResult>($"{IdentityRelativeUrl}/login", userLogin);
 
+    public async Task PostLogoutAsync(Guid userId) =>
+        await this.apiClient.PostContentAsync<Guid, Task>($"{IdentityRelativeUrl}/logout", userId);
+
     public async Task<AuthenticationResult> PostRegisterAsync(UserRegistration registration) =>
         await this.apiClient.PostContentAsync<UserRegistration, AuthenticationResult>($"{IdentityRelativeUrl}/register", registration);
 
@@ -72,6 +75,8 @@ public class AuthenticationBroker : IAuthenticationBroker
         var token = await this.localStorageBroker.GetTokenAsync();
         return new AuthenticationHeaderValue("bearer", token);
     }
+
+   
 
     private async Task<AuthenticationHeaderValue> RefreshToken()
     {

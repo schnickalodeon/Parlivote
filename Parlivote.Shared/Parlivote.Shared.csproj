@@ -12,7 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\Identity\Exceptions\" />
     <Folder Include="Models\VoteValues\" />
   </ItemGroup>
 
