@@ -6,7 +6,7 @@ namespace Parlivote.Shared.Models.Identity.Users
 {
     public class User : IdentityUser<Guid>
     {
-        [JsonIgnore]
-        public List<Meeting>? Meetings { get; set; }
+        public bool IsLoggedIn { get; set; }
+        public bool IsAttendant { get; set; }
     }
 }

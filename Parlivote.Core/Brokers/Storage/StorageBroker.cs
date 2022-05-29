@@ -23,7 +23,6 @@ public partial class StorageBroker : EFxceptionsIdentityContext<User, Role, Guid
     {
         base.OnModelCreating(modelBuilder);
         SetMeetingReference(modelBuilder);
-        AddMeetingAttendanceReference(modelBuilder);
         SetVoteEntityConfiguration(modelBuilder);
         //ApplyRefreshTokenAnnotations(modelBuilder);
     }

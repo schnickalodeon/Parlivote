@@ -28,7 +28,6 @@ public partial class MeetingViewServiceTests
                     Description = property.Description,
                     Start = property.Start,
                     Motions = new List<Motion>(),
-                    AttendantUsers = property.AttendantUsers
                 }).ToList();
 
         List<Meeting> retrievedMeetings = randomMeetings;

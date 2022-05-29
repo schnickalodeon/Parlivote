@@ -143,7 +143,6 @@ public class MotionViewService : IMotionViewService
                 await this.meetingService.RetrieveByIdWithMotionsAsync(motion.MeetingId.Value);
 
             meetingName = meeting?.Description ?? "";
-            meetingAttendance = meeting.AttendantUsers.Count;
         }
 
         return new MotionView

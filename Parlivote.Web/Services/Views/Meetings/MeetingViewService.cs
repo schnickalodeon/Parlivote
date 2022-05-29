@@ -113,7 +113,6 @@ public class MeetingViewService : IMeetingViewService
             Description = meetingView.Description,
             Start = meetingView.Start,
             Motions = meetingView.Motions?.Select(AsMotion).ToList() ?? new List<Motion>(),
-            AttendantUsers = meetingView.Attendances
         };
     }
     private static MeetingView MapToMeetingView(Meeting meeting)
@@ -124,7 +123,6 @@ public class MeetingViewService : IMeetingViewService
             Description = meeting.Description,
             Start = meeting.Start,
             Motions = meeting.Motions?.Select(AsMotionView).ToList() ?? new List<MotionView>(),
-            Attendances = meeting.AttendantUsers
         };
     }
 

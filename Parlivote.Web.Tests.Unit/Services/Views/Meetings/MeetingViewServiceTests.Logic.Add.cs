@@ -35,7 +35,6 @@ public partial class MeetingViewServiceTests
             Id = someMeetingViewInput.Id,
             Description = someMeetingViewInput.Description,
             Start = someMeetingViewInput.Start,
-            AttendantUsers = someMeetingViewInput.AttendantUsers,
             Motions = new List<Motion>()
         };
 

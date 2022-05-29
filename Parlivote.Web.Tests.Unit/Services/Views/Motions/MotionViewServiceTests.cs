@@ -64,7 +64,6 @@ public partial class MotionViewServiceTests
             State = GetRandomState(),
             Text = Tests.GetRandomString(),
             Meeting = randomMeeting,
-            AttendanceCount = randomMeeting.AttendantUsers.Count
         };
     }
 
@@ -75,7 +74,6 @@ public partial class MotionViewServiceTests
         {
             Id = Guid.NewGuid(),
             Description = Tests.GetRandomString(),
-            AttendantUsers = attendants
         };
 
         return randomMeeting;
