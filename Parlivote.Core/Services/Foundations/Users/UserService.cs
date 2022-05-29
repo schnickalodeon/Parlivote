@@ -19,6 +19,7 @@ public partial class UserService : IUserService
         this.userManagementBroker = userManagementBroker;
         this.loggingBroker = loggingBroker;
     }
+
     public Task<User> RetrieveByIdAsync(Guid userId) =>
         TryCatch(async () =>
         {
@@ -34,4 +35,20 @@ public partial class UserService : IUserService
 
     public IQueryable<User> RetrieveAll() =>
         TryCatch(() => this.userManagementBroker.SelectAllUsers());
+
+    public Task<User> ModifyUserAsync(User user) =>
+        TryCatch(async () =>
+        {
+            ValidateUser(user);
+
+            User maybeUser =
+                await this.userManagementBroker.SelectUserByIdAsync(user.Id);
+
+            ValidateStorageUser(maybeUser, user.Id);
+
+            User updatedUser =
+                await this.userManagementBroker.UpdateUserAsync(user);
+
+            return updatedUser;
+        });
 }

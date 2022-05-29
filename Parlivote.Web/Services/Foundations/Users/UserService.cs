@@ -28,4 +28,11 @@ public partial class UserService : IUserService
             ValidateUserId(userId);
             return await this.apiBroker.GetUserByIdAsync(userId);
         });
+
+    public Task<User> ModifyUserAsync(User user) =>
+    TryCatch(async () =>
+    {
+        
+        return await this.apiBroker.PutUserAsync(user);
+    });
 }

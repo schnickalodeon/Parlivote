@@ -10,4 +10,5 @@ public interface IUserService
 {
     Task<List<User>> RetrieveAllAsync();
     Task<User> RetrieveByIdAsync(Guid userId);
+    Task<User> ModifyUserAsync(User user);
 }

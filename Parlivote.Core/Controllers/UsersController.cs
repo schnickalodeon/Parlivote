@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Parlivote.Core.Services.Foundations.Users;
+using Parlivote.Shared.Models.Identity.Exceptions;
 using Parlivote.Shared.Models.Identity.Users;
 using Parlivote.Shared.Models.Identity.Users.Exceptions;
 using RESTFulSense.Controllers;
@@ -53,6 +54,26 @@ namespace Parlivote.Core.Controllers
             catch (UserServiceException pollServiceException)
             {
                 return InternalServerError(pollServiceException);
+            }
+        }
+
+        [HttpPut]
+        public async Task<ActionResult<User>> PutUserByAsync(User user)
+        {
+            try
+            {
+                User updatedUser =
+                    await this.userService.ModifyUserAsync(user);
+
+                return Ok(updatedUser);
+            }
+            catch (NullUserException nullUserException)
+            {
+                return BadRequest(nullUserException);
+            }
+            catch (UserNotFoundException userNotFoundException)
+            {
+                return BadRequest(userNotFoundException);
             }
         }
     }

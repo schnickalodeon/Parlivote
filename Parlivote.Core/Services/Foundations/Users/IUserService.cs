@@ -9,4 +9,5 @@ public interface IUserService
 {
     Task<User> RetrieveByIdAsync(Guid userId);
     IQueryable<User> RetrieveAll();
+    Task<User> ModifyUserAsync(User user);
 }

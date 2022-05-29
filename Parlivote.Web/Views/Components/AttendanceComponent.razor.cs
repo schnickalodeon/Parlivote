@@ -10,21 +10,15 @@ using Parlivote.Web.Hubs;
 using Parlivote.Web.Models.Views.Meetings;
 using Parlivote.Web.Services.Views.Meetings;
 
-namespace Parlivote.Web.Views.Components.Meetings;
+namespace Parlivote.Web.Views.Components;
 
-public partial class MeetingAttendanceComponent : ComponentBase
+public partial class AttendanceComponent : ComponentBase
 {
-    [Inject]
-    public IMeetingViewService MeetingViewService { get; set; }
-
     [Inject]
     public AuthenticationStateProvider AuthenticationStateProvider { get; set; }
 
     [Inject]
     public NavigationManager NavigationManager { get; set; }
-
-    [Parameter]
-    public MeetingView MeetingView { get; set; }
 
     private HubConnection hubConnection;
     private bool IsConnected => 
@@ -47,7 +41,7 @@ public partial class MeetingAttendanceComponent : ComponentBase
     protected override async Task OnInitializedAsync()
     {
         this.userId = await GetUserId();
-        this.isAttendant = MeetingView.Attendances.Any(attendance => attendance.Id == this.userId);
+        this.isAttendant = 
         await ConnectToVoteHub();
     }
 
