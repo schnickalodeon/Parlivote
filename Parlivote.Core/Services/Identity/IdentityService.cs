@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using Parlivote.Core.Brokers.Storage;
+using Parlivote.Core.Brokers.UserManagements;
 using Parlivote.Core.Configurations;
 using Parlivote.Shared.Models.Identity;
 using Parlivote.Shared.Models.Identity.Users;
@@ -21,18 +22,21 @@ public partial class IdentityService : IIdentityService
     private readonly JwtSettings jwtSettings;
     private readonly TokenValidationParameters tokenValidationParameters;
     private readonly IStorageBroker storageBroker;
+    private readonly IUserManagementBroker userManagementBroker;
     
 
     public IdentityService(
         UserManager<User> userManager, 
         JwtSettings jwtSettings, 
         TokenValidationParameters tokenValidationParameters, 
-        IStorageBroker storageBroker)
+        IStorageBroker storageBroker,
+        IUserManagementBroker userManagementBroker)
     {
         this.userManager = userManager;
         this.jwtSettings = jwtSettings;
         this.tokenValidationParameters = tokenValidationParameters;
         this.storageBroker = storageBroker;
+        this.userManagementBroker = userManagementBroker;
     }
 
     public async Task<AuthSuccessResponse> RegisterAsync(string email, string password)
@@ -73,6 +77,12 @@ public partial class IdentityService : IIdentityService
         await ValidatePassword(user, password);
 
         AuthenticationResult result = await GenerateAuthenticationResultForUserAsync(user);
+
+        if (result.Success)
+        {
+            user.IsLoggedIn = true;
+            await this.userManagementBroker.UpdateUserAsync(user);
+        }
 
         return new AuthSuccessResponse(
             result.Token,
