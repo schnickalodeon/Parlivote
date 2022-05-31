@@ -29,10 +29,16 @@ public partial class UserService : IUserService
             return await this.apiBroker.GetUserByIdAsync(userId);
         });
 
+    public Task<User> RetrieveByIdUntrackedAsync(Guid userId) =>
+        TryCatch(async () =>
+        {
+            ValidateUserId(userId);
+            return await this.apiBroker.GetUserUntrackedByIdAsync(userId);
+        });
+
     public Task<User> ModifyUserAsync(User user) =>
     TryCatch(async () =>
     {
-        
         return await this.apiBroker.PutUserAsync(user);
     });
 }

@@ -11,5 +11,6 @@ public partial interface IApiBroker
 {
     Task<List<User>>GetAllUsersAsync();
     Task<User> GetUserByIdAsync(Guid userId);
+    Task<User> GetUserUntrackedByIdAsync(Guid userId);
     Task<User> PutUserAsync(User user);
 }

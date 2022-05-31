@@ -83,7 +83,7 @@ public partial class IdentityService : IIdentityService
         if (result.Success)
         {
             user.IsLoggedIn = true;
-            await this.userManagementBroker.UpdateUserAsync(user);
+            await this.storageBroker.UpdateUserAsync(user);
         }
 
         return new AuthSuccessResponse(
@@ -170,7 +170,7 @@ public partial class IdentityService : IIdentityService
 
             userToLogout.IsLoggedIn = false;
 
-            await this.userManagementBroker.UpdateUserAsync(userToLogout);
+            await this.storageBroker.UpdateUserAsync(userToLogout);
             return true;
         }
         catch (Exception exception)

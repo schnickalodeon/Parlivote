@@ -9,11 +9,15 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Parlivote.Web.Hubs;
 using Parlivote.Web.Models.Views.Meetings;
 using Parlivote.Web.Services.Views.Meetings;
+using Parlivote.Web.Services.Views.Users;
 
 namespace Parlivote.Web.Views.Components;
 
 public partial class AttendanceComponent : ComponentBase
 {
+    [Inject]
+    public IUserViewService UserViewService { get; set; }
+
     [Inject]
     public AuthenticationStateProvider AuthenticationStateProvider { get; set; }
 
@@ -41,7 +45,7 @@ public partial class AttendanceComponent : ComponentBase
     protected override async Task OnInitializedAsync()
     {
         this.userId = await GetUserId();
-        this.isAttendant = 
+        this.isAttendant =  await this.UserViewService.IsAttendant(this.userId);
         await ConnectToVoteHub();
     }
 
@@ -56,22 +60,12 @@ public partial class AttendanceComponent : ComponentBase
 
     private async void UpdateAttendance(bool attendance)
     {
-        Func<MeetingView, Guid, Task<MeetingView>> attendanceFunction = null;
-        if (attendance)
-        {
-            attendanceFunction = this.MeetingViewService.AddAttendance;
-        }
-        else
-        {
-            attendanceFunction = this.MeetingViewService.RemoveAttendance;
-        }
 
-        MeetingView updatedMeetingView = 
-            await attendanceFunction(this.MeetingView, this.userId);
+        int attendanceCount = await this.UserViewService.UpdateAttendance(this.userId, attendance);
 
         if (IsConnected)
         {
-            await this.hubConnection.InvokeAsync(VoteHub.AttendanceUpdatedMethod, updatedMeetingView);
+            await this.hubConnection.InvokeAsync(VoteHub.AttendanceUpdatedMethod, attendanceCount);
         }
         else
         {
@@ -85,9 +79,9 @@ public partial class AttendanceComponent : ComponentBase
         AuthenticationState authState =
             await this.AuthenticationStateProvider.GetAuthenticationStateAsync();
 
-        string userId =
+        string strUserId =
             authState.User.Claims.First(claim => claim.Type == "id").Value;
 
-        return Guid.Parse(userId);
+        return Guid.Parse(strUserId);
     }
 }

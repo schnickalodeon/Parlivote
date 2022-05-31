@@ -15,9 +15,9 @@ public class VoteHub : Hub
     public const string AttendanceUpdatedMethod = "AttendanceUpdated";
     public const string VoteUpdatedMethod = "VoteUpdated";
 
-    public async Task AttendanceUpdated(MeetingView meetingView)
+    public async Task AttendanceUpdated(int attendanceCount)
     {
-        await Clients.All.SendAsync(AttendanceUpdatedMethod, meetingView);
+        await Clients.All.SendAsync(AttendanceUpdatedMethod, attendanceCount);
     }
 
     public async Task VoteUpdated(VoteView voteView, bool votingIsFinished)

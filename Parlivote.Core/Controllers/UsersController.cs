@@ -57,8 +57,26 @@ namespace Parlivote.Core.Controllers
             }
         }
 
+        [HttpGet("untracked/{userId}")]
+        public async Task<ActionResult<User>> GetUserUntrackedById(Guid userId)
+        {
+            try
+            {
+                User user = await this.userService.RetrieveUntrackedByIdAsync(userId);
+                return Ok(user);
+            }
+            catch (UserDependencyException pollDependencyException)
+            {
+                return InternalServerError(pollDependencyException);
+            }
+            catch (UserServiceException pollServiceException)
+            {
+                return InternalServerError(pollServiceException);
+            }
+        }
+
         [HttpPut]
-        public async Task<ActionResult<User>> PutUserByAsync(User user)
+        public async Task<ActionResult<User>> PutUserByAsync([FromBody] User user)
         {
             try
             {
