@@ -25,7 +25,6 @@ public partial class MotionViewServiceTests
             Text = someMotionViewInput.Text,
             Version = someMotionViewInput.Version,
             MeetingName = someMotionViewInput.Meeting.Description,
-            MeetingAttendanceCount = someMotionViewInput.AttendanceCount
         };
 
         MotionView inputMotionView = someMotionView;

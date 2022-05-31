@@ -56,13 +56,10 @@ public partial class VoteComponent: ComponentBase
             .WithUrl(NavigationManager.ToAbsoluteUri("/voteHub"))
             .Build();
 
-        this.voteHubHubConnection.On<MeetingView>(VoteHub.AttendanceUpdatedMethod, (meetingView) =>
+        this.voteHubHubConnection.On<int>(VoteHub.AttendanceUpdatedMethod, (attendanceCountUpdated) =>
         {
-            if (this.activeMotion.MeetingId == meetingView.Id)
-            {
-                this.attendanceCount = meetingView.Attendances.Count;
-                InvokeAsync(StateHasChanged);
-            }
+            this.attendanceCount = attendanceCountUpdated;
+            InvokeAsync(StateHasChanged);
         });
 
         this.voteHubHubConnection.On<VoteView, bool>(VoteHub.VoteUpdatedMethod, async (voteView, votingIsFinished) =>
@@ -116,9 +113,8 @@ public partial class VoteComponent: ComponentBase
 
             if (this.activeMotion is not null)
             {
-
-                this.attendanceCount = this.activeMotion.MeetingAttendanceCount;
-                this.voteCount = this.activeMotion.VoteViews.Count;
+                this.voteCount = this.activeMotion.VoteViews.Count(vote => vote.Value != VoteValue.NoValue);
+                this.attendanceCount = this.activeMotion.VoteViews.Count;
 
                 this.hasUserVoted =
                     this.activeMotion.VoteViews.Any(motion => motion.UserId == this.userId);
@@ -162,8 +158,8 @@ public partial class VoteComponent: ComponentBase
         this.selectedVoteValue = VoteValue.NoValue;
         this.hasUserVoted = true;
 
-        int isCount = this.activeMotion.VoteViews.Count + 1;
-        int mustCount = this.activeMotion.MeetingAttendanceCount;
+        int isCount = this.activeMotion.VoteViews.Count(vote => vote.Value != VoteValue.NoValue) + 1;
+        int mustCount = this.activeMotion.VoteViews.Count;
 
         bool votingIsFinished = isCount == mustCount;
         if (votingIsFinished)

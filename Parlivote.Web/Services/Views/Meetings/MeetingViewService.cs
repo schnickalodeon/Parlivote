@@ -40,26 +40,6 @@ public class MeetingViewService : IMeetingViewService
         return mappedMeetingView;
     }
 
-    public async Task<MeetingView> AddAttendance(MeetingView meetingView, Guid userId)
-    {
-        User user = await this.userService.RetrieveByIdAsync(userId);
-
-        meetingView.Attendances.Add(user);
-
-        MeetingView view = await UpdateAsync(meetingView);
-
-        return view;
-    }
-
-    public async Task<MeetingView> RemoveAttendance(MeetingView meetingView, Guid userId)
-    {
-        var removed = meetingView.Attendances.RemoveAll(user => user.Id == userId);
-
-        MeetingView view = await UpdateAsync(meetingView);
-
-        return view;
-    }
-
     public async Task<List<MeetingView>> GetAllAsync()
     {
         List<Meeting> meetings =

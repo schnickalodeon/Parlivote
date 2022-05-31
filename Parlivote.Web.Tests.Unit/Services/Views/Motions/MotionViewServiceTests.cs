@@ -69,7 +69,6 @@ public partial class MotionViewServiceTests
 
     private static Meeting GetRandomMeeting()
     {
-        List<User> attendants = GetAttendantsList();
         var randomMeeting = new Meeting()
         {
             Id = Guid.NewGuid(),
@@ -77,18 +76,6 @@ public partial class MotionViewServiceTests
         };
 
         return randomMeeting;
-    }
-
-    private static List<User> GetAttendantsList()
-    {
-        var someUserCount = Tests.GetRandomNumber();
-        var attendants = new List<User>();
-        for (int i = 0; i < someUserCount; i++)
-        {
-            attendants.Add(new User());
-        }
-
-        return attendants;
     }
 
     private static List<dynamic> CreateRandomMotionViewCollections()

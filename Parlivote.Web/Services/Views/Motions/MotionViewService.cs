@@ -153,7 +153,6 @@ public class MotionViewService : IMotionViewService
             State = motion.State.GetValue(),
             Text = motion.Text,
             MeetingName = meetingName,
-            MeetingAttendanceCount = meetingAttendance,
             VoteViews = motion.Votes?.Select(AsVoteView).ToList()
         };
     }

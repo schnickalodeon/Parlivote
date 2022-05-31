@@ -2,6 +2,7 @@
 using System.Linq;
 using Moq;
 using Parlivote.Core.Brokers.Logging;
+using Parlivote.Core.Brokers.Storage;
 using Parlivote.Core.Brokers.UserManagements;
 using Parlivote.Core.Services.Foundations.Users;
 using Parlivote.Shared.Models.Identity.Users;
@@ -12,17 +13,20 @@ namespace Parlivote.Core.Tests.Unit.Services.Foundations.Users;
 public partial class UserServiceTests
 {
     private readonly Mock<IUserManagementBroker> userManagementBrokerMock;
+    private readonly Mock<IStorageBroker> storageBrokerMock;
     private readonly Mock<ILoggingBroker> loggingBrokerMock;
     private readonly IUserService userService;
 
     public UserServiceTests()
     {
         this.userManagementBrokerMock = new Mock<IUserManagementBroker>();
+        this.storageBrokerMock = new Mock<IStorageBroker>();
         this.loggingBrokerMock = new Mock<ILoggingBroker>();
 
         this.userService = new UserService(
             this.userManagementBrokerMock.Object,
-            this.loggingBrokerMock.Object);
+            this.loggingBrokerMock.Object,
+            this.storageBrokerMock.Object);
     }
     private static User GetRandomUser() =>
         CreateUserFiller().Create();

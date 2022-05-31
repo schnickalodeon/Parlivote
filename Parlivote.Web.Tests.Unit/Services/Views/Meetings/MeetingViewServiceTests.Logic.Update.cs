@@ -22,7 +22,6 @@ public partial class MeetingViewServiceTests
             Id = someMeetingViewInput.Id,
             Description = someMeetingViewInput.Description,
             Start = someMeetingViewInput.Start,
-            Attendances = someMeetingViewInput.AttendantUsers
         };
 
         MeetingView inputMeetingView = someMeetingView;
