@@ -1,4 +1,5 @@
-﻿using System.Net.Http.Headers;
+﻿using System;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Parlivote.Shared.Models.Identity;
 
@@ -10,4 +11,5 @@ public interface IAuthenticationBroker
     Task<AuthenticationResult> PostRegisterAsync(UserRegistration registration);
     Task<AuthenticationResult> PostRefreshTokenAsync(RefreshTokenRequest refreshTokenRequest);
     Task<AuthenticationHeaderValue> GetAuthorizationHeaderAsync();
+    Task PostLogoutAsync(Guid userId);
 }

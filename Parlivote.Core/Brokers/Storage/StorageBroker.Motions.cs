@@ -31,16 +31,23 @@ public partial class StorageBroker
         await using var broker = new StorageBroker(this.configuration);
         return await broker.Motions.FindAsync(pollId);
     }
-    public async Task<Motion> UpdateMotionAsync(Motion poll)
+    public async Task<Motion> UpdateMotionAsync(Motion motion)
     {
-        await using var broker = new StorageBroker(this.configuration);
+        try
+        {
+            await using var broker = new StorageBroker(this.configuration);
 
-        EntityEntry<Motion> updatedEntityEntry =
-            broker.Motions.Update(poll);
+            broker.Attach(motion).State = EntityState.Modified;
 
-        await broker.SaveChangesAsync();
+            await broker.SaveChangesAsync();
 
-        return updatedEntityEntry.Entity;
+            return motion;
+        }
+        catch (Exception exception)
+        {
+            Console.WriteLine(exception.Message);
+            throw exception;
+        }
     }
     public async Task<Motion> DeleteMotionAsync(Motion poll)
     {

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Parlivote.Shared.Models.Identity;
 
 namespace Parlivote.Web.Services.Authentication
@@ -7,6 +8,6 @@ namespace Parlivote.Web.Services.Authentication
     {
         Task<AuthenticationResult> LoginAsync(UserLogin login);
         Task<AuthenticationResult> RegisterAsync(UserRegistration registration);
-        Task LogoutAsync();
+        Task LogoutAsync(Guid userId);
     }
 }

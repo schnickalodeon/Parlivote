@@ -13,6 +13,5 @@ public partial interface IUserManagementBroker
     IQueryable<User> SelectAllUsers();
     Task<User> SelectUserByIdAsync(Guid userId);
     Task<List<User>> SelectUserByRoleAsync(string role);
-    Task<User> UpdateUserAsync(User user);
     Task<User> DeleteUserAsync(User user);
 }

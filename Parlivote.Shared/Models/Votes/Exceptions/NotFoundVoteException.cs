@@ -9,4 +9,10 @@ public class NotFoundVoteException : Xeption
     {
         
     }
+
+    public NotFoundVoteException()
+        : base(message: $"Could not find vote for this user")
+    {
+
+    }
 }

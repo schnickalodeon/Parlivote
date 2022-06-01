@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Parlivote.Core.Brokers.Logging;
 using Parlivote.Core.Brokers.Storage;
 using Parlivote.Shared.Models.Votes;
@@ -61,5 +62,21 @@ public partial class VoteService : IVoteService
                 await this.storageBroker.SelectVoteById(voteId);
 
             return await this.storageBroker.DeleteVoteAsync(voteToDelete);
+        });
+
+    public Task<Vote> RemoveByIdMotionIdAsync(Guid motionId) =>
+        TryCatch(async () =>
+        {
+            ValidateVoteId(motionId);
+
+            IEnumerable<Vote> votesToDelete =
+                await this.storageBroker.SelectAllVotes().Where(vote => vote.MotionId == motionId).ToListAsync();
+
+            foreach (Vote vote in votesToDelete)
+            {
+                await this.storageBroker.DeleteVoteAsync(vote);
+            }
+
+            return votesToDelete.FirstOrDefault();
         });
 }

@@ -10,7 +10,22 @@ namespace Parlivote.Core.Services.Foundations.Users;
 
 public partial class UserService
 {
+    private void ValidateUser(User user)
+    {
+        ValidateUserIsNotNull(user);
 
+        Validate(
+            (IsInvalidUserId(user.Id), nameof(User.Id))
+        );
+    }
+
+    private static void ValidateUserIsNotNull(User user)
+    {
+        if (user is null)
+        {
+            throw new NullUserException();
+        }
+    }
     private static dynamic IsInvalidUserId(Guid userId) => new
     {
         Condition = userId == Guid.Empty,
@@ -48,4 +63,6 @@ public partial class UserService
 
         invalidPostException.ThrowIfContainsErrors();
     }
+
+   
 }

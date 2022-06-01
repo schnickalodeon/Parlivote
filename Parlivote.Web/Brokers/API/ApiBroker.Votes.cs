@@ -20,4 +20,7 @@ public partial class ApiBroker
         await this.PutAsync(VotesRelativeUrl,vote);
     public async Task<Vote> DeleteVoteById(Guid voteId) =>
         await this.DeleteAsync<Vote>($"{VotesRelativeUrl}/{voteId}");
+
+    public async Task<Vote> DeleteVoteByMotionId(Guid motionId) =>
+        await this.DeleteAsync<Vote>($"{VotesRelativeUrl}/ByMotion/{motionId}");
 }

@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Parlivote.Core.Services.Foundations.Users;
+using Parlivote.Shared.Models.Identity.Exceptions;
 using Parlivote.Shared.Models.Identity.Users;
 using Parlivote.Shared.Models.Identity.Users.Exceptions;
 using RESTFulSense.Controllers;
@@ -38,6 +39,25 @@ namespace Parlivote.Core.Controllers
             }
         }
 
+        [HttpGet("attendant")]
+        public ActionResult<IQueryable<User>> GetAttendantUsers()
+        {
+            try
+            {
+                IQueryable<User> allUsers = this.userService.RetrieveAll();
+                IQueryable<User> attendantUsers = allUsers.Where(user => user.IsAttendant && user.IsLoggedIn);
+                return Ok(attendantUsers);
+            }
+            catch (UserDependencyException pollDependencyException)
+            {
+                return InternalServerError(pollDependencyException);
+            }
+            catch (UserServiceException pollServiceException)
+            {
+                return InternalServerError(pollServiceException);
+            }
+        }
+
         [HttpGet("{userId}")]
         public async Task<ActionResult<User>> GetUserById(Guid userId)
         {
@@ -53,6 +73,44 @@ namespace Parlivote.Core.Controllers
             catch (UserServiceException pollServiceException)
             {
                 return InternalServerError(pollServiceException);
+            }
+        }
+
+        [HttpGet("untracked/{userId}")]
+        public async Task<ActionResult<User>> GetUserUntrackedById(Guid userId)
+        {
+            try
+            {
+                User user = await this.userService.RetrieveUntrackedByIdAsync(userId);
+                return Ok(user);
+            }
+            catch (UserDependencyException pollDependencyException)
+            {
+                return InternalServerError(pollDependencyException);
+            }
+            catch (UserServiceException pollServiceException)
+            {
+                return InternalServerError(pollServiceException);
+            }
+        }
+
+        [HttpPut]
+        public async Task<ActionResult<User>> PutUserByAsync([FromBody] User user)
+        {
+            try
+            {
+                User updatedUser =
+                    await this.userService.ModifyUserAsync(user);
+
+                return Ok(updatedUser);
+            }
+            catch (NullUserException nullUserException)
+            {
+                return BadRequest(nullUserException);
+            }
+            catch (UserNotFoundException userNotFoundException)
+            {
+                return BadRequest(userNotFoundException);
             }
         }
     }

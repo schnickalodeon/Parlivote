@@ -43,7 +43,6 @@ public partial class StorageBroker
 
             Meeting dbMeeting = await broker.Meetings
                 .Include(m => m.Motions)
-                .Include(m => m.AttendantUsers)
                 .FirstAsync(dbMeeting => dbMeeting.Id == meeting.Id);
 
             dbMeeting.Description = meeting.Description;
@@ -53,14 +52,6 @@ public partial class StorageBroker
             List<Guid> motionIdsToAdd = meeting.Motions.Select(motion => motion.Id).Except(motionIdsInDb).ToList();
             List<Motion> motionsToAdd = await broker.Motions.Where(motion => motionIdsToAdd.Contains(motion.Id)).ToListAsync();
             dbMeeting.Motions.AddRange(motionsToAdd);
-
-            List<Guid> attendantUserIdsInDb = dbMeeting.AttendantUsers.Select(user => user.Id).ToList();
-            List<Guid> attendantsUserIdsToAdd = meeting.AttendantUsers.Select(user => user.Id).Except(attendantUserIdsInDb).ToList();
-            List<User> attendancesToAdd = await broker.Users.Where(dbUser => attendantsUserIdsToAdd.Contains(dbUser.Id)).ToListAsync();
-            List<User> attendantsToDelete = dbMeeting.AttendantUsers.Where(dbu => !meeting.AttendantUsers.Select(u => u.Id).Contains(dbu.Id)).ToList();
-
-            dbMeeting.AttendantUsers.AddRange(attendancesToAdd);
-            attendantsToDelete.ForEach(deleted => dbMeeting.AttendantUsers.Remove(deleted));
 
             EntityEntry<Meeting> updatedEntityEntry =
                 broker.Meetings.Update(dbMeeting);

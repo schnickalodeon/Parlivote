@@ -12,7 +12,20 @@ namespace Parlivote.Web.Models.Views.Motions
         public string State { get; set; }
         public Guid? MeetingId { get; set; }
         public string MeetingName { get; set; }
-        public int MeetingAttendanceCount { get; set; }
         public List<VoteView> VoteViews { get; set; }
+
+        public MotionView Clone()
+        {
+            return new MotionView
+            {
+                MeetingId = this.MeetingId,
+                MeetingName = this.MeetingName,
+                MotionId = this.MotionId,
+                Text = this.Text,
+                Version = this.Version,
+                State = this.State,
+                VoteViews = new List<VoteView>(this.VoteViews),
+            };
+        }
     }
 }

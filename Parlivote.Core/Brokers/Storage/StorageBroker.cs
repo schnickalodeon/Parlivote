@@ -23,7 +23,6 @@ public partial class StorageBroker : EFxceptionsIdentityContext<User, Role, Guid
     {
         base.OnModelCreating(modelBuilder);
         SetMeetingReference(modelBuilder);
-        AddMeetingAttendanceReference(modelBuilder);
         SetVoteEntityConfiguration(modelBuilder);
         //ApplyRefreshTokenAnnotations(modelBuilder);
     }
@@ -34,6 +33,7 @@ public partial class StorageBroker : EFxceptionsIdentityContext<User, Role, Guid
             .GetConnectionString(name: "DefaultConnection");
 
         optionsBuilder.UseSqlServer(connectionString);
+        optionsBuilder.EnableSensitiveDataLogging();
     }
 
     public override void Dispose() { }

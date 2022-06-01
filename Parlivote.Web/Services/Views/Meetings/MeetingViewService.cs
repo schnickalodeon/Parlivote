@@ -40,26 +40,6 @@ public class MeetingViewService : IMeetingViewService
         return mappedMeetingView;
     }
 
-    public async Task<MeetingView> AddAttendance(MeetingView meetingView, Guid userId)
-    {
-        User user = await this.userService.RetrieveByIdAsync(userId);
-
-        meetingView.Attendances.Add(user);
-
-        MeetingView view = await UpdateAsync(meetingView);
-
-        return view;
-    }
-
-    public async Task<MeetingView> RemoveAttendance(MeetingView meetingView, Guid userId)
-    {
-        var removed = meetingView.Attendances.RemoveAll(user => user.Id == userId);
-
-        MeetingView view = await UpdateAsync(meetingView);
-
-        return view;
-    }
-
     public async Task<List<MeetingView>> GetAllAsync()
     {
         List<Meeting> meetings =
@@ -113,7 +93,6 @@ public class MeetingViewService : IMeetingViewService
             Description = meetingView.Description,
             Start = meetingView.Start,
             Motions = meetingView.Motions?.Select(AsMotion).ToList() ?? new List<Motion>(),
-            AttendantUsers = meetingView.Attendances
         };
     }
     private static MeetingView MapToMeetingView(Meeting meeting)
@@ -124,7 +103,6 @@ public class MeetingViewService : IMeetingViewService
             Description = meeting.Description,
             Start = meeting.Start,
             Motions = meeting.Motions?.Select(AsMotionView).ToList() ?? new List<MotionView>(),
-            Attendances = meeting.AttendantUsers
         };
     }
 

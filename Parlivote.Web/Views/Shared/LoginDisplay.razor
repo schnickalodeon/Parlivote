@@ -1,5 +1,6 @@
 ﻿<AuthorizeView>
     <Authorized>
+        <AttendanceComponent />
         <a href="Identity/Account/Manage">Hello, @context.User.Identity.Name!</a>
         <button class="nav-link btn btn-link" @onclick="LogOut">Log out</button>
     </Authorized>

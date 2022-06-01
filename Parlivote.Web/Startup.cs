@@ -24,6 +24,7 @@ using Parlivote.Web.Services.Foundations.Users;
 using Parlivote.Web.Services.Foundations.Votes;
 using Parlivote.Web.Services.Views.Meetings;
 using Parlivote.Web.Services.Views.Motions;
+using Parlivote.Web.Services.Views.Users;
 using Parlivote.Web.Services.Views.Votes;
 using RESTFulSense.Clients;
 using Syncfusion.Blazor;
@@ -44,7 +45,6 @@ namespace Parlivote.Web
 
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddRazorPages(options => options.RootDirectory = "/Views/Pages");
             services.AddServerSideBlazor();
             services.AddResponseCompression(options =>
@@ -87,6 +87,7 @@ namespace Parlivote.Web
             services.AddTransient<IMotionViewService, MotionViewService>();
             services.AddTransient<IMeetingViewService, MeetingViewService>();
             services.AddTransient<IVoteViewService, VoteViewService>();
+            services.AddTransient<IUserViewService, UserViewService>();
 
             services.AddScoped<IAuthenticationService, AuthenticationService>();
             

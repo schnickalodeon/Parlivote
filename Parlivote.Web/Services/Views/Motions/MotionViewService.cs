@@ -3,27 +3,39 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using Microsoft.Build.Framework;
+using NuGet.Packaging;
+using Parlivote.Shared.Models.Identity.Users;
 using Parlivote.Shared.Models.Meetings;
 using Parlivote.Shared.Models.Motions;
 using Parlivote.Shared.Models.Votes;
+using Parlivote.Shared.Models.VoteValues;
 using Parlivote.Web.Brokers.Logging;
 using Parlivote.Web.Models.Views.Motions;
 using Parlivote.Web.Models.Views.Votes;
 using Parlivote.Web.Services.Foundations.Meetings;
 using Parlivote.Web.Services.Foundations.Motions;
+using Parlivote.Web.Services.Foundations.Users;
+using Parlivote.Web.Services.Foundations.Votes;
 
 namespace Parlivote.Web.Services.Views.Motions;
 
 public class MotionViewService : IMotionViewService
 {
     private readonly IMotionService motionService;
+    private readonly IVoteService voteService;
     private readonly IMeetingService meetingService;
+    private readonly IUserService userService;
     public MotionViewService(
         IMotionService motionService, 
-        IMeetingService meetingService)
+        IMeetingService meetingService, 
+        IUserService userService, 
+        IVoteService voteService)
     {
         this.motionService = motionService;
         this.meetingService = meetingService;
+        this.userService = userService;
+        this.voteService = voteService;
     }
     public async Task<MotionView> AddAsync(MotionView pollView)
     {
@@ -82,7 +94,34 @@ public class MotionViewService : IMotionViewService
         Motion updatedMotion =
             await this.motionService.ModifyAsync(mappedMotion);
 
-        return await MapToMotionView(updatedMotion);
+        MotionView updatedMotionView =
+            await MapToMotionView(updatedMotion);
+
+        if (motionView.State == MotionStateConverter.Pending)
+        {
+            List<Vote> votes = await AddEmptyVoteEntries(updatedMotionView);
+            List<VoteView> voteViews = votes.Select(AsVoteView).ToList();
+            updatedMotionView.VoteViews.AddRange(voteViews);
+        }
+
+        return updatedMotionView;
+    }
+
+    private async Task<List<Vote>> AddEmptyVoteEntries(MotionView motionView)
+    {
+        List<User> attendantUsers =
+            await this.userService.RetrieveAttendantAsync();
+
+        List<Vote> votes =  attendantUsers.Select(user => new Vote()
+        {
+            Id = Guid.NewGuid(),
+            MotionId = motionView.MotionId,
+            UserId = user.Id,
+            Value = VoteValue.NoValue
+        }).ToList();
+
+        await this.voteService.DeleteByMotionIdAsync(motionView.MotionId);
+        return await this.voteService.AddRangeAsync(votes);
     }
 
     public async Task<MotionView> RemoveByIdAsync(Guid motionIdToDelete)
@@ -93,7 +132,7 @@ public class MotionViewService : IMotionViewService
         return await MapToMotionView(deletedMotion);
     }
 
-    private static Motion MapToMotion(MotionView motionView)
+    private Motion MapToMotion(MotionView motionView)
     {
         return new Motion
         {
@@ -101,13 +140,28 @@ public class MotionViewService : IMotionViewService
             MeetingId = motionView.MeetingId,
             Version = motionView.Version,
             State = MotionStateConverter.FromString(motionView.State),
-            Text = motionView.Text
+            Text = motionView.Text,
+            Votes = motionView.VoteViews.Select(AsVote).ToList()
         };
     }
 
     private Func<Motion, Task<MotionView>> AsMotionView => MapToMotionView;
     private Func<Vote, VoteView> AsVoteView => MapToVoteView;
 
+    private Func<VoteView, Vote> AsVote => MapToVote;
+
+    private Vote MapToVote(VoteView voteView)
+    {
+        var vote = new Vote
+        {
+            Id = voteView.VoteId,
+            UserId = voteView.UserId,
+            MotionId = voteView.MotionId,
+            Value = voteView.Value,
+        };
+
+        return vote;
+    }
     private VoteView MapToVoteView(Vote vote)
     {
         var voteView = new VoteView
@@ -143,7 +197,6 @@ public class MotionViewService : IMotionViewService
                 await this.meetingService.RetrieveByIdWithMotionsAsync(motion.MeetingId.Value);
 
             meetingName = meeting?.Description ?? "";
-            meetingAttendance = meeting.AttendantUsers.Count;
         }
 
         return new MotionView
@@ -154,7 +207,6 @@ public class MotionViewService : IMotionViewService
             State = motion.State.GetValue(),
             Text = motion.Text,
             MeetingName = meetingName,
-            MeetingAttendanceCount = meetingAttendance,
             VoteViews = motion.Votes?.Select(AsVoteView).ToList()
         };
     }

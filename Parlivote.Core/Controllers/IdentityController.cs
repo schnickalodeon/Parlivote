@@ -5,12 +5,13 @@ using Microsoft.AspNetCore.Mvc;
 using Parlivote.Core.Services.Identity;
 using Parlivote.Shared.Models.Identity;
 using Parlivote.Shared.Models.Identity.Exceptions;
+using RESTFulSense.Controllers;
 
 namespace Parlivote.Core.Controllers
 {
     [ApiController]
     [Route("api/v1/[controller]")]
-    public class IdentityController : Controller
+    public class IdentityController : RESTFulController
     {
         private readonly IIdentityService identityService;
 
@@ -67,6 +68,28 @@ namespace Parlivote.Core.Controllers
                 return BadRequest(authFailedResponse);
             }
           
+        }
+
+        [HttpPost("logout")]
+        public async Task<ActionResult> Logout([FromBody] Guid userId)
+        {
+            try
+            {
+                bool logoutSuccessful = await this.identityService.LogOutAsync(userId);
+                return Ok();
+            }
+            catch (InvalidUserIdException invalidUserIdException)
+            {
+                return BadRequest(invalidUserIdException);
+            }
+            catch (UserNotFoundException userNotFoundException)
+            {
+                return BadRequest(userNotFoundException);
+            }
+            catch (Exception exception)
+            {
+                return InternalServerError(exception);
+            }
         }
 
         [HttpPost("refresh")]

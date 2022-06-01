@@ -107,7 +107,6 @@ public class MeetingsController : RESTFulController
         {
             IQueryable<Meeting> meetings = this.meetingService
                 .RetrieveAll()
-                .Include(meeting => meeting.AttendantUsers)
                 .Include(meeting => meeting.Motions)
                 .ThenInclude(motion => motion.Votes);
 
@@ -134,7 +133,6 @@ public class MeetingsController : RESTFulController
             Meeting meeting = await this.meetingService
                 .RetrieveAll()
                 .Include(meeting => meeting.Motions)
-                .Include(meeting => meeting.AttendantUsers)
                 .FirstOrDefaultAsync(meeting => meeting.Id == meetingId);
 
             return Ok(meeting);

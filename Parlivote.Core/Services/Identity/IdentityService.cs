@@ -8,7 +8,9 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
+using Parlivote.Core.Brokers.Logging;
 using Parlivote.Core.Brokers.Storage;
+using Parlivote.Core.Brokers.UserManagements;
 using Parlivote.Core.Configurations;
 using Parlivote.Shared.Models.Identity;
 using Parlivote.Shared.Models.Identity.Users;
@@ -21,18 +23,22 @@ public partial class IdentityService : IIdentityService
     private readonly JwtSettings jwtSettings;
     private readonly TokenValidationParameters tokenValidationParameters;
     private readonly IStorageBroker storageBroker;
+    private readonly ILoggingBroker loggingBroker;
+    private readonly IUserManagementBroker userManagementBroker;
     
 
     public IdentityService(
         UserManager<User> userManager, 
         JwtSettings jwtSettings, 
         TokenValidationParameters tokenValidationParameters, 
-        IStorageBroker storageBroker)
+        IStorageBroker storageBroker,
+        IUserManagementBroker userManagementBroker)
     {
         this.userManager = userManager;
         this.jwtSettings = jwtSettings;
         this.tokenValidationParameters = tokenValidationParameters;
         this.storageBroker = storageBroker;
+        this.userManagementBroker = userManagementBroker;
     }
 
     public async Task<AuthSuccessResponse> RegisterAsync(string email, string password)
@@ -68,11 +74,17 @@ public partial class IdentityService : IIdentityService
         User user =
             await this.userManager.FindByEmailAsync(email);
 
-        ValidateStorageUser(user);
+        ValidateEmailPasswordCombination(user);
 
         await ValidatePassword(user, password);
 
         AuthenticationResult result = await GenerateAuthenticationResultForUserAsync(user);
+
+        if (result.Success)
+        {
+            user.IsLoggedIn = true;
+            await this.storageBroker.UpdateUserAsync(user);
+        }
 
         return new AuthSuccessResponse(
             result.Token,
@@ -143,6 +155,29 @@ public partial class IdentityService : IIdentityService
             authenticationResult.Token,
             authenticationResult.Token_Expiration,
             authenticationResult.RefreshToken);
+    }
+
+    public async Task<bool> LogOutAsync(Guid userId)
+    {
+        try
+        {
+            ValidateUserId(userId);
+
+            User userToLogout =
+                await this.userManagementBroker.SelectUserByIdAsync(userId);
+
+            ValidateStorageUser(userToLogout);
+
+            userToLogout.IsLoggedIn = false;
+
+            await this.storageBroker.UpdateUserAsync(userToLogout);
+            return true;
+        }
+        catch (Exception exception)
+        {
+            this.loggingBroker.LogError(exception);
+            return false;
+        }
     }
 
     private bool IsJwtWithValidSecurityAlgorithm(SecurityToken validatedToken)

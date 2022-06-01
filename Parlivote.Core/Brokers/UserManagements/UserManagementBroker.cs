@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
+using Parlivote.Core.Brokers.Storage;
 using Parlivote.Shared.Models.Identity;
 using Parlivote.Shared.Models.Identity.Users;
 
@@ -39,14 +40,6 @@ namespace Parlivote.Core.Brokers.UserManagements
         {
             var broker = new UserManagementBroker(this.userManagement);
             await broker.userManagement.CreateAsync(user, password);
-
-            return user;
-        }
-
-        public async Task<User> UpdateUserAsync(User user)
-        {
-            var broker = new UserManagementBroker(this.userManagement);
-            await broker.userManagement.UpdateAsync(user);
 
             return user;
         }
