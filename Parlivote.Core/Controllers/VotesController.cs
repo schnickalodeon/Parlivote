@@ -136,4 +136,20 @@ public class VotesController : RESTFulController
         }
     }
 
+    [HttpDelete("ByMotion/{motionId}")]
+    public async Task<ActionResult<Vote>> DeleteVoteByMotionId(Guid motionId)
+    {
+        try
+        {
+            Vote deletedVote =
+                await this.voteService.RemoveByIdMotionIdAsync(motionId);
+
+            return Ok(deletedVote);
+        }
+        catch (Exception e)
+        {
+            return InternalServerError(e);
+        }
+    }
+
 }

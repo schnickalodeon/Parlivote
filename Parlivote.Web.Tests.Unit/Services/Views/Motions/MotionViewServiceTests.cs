@@ -10,6 +10,8 @@ using System.Linq.Expressions;
 using Parlivote.Shared.Models.Identity.Users;
 using Parlivote.Shared.Models.Meetings;
 using Parlivote.Web.Services.Foundations.Meetings;
+using Parlivote.Web.Services.Foundations.Users;
+using Parlivote.Web.Services.Foundations.Votes;
 using Tynamix.ObjectFiller;
 
 namespace Parlivote.Web.Tests.Unit.Services.Views.Motions;
@@ -18,17 +20,23 @@ public partial class MotionViewServiceTests
 {
     private readonly Mock<IMotionService> motionServiceMock;
     private readonly Mock<IMeetingService> meetingServiceMock;
+    private readonly Mock<IUserService> userService;
     private readonly IMotionViewService motionViewService;
+    private readonly Mock<IVoteService> voteService;
     private readonly ICompareLogic compareLogic;
 
     public MotionViewServiceTests()
     {
         this.motionServiceMock = new Mock<IMotionService>();
         this.meetingServiceMock = new Mock<IMeetingService>();
+        this.userService = new Mock<IUserService>();
+        this.voteService = new Mock<IVoteService>();
 
         this.motionViewService = new MotionViewService(
             this.motionServiceMock.Object,
-            this.meetingServiceMock.Object);
+            this.meetingServiceMock.Object,
+            this.userService.Object,
+            this.voteService.Object);
 
         var compareConfig = new ComparisonConfig();
         compareConfig.IgnoreProperty<Motion>(motion => motion.Id);

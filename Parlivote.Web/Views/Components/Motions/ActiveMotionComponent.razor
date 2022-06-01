@@ -1,0 +1,36 @@
+﻿<UserComponent @ref="userComponent" />
+<Condition Evaluation="activeMotion != null">
+    <Match>
+        <div class="d-flex flex-row justify-content-center align-items-center w-100">
+            <div class="card">
+                <h3 class="card-header d-flex">
+                    <span class="flex-grow-1 align-self-center">Aktive Abstimmung</span>
+                    <span class="mb-0 ms-2 badge rounded-pill bg-primary fs-5">
+                        @($"{voteCount}/{attendanceCount}")
+                    </span>
+                </h3>
+                <div class="card-body">
+                    <h5 class="card-title">@activeMotion.Text</h5>
+                    <hr/>
+                    <VoteComponent 
+                        @ref="voteComponent" 
+                        ActiveMotion="activeMotion" 
+                        AfterVoteSubmitted="UpdateVote" 
+                        OnSelectedVoteValueChanged="SetSubmitButtonCss"
+                        OnVotingFinished="OnVotingFinished"
+                        />
+                </div>
+                <div class="card-footer text-center">
+                    <button class="@submitButtonCss" @onclick="(() => voteComponent.SubmitVoteAsync())">Bestätigen</button>
+                </div>
+            </div>
+        </div>
+    </Match>
+</Condition>
+
+<Condition Evaluation="isVotingFinished">
+    <Match>
+        <MotionResultDialog @ref="motionResultDialog" MotionView="@finishedMotion" IsVisible="true" />
+    </Match>
+</Condition>
+

@@ -13,4 +13,5 @@ public interface IVoteService
     Task<Vote> RetrieveByIdAsync(Guid voteId);
     Task<Vote> ModifyAsync(Vote vote);
     Task<Vote> RemoveByIdAsync(Guid voteId);
+    Task<Vote> RemoveByIdMotionIdAsync(Guid motionId);
 }

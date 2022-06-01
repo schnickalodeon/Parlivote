@@ -35,7 +35,7 @@ public partial class ChangeMotionStateDialog : ComponentBase
     private HubConnection hubConnection;
     private bool IsConnected => this.hubConnection.State == HubConnectionState.Connected;
 
-    public async Task Show(MotionView motionView)
+    public void Show(MotionView motionView)
     {
         this.motion = motionView;
         this.stateToUpdate = MotionStateConverter.FromString(this.motion.State);
@@ -141,7 +141,7 @@ public partial class ChangeMotionStateDialog : ComponentBase
         if (IsConnected)
         {
             this.motion.State = this.stateToUpdate.GetValue();
-            await this.MotionViewService.UpdateAsync(this.motion);
+            this.motion = await this.MotionViewService.UpdateAsync(this.motion);
             await this.hubConnection.SendAsync(MotionHub.SetStateMethod, this.motion);
             this.dialog.Hide();
         }

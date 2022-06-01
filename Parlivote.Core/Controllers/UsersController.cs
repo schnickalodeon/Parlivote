@@ -39,6 +39,25 @@ namespace Parlivote.Core.Controllers
             }
         }
 
+        [HttpGet("attendant")]
+        public ActionResult<IQueryable<User>> GetAttendantUsers()
+        {
+            try
+            {
+                IQueryable<User> allUsers = this.userService.RetrieveAll();
+                IQueryable<User> attendantUsers = allUsers.Where(user => user.IsAttendant && user.IsLoggedIn);
+                return Ok(attendantUsers);
+            }
+            catch (UserDependencyException pollDependencyException)
+            {
+                return InternalServerError(pollDependencyException);
+            }
+            catch (UserServiceException pollServiceException)
+            {
+                return InternalServerError(pollServiceException);
+            }
+        }
+
         [HttpGet("{userId}")]
         public async Task<ActionResult<User>> GetUserById(Guid userId)
         {

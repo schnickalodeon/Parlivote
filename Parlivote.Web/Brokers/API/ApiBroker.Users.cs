@@ -12,6 +12,9 @@ public partial class ApiBroker
     public async Task<List<User>> GetAllUsersAsync() =>
         await this.GetAsync<List<User>>(UsersRelativeUrl);
 
+    public async Task<List<User>> GetAttendantUsersAsync() =>
+        await this.GetAsync<List<User>>($"{UsersRelativeUrl}/attendant");
+
     public async Task<User> GetUserByIdAsync(Guid userId) =>
         await this.GetAsync<User>($"{UsersRelativeUrl}/{userId}");
 

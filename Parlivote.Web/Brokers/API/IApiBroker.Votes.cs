@@ -12,4 +12,5 @@ public partial interface IApiBroker
     Task<Vote> GetVoteById(Guid voteId);
     Task<Vote> PutVoteAsync(Vote vote);
     Task<Vote> DeleteVoteById(Guid voteId);
+    Task<Vote> DeleteVoteByMotionId(Guid motionId);
 }
