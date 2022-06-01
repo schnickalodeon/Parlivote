@@ -8,11 +8,24 @@
          </div>
      </Match>
      <NotMatch>
-         <div class="d-flex flex-row justify-content-center">
-             <ButtonBase CustomCss="mx-2 e-success" Text="Ja" OnClick="(() => SetVoteValue(VoteValue.For))"/>
-             <ButtonBase CustomCss="mx-2 e-danger" Text="Nein" OnClick="(() => SetVoteValue(VoteValue.Against))"/>
-             <ButtonBase CustomCss="mx-2 e-warning" Text="Enthaltung" OnClick="(() => SetVoteValue(VoteValue.Abstention))"/>
-         </div>
+         <Condition Evaluation="@mayUserVote">
+             <Match>
+                 <div class="d-flex flex-row justify-content-center">
+                     <ButtonBase CustomCss="mx-2 e-success" Text="Ja" OnClick="(() => SetVoteValue(VoteValue.For))"/>
+                     <ButtonBase CustomCss="mx-2 e-danger" Text="Nein" OnClick="(() => SetVoteValue(VoteValue.Against))"/>
+                     <ButtonBase CustomCss="mx-2 e-warning" Text="Enthaltung" OnClick="(() => SetVoteValue(VoteValue.Abstention))"/>
+                 </div>
+             </Match>
+             <NotMatch>
+                 <div class="d-flex align-items-center">
+                     <strong class="me-2">Abstimmung läuft noch</strong>
+                     <div class="spinner-border ms-auto" role="status" aria-hidden="true"></div>
+                 </div>
+                 <div class="fs-6 text-muted mt-4"> 
+                     Um an Abstimmung teilzunehmen, "Anwesend" Checkbox setzten
+                 </div>
+             </NotMatch>
+         </Condition>
      </NotMatch>
  </Condition>
 

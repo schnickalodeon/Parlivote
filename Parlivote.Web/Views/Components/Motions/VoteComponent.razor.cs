@@ -24,6 +24,9 @@ public partial class VoteComponent: ComponentBase
     public IVoteViewService VoteViewService { get; set; }
 
     [Inject]
+    public IMotionViewService MotionViewService { get; set; }
+
+    [Inject]
     public NavigationManager NavigationManager { get; set; }
     
     [Parameter]
@@ -40,16 +43,19 @@ public partial class VoteComponent: ComponentBase
 
     private Guid userId;
 
-    private MotionView finishedMotion;
     private HubConnection voteHubHubConnection;
-    private UserComponent userComponent;
+    private HubConnection motionHubConnection;
+
+    private bool mayUserVote;
     private bool hasUserVoted;
+    private UserComponent userComponent;
     private bool isVotingFinished;
     private VoteValue selectedVoteValue;
 
     protected override async Task OnInitializedAsync()
     {
         await ConnectToVoteHub();
+        await ConnectToMotionHub();
     }
 
     protected override async Task OnParametersSetAsync()
@@ -61,8 +67,22 @@ public partial class VoteComponent: ComponentBase
 
         this.hasUserVoted =
             this.ActiveMotion.VoteViews.Any(userHasVotedCondition);
+
+        Func<VoteView, bool> userMayVoteCondition =
+            vote => vote.UserId == this.userId;
+
+        this.mayUserVote =
+            this.ActiveMotion.VoteViews.Any(userMayVoteCondition);
     }
 
+    private async Task ConnectToMotionHub()
+    {
+        this.motionHubConnection = new HubConnectionBuilder()
+            .WithUrl(NavigationManager.ToAbsoluteUri("/motionhub"))
+            .Build();
+
+        await this.motionHubConnection.StartAsync();
+    }
     private async Task ConnectToVoteHub()
     {
         this.voteHubHubConnection = new HubConnectionBuilder()
@@ -85,13 +105,9 @@ public partial class VoteComponent: ComponentBase
             await InvokeAsync(StateHasChanged);
         });
 
-        this.voteHubHubConnection.On(VoteHub.VoteFinishedMethod, async () =>
+        this.voteHubHubConnection.On<MotionView>(VoteHub.VoteFinishedMethod, async (finishedMotionView) =>
         {
-            //this.finishedMotion = finishedMotion;
-            //this.ActiveMotion = null;
-            //this.isVotingFinished = true;
-            await this.OnVotingFinished.InvokeAsync(this.ActiveMotion);
-            //await InvokeAsync(StateHasChanged);
+            await this.OnVotingFinished.InvokeAsync(finishedMotionView);
         });
 
         await this.voteHubHubConnection.StartAsync();
@@ -124,8 +140,34 @@ public partial class VoteComponent: ComponentBase
 
         if (IsVotingFinished())
         {
-            await this.voteHubHubConnection.InvokeAsync(VoteHub.VoteFinishedMethod);
+            MotionView finishedMotion = await GetUpdatedMotionResult();
+            await this.voteHubHubConnection.InvokeAsync(VoteHub.VoteFinishedMethod, finishedMotion);
+            await this.motionHubConnection.InvokeAsync(MotionHub.SetStateMethod, finishedMotion);
         }
+    }
+
+    private async Task<MotionView> GetUpdatedMotionResult()
+    {
+        MotionState state = GetMotionState();
+        this.ActiveMotion.State = state.GetValue();
+
+        MotionView updatedMotion =
+            await this.MotionViewService.UpdateAsync(this.ActiveMotion);
+
+        return updatedMotion;
+    }
+
+    private MotionState GetMotionState()
+    {
+        List<VoteView> votes = this.ActiveMotion.VoteViews;
+        float yesCount = votes.Count(vote => vote.Value == VoteValue.For);
+
+        //TODO Später auslagern
+        bool IsAccepted(int all, float yes) => (yes / all) > 0.5;
+
+        bool isMotionAccepted = IsAccepted(votes.Count, yesCount);
+
+        return isMotionAccepted ? MotionState.Accepted : MotionState.Declined;
     }
 
     private bool IsVotingFinished()

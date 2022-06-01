@@ -35,8 +35,9 @@ public partial class ChangeMotionStateDialog : ComponentBase
     private HubConnection hubConnection;
     private bool IsConnected => this.hubConnection.State == HubConnectionState.Connected;
 
-    public void Show(MotionView motionView)
+    public async Task Show(MotionView motionView)
     {
+        await LoadActiveMotion();
         this.motion = motionView;
         this.stateToUpdate = MotionStateConverter.FromString(this.motion.State);
         SetButtonEnabled();

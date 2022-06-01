@@ -60,14 +60,11 @@ public partial class ActiveMotionComponent : ComponentBase
         {
             if (motion.State == MotionStateConverter.Pending)
             {
+                this.isVotingFinished = false;
                 this.activeMotion = motion;
+                this.voteCount = motion.VoteViews.Count(vote => vote.Value != VoteValue.NoValue);
                 this.attendanceCount = motion.VoteViews.Count;
             }
-            //else if (motion.State is MotionStateConverter.Submitted)
-            //{
-            //    this.activeMotion = null;
-            //}
-
             await InvokeAsync(StateHasChanged);
         });
 
@@ -107,21 +104,12 @@ public partial class ActiveMotionComponent : ComponentBase
 
     }
 
-    private async Task OnVotingFinished()
+    private async Task OnVotingFinished(MotionView finishedMotionView)
     {
-        this.finishedMotion = this.activeMotion.Clone();
+        this.finishedMotion = finishedMotionView;
         this.activeMotion = null;
         this.isVotingFinished = true;
         await InvokeAsync(StateHasChanged);
-    }
-
-    private async Task SetMotionResult()
-    {
-        MotionState motionResult = GetMotionResult();
-        this.activeMotion.State = motionResult.GetValue();
-
-        await this.MotionViewService.UpdateAsync(this.activeMotion);
-        await this.motionHubConnection.InvokeAsync(MotionHub.SetStateMethod, this.activeMotion);
     }
 
     private MotionState GetMotionResult()

@@ -26,8 +26,8 @@ public class VoteHub : Hub
         await Clients.All.SendAsync(VoteUpdatedMethod, voteView);
     }
 
-    public async Task VoteFinished()
+    public async Task VoteFinished(MotionView finishedMotion)
     {
-        await Clients.All.SendAsync(VoteFinishedMethod);
+        await Clients.All.SendAsync(VoteFinishedMethod, finishedMotion);
     }
 }
