@@ -1,20 +1,28 @@
 ﻿<InfoDialogBase @ref="infoDialog" Title="Abstimmungsergebnis" IsVisible="@IsVisible" OnCancel="CloseAsync">
-    <h5>Abstimmung:</h5>
-    <h6>@MotionView.Text</h6>
-    <TableBase>
-        <Body>
-        <tr>
-            <td><strong>Dafür</strong></td>
-            <td>@yesCount</td>
-        </tr>
-        <tr>
-            <td><strong>Dagegen</strong></td>
-            <td>@noCount</td>
-        </tr>
-        <tr>
-            <td><strong>Enhtaltungen</strong></td>
-            <td>@abstentionCount</td>
-        </tr>
-        </Body>
-    </TableBase>
+    
+    <div class="d-flex border border-1 rounded p-2 justify-content-center align-items-center">
+        <h6 class="flex-grow-1 mb-0">@MotionView.Text</h6>
+        <span class="badge @this.statusPillCss rounded-pill" style="font-size: 1em; width: 8em;">
+            @MotionView.State
+        </span>
+    </div>
+    <div class="mt-2">
+        <h5>Stimmenverteilung:</h5>
+        <TableBase>
+            <Body>
+            <tr>
+                <td><strong>Dafür</strong></td>
+                <td>@yesCount</td>
+            </tr>
+            <tr>
+                <td><strong>Dagegen</strong></td>
+                <td>@noCount</td>
+            </tr>
+            <tr>
+                <td><strong>Enhtaltungen</strong></td>
+                <td>@abstentionCount</td>
+            </tr>
+            </Body>
+        </TableBase>
+    </div>
 </InfoDialogBase>

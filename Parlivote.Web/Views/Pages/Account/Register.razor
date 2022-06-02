@@ -1,4 +1,5 @@
 ﻿@page "/Identity/Account/Register"
+@using System.Collections.ObjectModel
 <StateEvaluation 
     State="@this.state" 
     LoadingText="Register"
@@ -16,6 +17,17 @@
 
         <FormControlBase LabelText="Passwort">
             <TextBoxBase @bind-Value="registration.Password"/>
+        </FormControlBase>
+        
+        <FormControlBase LabelText="Rolle">
+            <DropDownBase 
+                TEntity="Tuple<string,string>" 
+                TValue="string" 
+                Items="@this.roles"
+                ValueProperty="Item1"
+                TextProperty="Item2"
+                Placeholder="Rolle wählen..."
+                @bind-Value="registration.Role" />
         </FormControlBase>
         
         <Success Visible="@this.registrationSuccessul">

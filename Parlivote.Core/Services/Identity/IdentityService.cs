@@ -45,8 +45,11 @@ public partial class IdentityService : IIdentityService
         this.roleManager = roleManager;
     }
 
-    public async Task<AuthSuccessResponse> RegisterAsync(string email, string password)
+    public async Task<AuthSuccessResponse> RegisterAsync(UserRegistration registration)
     {
+        string email = registration.Email;
+        string password = registration.Password;
+
         ValidateEmailAddress(email);
 
         await ValidateUserDoesNotExist(email);
@@ -59,6 +62,8 @@ public partial class IdentityService : IIdentityService
 
         IdentityResult createdUserResult =
             await this.userManager.CreateAsync(newUser, password);
+
+        await this.userManager.AddToRoleAsync(newUser, registration.Role);
 
         ValidateCreatedUser(createdUserResult);
 

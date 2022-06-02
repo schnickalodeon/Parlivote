@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
@@ -26,7 +28,15 @@ namespace Parlivote.Web.Views.Base.Grids
         private void SetProperties()
         {
             PropertyInfo[] propertyInfos = DataItem.GetType().GetProperties();
-            PropertyInfo[] propertiesToShow = propertyInfos.Where(property => !property.Name.Contains("Id")).ToArray();
+           
+            Func<PropertyInfo, bool> containsNoId = property => !property.Name.Contains("Id");
+
+            Func<PropertyInfo, bool> isNoList = 
+                property => !(property.PropertyType.IsGenericType && (property.PropertyType.GetGenericTypeDefinition() == typeof(List<>)));
+
+            Func<PropertyInfo, bool> filter = property => (isNoList(property) && containsNoId(property));
+
+            PropertyInfo[] propertiesToShow = propertyInfos.Where(filter).ToArray();
             this.properties = propertiesToShow;
         }
 
