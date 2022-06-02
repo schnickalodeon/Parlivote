@@ -26,7 +26,7 @@ namespace Parlivote.Core.Controllers
             try
             {
                 AuthSuccessResponse authSuccessResponse =
-                    await this.identityService.RegisterAsync(userRegistration.Email, userRegistration.Password);
+                    await this.identityService.RegisterAsync(userRegistration);
 
                 return Ok(authSuccessResponse);
             }

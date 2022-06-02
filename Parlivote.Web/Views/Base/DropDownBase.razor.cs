@@ -26,7 +26,7 @@ public partial class DropDownBase<TEntity, TValue> : ComponentBase
     public bool IsDisabled { get; set; }
 
     [Parameter]
-    public IReadOnlyCollection<TEntity> Items { get; set; }
+    public List<TEntity> Items { get; set; }
 
     public bool IsEnabled => IsDisabled is false;
 

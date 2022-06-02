@@ -6,7 +6,7 @@ namespace Parlivote.Core.Services.Identity;
 
 public interface IIdentityService
 {
-    Task<AuthSuccessResponse> RegisterAsync(string email, string password);
+    Task<AuthSuccessResponse> RegisterAsync(UserRegistration userRegistration);
     Task<AuthSuccessResponse> LoginAsync(string email, string password);
     Task<AuthSuccessResponse> RefreshTokenAsync(string token, string refreshToken);
     Task<bool> LogOutAsync(Guid userId);

@@ -5,11 +5,13 @@ using Parlivote.Web.Models;
 using Parlivote.Web.Services.Authentication;
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
 namespace Parlivote.Web.Views.Pages.Account
 {
-    public partial class Register
+    public partial class Register : ComponentBase
     {
         [Inject]
         public IAuthenticationService AuthenticationService { get; set; }
@@ -22,6 +24,12 @@ namespace Parlivote.Web.Views.Pages.Account
         private string error = "";
         private bool registrationSuccessul = false;
         private IDictionary validationErrors;
+
+        protected List<Tuple<string,string>> roles = new()
+        {
+            new(Roles.CHAIR, "Präsidium"),
+            new(Roles.PARLIAMENTARIAN, "Parlamentarierin")
+        };
 
         protected override void OnAfterRender(bool firstRender)
         {
