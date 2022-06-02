@@ -4,15 +4,17 @@
 
 <StateEvaluation State="@this.state">
     <Loading>
-        <SpinnerBase Value="Meeting Data" IsVisible="true" />
+        <SpinnerBase Value="Sitzungsdaten werdeb geladen" IsVisible="true" />
     </Loading>
 
     <Content>
+        <ActiveMotionComponent />
+
         <h3>@meeting.Description</h3>
         <h5>@meeting.Start.ToString("dddd dd.MM.yy HH:mm")</h5>
 
         <div class="mt-4">
-            <MotionList Motions="@meeting.Motions" />
+            <MotionList Motions="@meeting.Motions"/>
         </div>
 
     </Content>

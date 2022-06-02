@@ -36,6 +36,8 @@ public partial class MeetingDetails : ComponentBase
             this.meeting =
                 await this.MeetingViewService.GetByIdWithMotions(Id);
             this.state = ComponentState.Content;
+
+            await InvokeAsync(StateHasChanged);
         }
         catch (Exception e)
         {
