@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
+using Parlivote.Shared.Models.Motions;
 using Parlivote.Shared.Models.VoteValues;
 using Parlivote.Web.Models.Views.Motions;
 using Parlivote.Web.Models.Views.Votes;
@@ -25,6 +26,7 @@ public partial class MotionResultDialog: ComponentBase
     private int yesCount = 0;
     private int noCount = 0;
     private int abstentionCount = 0;
+    private string statusPillCss;
 
     public void Show()
     {
@@ -43,11 +45,25 @@ public partial class MotionResultDialog: ComponentBase
         this.yesCount = votes.Count(vote => vote.Value == VoteValue.For);
         this.noCount = votes.Count(vote => vote.Value == VoteValue.Against);
         this.abstentionCount = votes.Count(vote => vote.Value == VoteValue.Abstention);
+        this.statusPillCss = GetPillCssByStatus();
     }
 
     private async Task CloseAsync()
     {
         this.IsVisible = false;
         await this.OnClose.InvokeAsync();
+    }
+
+    private string GetPillCssByStatus()
+    {
+        return MotionStateConverter.FromString(MotionView.State) switch
+        {
+            MotionState.Submitted => "bg-primary",
+            MotionState.Pending => "bg-warning",
+            MotionState.Accepted => "bg-success",
+            MotionState.Cancelled => "bg-secondary",
+            MotionState.Declined => "bg-danger",
+            _ => ""
+        };
     }
 }
