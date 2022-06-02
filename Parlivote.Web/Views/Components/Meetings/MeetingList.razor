@@ -1,6 +1,8 @@
 ﻿<div class="d-flex flex-row my-3">
-    <h3 class="me-4">Meetings </h3>
-    <ButtonBase Text="Add Meeting" OnClick="@(() => addMeetingComponent.Show())" />
+    <h3 class="me-4">Sitzungen </h3>
+    <ChairAuthorization>
+        <ButtonBase Text="Sitzung hinzufügen" OnClick="@(() => addMeetingComponent.Show())" />
+    </ChairAuthorization>
 </div>
 
 <StateEvaluation State="@this.state">

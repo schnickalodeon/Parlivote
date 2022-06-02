@@ -13,18 +13,20 @@
                 <div class="d-flex align-items-center justify-content-between h-100">
                     <ButtonBase 
                         CustomCss="btn btn-primary btn-lg mx-2" 
-                        Text="Result"
+                        Text="Ergebnis"
                         OnClick="@(() => motionResultDialog.Show())"/>
                 </div>
             </Match>
         </Condition>
         
-        <div class="d-flex align-items-center justify-content-between h-100">
-            <ButtonBase 
-                CustomCss="btn btn-primary btn-lg mx-2" 
-                Text="Edit"
-                OnClick="@(() => editMotionComponent.Show(Motion))"/>
-        </div>
+        <ChairAuthorization>
+            <div class="d-flex align-items-center justify-content-between h-100">
+                <ButtonBase 
+                    CustomCss="btn btn-primary btn-lg mx-2" 
+                    Text="Edit"
+                    OnClick="@(() => editMotionComponent.Show(Motion))"/>
+            </div>
+        </ChairAuthorization>
     </Additional>
 </ListGroupItem>
 

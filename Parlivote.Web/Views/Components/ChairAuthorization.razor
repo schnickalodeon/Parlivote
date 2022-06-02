@@ -1,0 +1,6 @@
+﻿@using Parlivote.Shared.Models.Identity
+<AuthorizeView Roles="@Roles.CHAIR">
+    <Authorized>
+        @ChildContent
+    </Authorized>
+</AuthorizeView>
