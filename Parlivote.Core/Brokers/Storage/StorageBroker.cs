@@ -22,6 +22,7 @@ public partial class StorageBroker : EFxceptionsIdentityContext<User, Role, Guid
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+        SeedRoles(modelBuilder);
         SetMeetingReference(modelBuilder);
         SetVoteEntityConfiguration(modelBuilder);
         //ApplyRefreshTokenAnnotations(modelBuilder);
