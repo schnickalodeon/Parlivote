@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Reflection;
 using Microsoft.AspNetCore.Components;
 
@@ -19,7 +20,11 @@ namespace Parlivote.Web.Views.Base.Grids
         private void SetProperties()
         {
             PropertyInfo[] propertyInfos = DataItem.GetType().GetProperties();
-            PropertyInfo[] propertiesToShow = propertyInfos.Where(property => !property.Name.Contains("Id")).ToArray();
+
+            Func<PropertyInfo, bool> propertyFilter =
+                property => !property.Name.Contains("Id") || !property.PropertyType.IsGenericType;
+
+            PropertyInfo[] propertiesToShow = propertyInfos.Where(propertyFilter).ToArray();
             this.properties = propertiesToShow;
         }
 
