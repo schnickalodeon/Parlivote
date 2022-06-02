@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using FluentAssertions.Equivalency;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.SignalR.Client;
@@ -29,7 +30,6 @@ public partial class MotionListItem : ComponentBase
     private string statusPillCss = "";
     private HubConnection hubConnection;
     private EditMotionComponent editMotionComponent;
-    private ChangeMotionStateDialog changeMotionStateDialog;
     private MotionResultDialog motionResultDialog;
     private bool existsActiveMeeting = false;
     private bool resultsAvailable = false;
@@ -47,16 +47,10 @@ public partial class MotionListItem : ComponentBase
             (Motion is not null &&
              (Motion.State is MotionStateConverter.Accepted or MotionStateConverter.Declined));
     }
-
-    private async Task GetActiveMotion()
+    protected override void OnParametersSet()
     {
-        MotionView activeMotion =
-            await this.MotionViewService.GetActiveAsync();
-
-        this.existsActiveMeeting = activeMotion is not null;
-        await InvokeAsync(StateHasChanged);
+        this.statusPillCss = GetPillCssByStatus();
     }
-
     private async Task ConnectToMotionHub()
     {
         this.hubConnection = new HubConnectionBuilder()
@@ -76,10 +70,23 @@ public partial class MotionListItem : ComponentBase
 
         await this.hubConnection.StartAsync();
     }
-
-    protected override void OnParametersSet()
+    private async Task GetActiveMotion()
     {
-        this.statusPillCss = GetPillCssByStatus();
+        MotionView activeMotion =
+            await this.MotionViewService.GetActiveAsync();
+
+        this.existsActiveMeeting = activeMotion is not null;
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private void ShowResult()
+    {
+        if (!this.resultsAvailable)
+        {
+            return;
+        }
+
+        this.motionResultDialog.Show();
     }
 
     private string GetPillCssByStatus()

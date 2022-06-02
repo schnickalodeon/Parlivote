@@ -1,0 +1,38 @@
+﻿@using Parlivote.Shared.Models.Motions
+
+<div class="p-2 border border-2">
+<div class="d-flex flex-row align-items-center justify-content-center">
+    <ButtonBase
+        @ref="pendingButton"
+        OnClick="(() => SetState(MotionState.Pending))"
+        Text="Aussehend"
+        Disabled="!pendingButtonEnabled"
+        CustomCss="mx-2 e-warning"/>
+
+    <ButtonBase
+        @ref="cancelledButton"
+        OnClick="(() => SetState(MotionState.Cancelled))"
+        Text="Abgebrochen"
+        Disabled="!cancelledButtonEnabled"
+        CustomCss="mx-2 bg-secondary"/>
+
+    <ButtonBase
+        @ref="submittedButton"
+        OnClick="(() => SetState(MotionState.Submitted))"
+        Text="Eingereicht"
+        Disabled="!submittedButtonEnabled"
+        CustomCss="mx-2"/>
+</div>
+<hr class="mb-0"/>
+<div class="d-flex align-items-center justify-content-center h-100 mt-2 p-2">
+    <span class="badge @GetPillCssByStatus(initialState) rounded-pill me-4" style="font-size: 1em;">
+        @initialState.GetValue()
+    </span>
+    
+    <SfIcon Name="IconName.ArrowRight" Size="IconSize.Large" />
+
+    <span class="badge @GetPillCssByStatus(this.Motion.State) rounded-pill ms-4" style="font-size: 1em;">
+        @this.Motion.State
+    </span>
+</div>
+</div>

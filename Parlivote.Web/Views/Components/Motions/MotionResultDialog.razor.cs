@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Parlivote.Shared.Models.VoteValues;
 using Parlivote.Web.Models.Views.Motions;
@@ -16,6 +17,9 @@ public partial class MotionResultDialog: ComponentBase
 
     [Parameter]
     public bool IsVisible { get; set; } = false;
+
+    [Parameter]
+    public EventCallback OnClose { get; set; }
 
     private InfoDialogBase infoDialog;
     private int yesCount = 0;
@@ -39,5 +43,11 @@ public partial class MotionResultDialog: ComponentBase
         this.yesCount = votes.Count(vote => vote.Value == VoteValue.For);
         this.noCount = votes.Count(vote => vote.Value == VoteValue.Against);
         this.abstentionCount = votes.Count(vote => vote.Value == VoteValue.Abstention);
+    }
+
+    private async Task CloseAsync()
+    {
+        this.IsVisible = false;
+        await this.OnClose.InvokeAsync();
     }
 }

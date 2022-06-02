@@ -1,4 +1,4 @@
-﻿<InfoDialogBase @ref="infoDialog" Title="Abstimmungsergebnis" IsVisible="@IsVisible">
+﻿<InfoDialogBase @ref="infoDialog" Title="Abstimmungsergebnis" IsVisible="@IsVisible" OnCancel="CloseAsync">
     <h5>Abstimmung:</h5>
     <h6>@MotionView.Text</h6>
     <TableBase>

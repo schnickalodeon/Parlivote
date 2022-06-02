@@ -30,7 +30,11 @@
 
 <Condition Evaluation="isVotingFinished">
     <Match>
-        <MotionResultDialog @ref="motionResultDialog" MotionView="@finishedMotion" IsVisible="true" />
+        <MotionResultDialog 
+            @ref="motionResultDialog" 
+            MotionView="@finishedMotion"
+            IsVisible="true" 
+            OnClose="(() => this.isVotingFinished = false)"/>
     </Match>
 </Condition>
 

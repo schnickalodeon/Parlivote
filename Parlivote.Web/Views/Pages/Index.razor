@@ -1,10 +1,12 @@
 ﻿@page "/"
 @using Parlivote.Shared.Models.Identity
+@using System.Security.Claims
 
 <h2>Parlivote</h2>
 <AuthorizeView>
     <Authorized>
         <h4>Welcome @context.User.Identity.Name</h4>
+        <h5>Role: @context.User.Claims.FirstOrDefault(claim => claim.Type == "role")?.Value</h5>
     </Authorized>
     <NotAuthorized>
         <h4>Please <a href="/Identity/Account/Login">Login</a></h4>
