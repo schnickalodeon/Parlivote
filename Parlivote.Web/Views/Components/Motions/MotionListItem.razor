@@ -4,7 +4,7 @@
     <Body>@($"Version {Motion.Version}")</Body>
     <Additional>
         <div class="d-flex align-items-center justify-content-center h-100 me-4">
-            <span class="badge @this.statusPillCss rounded-pill" style="font-size: 1em; width: 8em;" @onclick="(() => changeMotionStateDialog.Show(this.Motion))">
+            <span class="badge @this.statusPillCss rounded-pill" style="font-size: 1em; width: 8em;">
                 @Motion.State
             </span>
         </div>
@@ -31,5 +31,4 @@
 </ListGroupItem>
 
 <EditMotionComponent @ref="this.editMotionComponent" OnMotionSaved="@this.OnMotionChanged" />
-<ChangeMotionStateDialog @ref="changeMotionStateDialog"/>
 <MotionResultDialog @ref="this.motionResultDialog" MotionView="Motion" />

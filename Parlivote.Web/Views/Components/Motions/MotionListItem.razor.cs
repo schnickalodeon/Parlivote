@@ -29,7 +29,6 @@ public partial class MotionListItem : ComponentBase
     private string statusPillCss = "";
     private HubConnection hubConnection;
     private EditMotionComponent editMotionComponent;
-    private ChangeMotionStateDialog changeMotionStateDialog;
     private MotionResultDialog motionResultDialog;
     private bool existsActiveMeeting = false;
     private bool resultsAvailable = false;

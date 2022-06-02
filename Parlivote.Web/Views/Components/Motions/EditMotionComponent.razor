@@ -16,6 +16,10 @@
         <MeetingDropDown @bind-MeetingId="motionView.MeetingId"/>
     </FormControlBase>
 
+    <FormControlBase LabelText="Status">
+        <ChangeMotionStateComponent Motion="@this.motionView" />
+    </FormControlBase>
+
     <Condition Evaluation="@(this.error.IsNullOrWhitespace() == false)">
         <Match>
             <ValidationSummaryBase ValidationErrors="@this.validationErrors" />

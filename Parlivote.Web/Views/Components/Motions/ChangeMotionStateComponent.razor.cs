@@ -11,7 +11,7 @@ using Parlivote.Web.Views.Base;
 
 namespace Parlivote.Web.Views.Components.Motions;
 
-public partial class ChangeMotionStateDialog : ComponentBase
+public partial class ChangeMotionStateComponent : ComponentBase
 {
     [Inject]
     public NavigationManager NavigationManager { get; set; }
@@ -19,9 +19,8 @@ public partial class ChangeMotionStateDialog : ComponentBase
     [Inject]
     public IMotionViewService MotionViewService { get; set; }
 
-    private MotionView motion;
-    private MotionState stateToUpdate;
-    private DialogBase dialog;
+    [Parameter]
+    public MotionView Motion { get; set; }
 
     private ButtonBase submittedButton;
     private ButtonBase pendingButton;
@@ -31,28 +30,14 @@ public partial class ChangeMotionStateDialog : ComponentBase
     private bool pendingButtonEnabled;
     private bool cancelledButtonEnabled;
     private bool existsActiveMotion;
+    private MotionState initialState = MotionState.Unset;
 
-    private HubConnection hubConnection;
-    private bool IsConnected => this.hubConnection.State == HubConnectionState.Connected;
-
-    public async Task Show(MotionView motionView)
+    protected override async Task OnParametersSetAsync()
     {
+        this.initialState = MotionStateConverter.FromString(Motion.State);
         await LoadActiveMotion();
-        this.motion = motionView;
-        this.stateToUpdate = MotionStateConverter.FromString(this.motion.State);
-        SetButtonEnabled();
-        this.dialog.Show();
+        await SetButtonEnabled();
     }
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            await ConnectToMotionHub();
-            await LoadActiveMotion();
-        }
-    }
-
     private async Task LoadActiveMotion()
     {
         try
@@ -69,9 +54,10 @@ public partial class ChangeMotionStateDialog : ComponentBase
         }
     }
 
-    private void SetButtonEnabled()
+    private async Task SetButtonEnabled()
     {
-        switch (this.stateToUpdate)
+        MotionState state = MotionStateConverter.FromString(this.Motion.State);
+        switch (state)
         {
             case MotionState.Submitted: 
                 this.submittedButtonEnabled = false;
@@ -102,20 +88,13 @@ public partial class ChangeMotionStateDialog : ComponentBase
             default:
                 throw new InvalidEnumArgumentException("This is an invalid argument for the motion state");
         }
-    }
 
-    private async Task ConnectToMotionHub()
-    {
-        this.hubConnection = new HubConnectionBuilder()
-            .WithUrl(NavigationManager.ToAbsoluteUri("/motionhub"))
-            .Build();
-
-        await this.hubConnection.StartAsync();
+        await InvokeAsync(StateHasChanged);
     }
 
     private void SetState(MotionState state)
     {
-        this.stateToUpdate = state;
+        this.Motion.State = state.GetValue();
         StateHasChanged();
     }
 
@@ -136,16 +115,4 @@ public partial class ChangeMotionStateDialog : ComponentBase
             _ => ""
         };
     }
-
-    private async Task SaveState()
-    {
-        if (IsConnected)
-        {
-            this.motion.State = this.stateToUpdate.GetValue();
-            this.motion = await this.MotionViewService.UpdateAsync(this.motion);
-            await this.hubConnection.SendAsync(MotionHub.SetStateMethod, this.motion);
-            this.dialog.Hide();
-        }
-    }
-
 }
