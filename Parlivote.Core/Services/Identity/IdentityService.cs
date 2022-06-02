@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Runtime.InteropServices.ComTypes;
@@ -20,6 +21,7 @@ namespace Parlivote.Core.Services.Identity;
 public partial class IdentityService : IIdentityService
 {
     private readonly UserManager<User> userManager;
+    private readonly RoleManager<Role> roleManager;
     private readonly JwtSettings jwtSettings;
     private readonly TokenValidationParameters tokenValidationParameters;
     private readonly IStorageBroker storageBroker;
@@ -32,13 +34,15 @@ public partial class IdentityService : IIdentityService
         JwtSettings jwtSettings, 
         TokenValidationParameters tokenValidationParameters, 
         IStorageBroker storageBroker,
-        IUserManagementBroker userManagementBroker)
+        IUserManagementBroker userManagementBroker, 
+        RoleManager<Role> roleManager)
     {
         this.userManager = userManager;
         this.jwtSettings = jwtSettings;
         this.tokenValidationParameters = tokenValidationParameters;
         this.storageBroker = storageBroker;
         this.userManagementBroker = userManagementBroker;
+        this.roleManager = roleManager;
     }
 
     public async Task<AuthSuccessResponse> RegisterAsync(string email, string password)
@@ -211,12 +215,16 @@ public partial class IdentityService : IIdentityService
         byte[] key = Encoding.ASCII.GetBytes(this.jwtSettings.Secret);
 
         DateTime expiration = DateTime.UtcNow.Add(this.jwtSettings.TokenLifeTime);
+
+        IList<string> roles = await this.userManager.GetRolesAsync(user);
+        string role = roles.FirstOrDefault(string.Empty);
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(new[]
             {
                 new Claim(ClaimTypes.Email, user.Email),
                 new Claim(ClaimTypes.Name, user.Email),
+                new Claim(ClaimTypes.Role, role),
                 new Claim("id", user.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             }),
