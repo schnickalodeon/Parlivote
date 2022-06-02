@@ -4,26 +4,16 @@
     <Body>@($"Version {Motion.Version}")</Body>
     <Additional>
         <div class="d-flex align-items-center justify-content-center h-100 me-4">
-            <span class="badge @this.statusPillCss rounded-pill" style="font-size: 1em; width: 8em;">
+            <span class="badge @this.statusPillCss rounded-pill" style="font-size: 1em; width: 8em;" @onclick="ShowResult">
                 @Motion.State
             </span>
         </div>
-        <Condition Evaluation="@resultsAvailable">
-            <Match>
-                <div class="d-flex align-items-center justify-content-between h-100">
-                    <ButtonBase 
-                        CustomCss="btn btn-primary btn-lg mx-2" 
-                        Text="Ergebnis"
-                        OnClick="@(() => motionResultDialog.Show())"/>
-                </div>
-            </Match>
-        </Condition>
-        
+
         <ChairAuthorization>
             <div class="d-flex align-items-center justify-content-between h-100">
                 <ButtonBase 
                     CustomCss="btn btn-primary btn-lg mx-2" 
-                    Text="Edit"
+                    Text="Bearbeiten"
                     OnClick="@(() => editMotionComponent.Show(Motion))"/>
             </div>
         </ChairAuthorization>
