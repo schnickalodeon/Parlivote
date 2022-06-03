@@ -14,6 +14,7 @@ using Parlivote.Web.Models.Views.Motions;
 using Parlivote.Web.Models.Views.Votes;
 using Parlivote.Web.Services.Views.Motions;
 using Parlivote.Web.Services.Views.Votes;
+using Parlivote.Web.Views.Components.Users;
 using Syncfusion.Blazor.PivotView.Internal;
 
 namespace Parlivote.Web.Views.Components.Motions;
@@ -113,7 +114,7 @@ public partial class VoteComponent: ComponentBase
         await this.voteHubHubConnection.StartAsync();
     }
 
-    private async Task SetVoteValue(VoteValue value)
+    private async void SetVoteValue(VoteValue value)
     {
         this.selectedVoteValue = value;
         await this.OnSelectedVoteValueChanged.InvokeAsync(value);

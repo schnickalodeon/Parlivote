@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Parlivote.Core.Brokers.Logging;
@@ -52,6 +53,13 @@ public partial class UserService : IUserService
 
     public IQueryable<User> RetrieveAll() =>
         TryCatch(() => this.userManagementBroker.SelectAllUsers());
+
+    public Task<List<User>> RetrieveAllApplicants() =>
+        TryCatch(async () =>
+        {
+            List<User> users = await this.userManagementBroker.SelectUserByRoleAsync("applicant");
+            return users;
+        });
 
     public Task<User> ModifyUserAsync(User user) =>
         TryCatch(async () =>

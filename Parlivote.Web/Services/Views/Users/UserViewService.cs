@@ -31,6 +31,11 @@ public class UserViewService : IUserViewService
         return attendantCount;
     }
 
+    public async Task<List<User>> RetrieveApplicants()
+    {
+        return await this.userService.RetrieveApplicantsAsync();
+    }
+
     public async Task<bool> IsAttendant(Guid userId)
     {
         User user = await this.userService.RetrieveByIdAsync(userId);

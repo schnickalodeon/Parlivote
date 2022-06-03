@@ -18,7 +18,7 @@ public partial class MotionService
         Validate(
             (IsInvalid(poll.Id), nameof(Motion.Id)),
             (IsInvalid(poll.Text), nameof(Motion.Text)),
-            (IsInvalid(poll.Version), nameof(Motion.Version))
+            (IsInvalid(poll.ApplicantId), nameof(Motion.ApplicantId))
             );
     }
 
@@ -45,6 +45,12 @@ public partial class MotionService
     private static dynamic IsInvalid(Guid id) => new
     {
         Condition = id == Guid.Empty,
+        Message = ExceptionMessages.INVALID_ID
+    };
+
+    private static dynamic IsInvalid(Guid? id) => new
+    {
+        Condition = !id.HasValue || id == Guid.Empty,
         Message = ExceptionMessages.INVALID_ID
     };
 

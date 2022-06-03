@@ -25,6 +25,9 @@ public partial class UserService : IUserService
     public Task<List<User>> RetrieveAttendantAsync() =>
         TryCatch(async () => await this.apiBroker.GetAttendantUsersAsync());
 
+    public Task<List<User>> RetrieveApplicantsAsync() =>
+        TryCatch(async () => await this.apiBroker.GetApplicantsAsync());
+
     public Task<User> RetrieveByIdAsync(Guid userId) =>
         TryCatch(async () =>
         {

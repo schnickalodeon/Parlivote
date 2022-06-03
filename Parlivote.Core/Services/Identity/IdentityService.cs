@@ -56,6 +56,8 @@ public partial class IdentityService : IIdentityService
 
         var newUser = new User
         {
+            FirstName = registration.FirstName,
+            LastName = registration.LastName,
             Email = email,
             UserName = email
         };
@@ -228,7 +230,7 @@ public partial class IdentityService : IIdentityService
             Subject = new ClaimsIdentity(new[]
             {
                 new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.Name, user.Email),
+                new Claim(ClaimTypes.Name, user.FirstName),
                 new Claim(ClaimTypes.Role, role),
                 new Claim("id", user.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())

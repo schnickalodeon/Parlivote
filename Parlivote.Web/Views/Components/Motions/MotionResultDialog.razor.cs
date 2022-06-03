@@ -42,6 +42,11 @@ public partial class MotionResultDialog: ComponentBase
     private void SetVoteResults()
     {
         List<VoteView> votes = MotionView.VoteViews;
+        if (votes is null)
+        {
+            return;
+        }
+
         this.yesCount = votes.Count(vote => vote.Value == VoteValue.For);
         this.noCount = votes.Count(vote => vote.Value == VoteValue.Against);
         this.abstentionCount = votes.Count(vote => vote.Value == VoteValue.Abstention);

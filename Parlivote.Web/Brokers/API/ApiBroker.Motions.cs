@@ -14,7 +14,10 @@ public partial class ApiBroker
 
     public async Task<List<Motion>> GetAllMotionsAsync() =>
         await this.GetAsync<List<Motion>>(MotionsRelativeUrl);
-    
+
+    public async Task<List<Motion>> GetByApplicantIdAsync(Guid applicantId) =>
+        await this.GetAsync<List<Motion>>($"{MotionsRelativeUrl}/applicant/{applicantId}");
+
     public async Task<Motion> GetMotionById(Guid pollId) =>
         await this.GetAsync<Motion>($"{MotionsRelativeUrl}/{pollId}");
 

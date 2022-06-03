@@ -1,7 +1,7 @@
 ﻿@using Parlivote.Shared.Models.Motions
 <ListGroupItem>
     <Title>@Motion.Text</Title>
-    <Body>@($"Version {Motion.Version}")</Body>
+    <Body>@Motion.ApplicantName</Body>
     <Additional>
         <div class="d-flex align-items-center justify-content-center h-100 me-4">
             <span class="badge @this.statusPillCss rounded-pill" style="font-size: 1em; width: 8em;" @onclick="ShowResult">

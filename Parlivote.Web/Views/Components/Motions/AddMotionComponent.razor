@@ -1,4 +1,7 @@
-﻿<DialogBase @ref="@this.dialog"
+﻿@using Parlivote.Web.Views.Components.Users
+@using Parlivote.Shared.Models.Identity
+<UserComponent @ref="userComponent" />
+<DialogBase @ref="@this.dialog"
             Title="Add Motion"
             SubmitButtonText="Add"
             CancelButtonText="Cancel"
@@ -9,6 +12,15 @@
     <FormControlBase LabelText="Beschreibung">
         <TextBoxBase @bind-Value="motionView.Text"/>
     </FormControlBase>
+    
+    @*Applicant*@
+    <Condition Evaluation="this.role == Roles.CHAIR">
+        <Match>
+            <FormControlBase LabelText="Antragssteller:in">
+                <ApplicantsDropDown @bind-ApplicantId="motionView.ApplicantId" />
+            </FormControlBase>
+        </Match>
+    </Condition>
 
     <Condition Evaluation="@(this.error.IsNullOrWhitespace() == false)">
         <Match>

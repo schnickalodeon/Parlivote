@@ -1,6 +1,7 @@
 ﻿@page "/motions"
 @attribute [Authorize]
 @using Parlivote.Web.Views.Components.Motions
+@using Parlivote.Web.Views.Components.Users
 @using Parlivote.Web.Models.Views.Motions
 
 <StateEvaluation State="@this.state">
@@ -9,15 +10,20 @@
     </Loading>
 
     <Content>
-        <CrudDataGridBase 
-            DataItems="Motions" 
+        <div class="d-flex flex-row my-3">
+            <h3 class="me-4">Anträge </h3>
+            <ButtonBase Text="Antrag anlegen" OnClick="@(() => addMotionComponent.Show())" />
+        </div>
+
+        <CrudDataGridBase
+            DataItems="motions"
             OnEditClicked="@((MotionView view) => editMotionComponent.Show(view))"
             OnDeleteClicked="@((MotionView view) => deleteMotionComponent.Show(view))">
             <HeaderTemplate>
-                <th>Beschreibung</th>
-                <th>Version</th>
+                <th>Titel</th>
                 <th>Status</th>
-                <th>Meeting</th>
+                <th>Antragssteller:in</th>
+                <th>Sitzung</th>
             </HeaderTemplate>
         </CrudDataGridBase>
     </Content>
@@ -28,5 +34,6 @@
 </StateEvaluation>
 
 <EditMotionComponent @ref="editMotionComponent" OnMotionSaved="LoadMotions"/>
+<AddMotionComponent @ref="addMotionComponent" OnMotionAdded="LoadMotions"/>
 <DeleteMotionDialog @ref="deleteMotionComponent" OnDeleted="LoadMotions"/>
 
