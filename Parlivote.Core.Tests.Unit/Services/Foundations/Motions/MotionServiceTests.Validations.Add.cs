@@ -54,7 +54,8 @@ public partial class MotionServiceTests
         var invalidMotion = new Motion
         {
             Id = Guid.Empty,
-            Text = invalidText
+            ApplicantId = Guid.Empty,
+            Text = invalidText,
         };
 
         var invalidMotionException =
@@ -65,12 +66,12 @@ public partial class MotionServiceTests
             values: ExceptionMessages.INVALID_ID);
 
         invalidMotionException.AddData(
-            key: nameof(Motion.Text),
-            values: ExceptionMessages.INVALID_STRING);
+            key: nameof(Motion.ApplicantId),
+            values: ExceptionMessages.INVALID_ID);
 
         invalidMotionException.AddData(
-            key: nameof(Motion.Version),
-            values: ExceptionMessages.Motions.INVALID_VERSION);
+            key: nameof(Motion.Text),
+            values: ExceptionMessages.INVALID_STRING);
 
         var expectedMotionValidationException
             = new MotionValidationException(invalidMotionException);

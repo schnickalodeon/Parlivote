@@ -40,6 +40,7 @@ public partial class MotionViewServiceTests
                     State = ((MotionState)property.State).GetValue(),
                     Text = property.Text,
                     MeetingName = "",
+                    ApplicantName = "",
                 }).ToList();
 
         List<MotionView> expectedMotionViews = randomMotionViews;

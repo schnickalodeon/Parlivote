@@ -1,10 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Moq;
+using Parlivote.Shared.Models.Identity.Users;
 using Parlivote.Shared.Models.Meetings;
 using Parlivote.Shared.Models.Motions;
+using Parlivote.Shared.Models.Votes;
 using Parlivote.Web.Models.Views.Motions;
+using Parlivote.Web.Models.Views.Votes;
 using Xunit;
 
 namespace Parlivote.Web.Tests.Unit.Services.Views.Motions;
@@ -24,6 +28,9 @@ public partial class MotionViewServiceTests
             State = ((MotionState)someMotionViewInput.State).GetValue(),
             Text = someMotionViewInput.Text,
             MeetingName = someMotionViewInput.Meeting.Description,
+            ApplicantId = someMotionViewInput.ApplicantId,
+            ApplicantName = someMotionViewInput.AppicantName,
+            VoteViews = new List<VoteView>()
         };
 
         MotionView inputMotionView = someMotionView;
@@ -36,7 +43,9 @@ public partial class MotionViewServiceTests
             State = someMotionViewInput.State,
             Text = someMotionViewInput.Text,
             Version = someMotionViewInput.Version,
-            Meeting = null
+            ApplicantId = someMotionViewInput.ApplicantId,
+            Meeting = null,
+            Votes = new List<Vote>()
         };
 
         Motion expectedInputMotion = someMotion;
@@ -46,6 +55,10 @@ public partial class MotionViewServiceTests
         this.meetingServiceMock.Setup(service =>
             service.RetrieveByIdWithMotionsAsync(It.IsAny<Guid>()))
                 .ReturnsAsync(someMeeting);
+
+        this.userServiceMock.Setup(service =>
+            service.RetrieveByIdAsync(It.IsAny<Guid>()))
+                .ReturnsAsync(new User() {FirstName = someMotionViewInput.AppicantName});
 
         this.motionServiceMock.Setup(service =>
             service.ModifyAsync(It.IsAny<Motion>()))
