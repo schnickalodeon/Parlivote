@@ -7,6 +7,7 @@ using Parlivote.Web.Views.Base;
 using System;
 using System.Collections;
 using System.Threading.Tasks;
+using Parlivote.Shared.Models.Identity;
 using Parlivote.Web.Views.Components.Users;
 
 namespace Parlivote.Web.Views.Components.Motions;
@@ -28,14 +29,28 @@ public partial class AddMotionComponent
     
     public async Task Show(MeetingView meeting = null, int version = 1)
     {
-        this.role = await this.userComponent.GetUserRole();
+        Guid? applicantId = await GetApplicantId();
+
         this.motionView = new MotionView()
         {
+            ApplicantId = applicantId,
             MeetingId = meeting?.Id,
             Version = version
         };
 
         this.dialog.Show();
+    }
+
+    private async Task<Guid?> GetApplicantId()
+    {
+        this.role = await this.userComponent.GetUserRole();
+
+        if (this.role == Roles.APPLICANT)
+        {
+            return await this.userComponent.GetUserId();
+        }
+
+        return null;
     }
 
     private async void AddMotionViewAsync()

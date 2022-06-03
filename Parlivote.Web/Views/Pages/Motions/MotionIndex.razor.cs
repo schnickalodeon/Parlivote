@@ -15,6 +15,7 @@ public partial class MotionIndex : ComponentBase
     public IMotionViewService MotionViewService { get; set; }
 
     private ComponentState state;
+    private AddMotionComponent addMotionComponent;
     private EditMotionComponent editMotionComponent;
     private DeleteMotionDialog deleteMotionComponent;
 
