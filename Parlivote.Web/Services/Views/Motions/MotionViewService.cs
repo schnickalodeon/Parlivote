@@ -45,7 +45,6 @@ public class MotionViewService : IMotionViewService
             MeetingId = motionView.MeetingId,
             State = MotionState.Submitted,
             Text = motionView.Text,
-            Version = motionView.Version,
             ApplicantId = motionView.ApplicantId
         };
 
@@ -70,6 +69,17 @@ public class MotionViewService : IMotionViewService
     {
         List<Motion> motions =
             await this.motionService.RetrieveAllAsync();
+
+        List<MotionView> motionViews =
+            await MapToMotionViews(motions);
+
+        return motionViews;
+    }
+
+    public async Task<List<MotionView>> GetMyWithMeetingAsync(Guid applicantId)
+    {
+        List<Motion> motions =
+            await this.motionService.RetrieveByApplicantId(applicantId);
 
         List<MotionView> motionViews =
             await MapToMotionViews(motions);
@@ -141,11 +151,10 @@ public class MotionViewService : IMotionViewService
         {
             Id = motionView.MotionId,
             MeetingId = motionView.MeetingId,
-            Version = motionView.Version,
             ApplicantId = motionView.ApplicantId,
             State = MotionStateConverter.FromString(motionView.State),
             Text = motionView.Text,
-            Votes = motionView.VoteViews.Select(AsVote).ToList()
+            Votes = motionView.VoteViews?.Select(AsVote).ToList() ?? new List<Vote>()
         };
     }
     private async Task<MotionView> MapToMotionView(Motion motion)
@@ -156,7 +165,6 @@ public class MotionViewService : IMotionViewService
         return new MotionView
         {
             MotionId = motion.Id,
-            Version = motion.Version,
             MeetingId = motion.MeetingId,
             ApplicantId = motion.ApplicantId,
             ApplicantName = applicantName,

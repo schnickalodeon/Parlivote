@@ -35,7 +35,6 @@ public partial class AddMotionComponent
         {
             ApplicantId = applicantId,
             MeetingId = meeting?.Id,
-            Version = version
         };
 
         this.dialog.Show();

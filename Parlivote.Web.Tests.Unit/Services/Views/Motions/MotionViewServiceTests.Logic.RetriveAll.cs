@@ -37,7 +37,6 @@ public partial class MotionViewServiceTests
                 new MotionView
                 {
                     MotionId = property.Id,
-                    Version = property.Version,
                     State = ((MotionState)property.State).GetValue(),
                     Text = property.Text,
                     MeetingName = "",

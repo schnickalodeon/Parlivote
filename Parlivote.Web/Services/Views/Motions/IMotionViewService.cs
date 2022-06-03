@@ -12,6 +12,7 @@ public interface IMotionViewService
     Task<MotionView> AddAsync(MotionView motionView);
     Task<List<MotionView>> GetAllAsync();
     Task<List<MotionView>> GetAllWithMeetingAsync();
+    Task<List<MotionView>> GetMyWithMeetingAsync(Guid applicantId);
     Task<MotionView> GetActiveAsync();
     Task<MotionView> UpdateAsync(MotionView motionView);
     Task<MotionView> RemoveByIdAsync(Guid motionIdToDelete);

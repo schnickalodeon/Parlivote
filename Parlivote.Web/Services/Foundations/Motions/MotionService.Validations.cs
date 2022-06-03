@@ -13,8 +13,7 @@ public partial class MotionService
 
         Validate(
             (IsInvalid(poll.Id), nameof(Motion.Id)),
-            (IsInvalid(poll.Text), nameof(Motion.Text)),
-            (IsInvalid(poll.Version), nameof(Motion.Version))
+            (IsInvalid(poll.Text), nameof(Motion.Text))
         );
     }
 

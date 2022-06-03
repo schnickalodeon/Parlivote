@@ -32,6 +32,9 @@ public partial class MotionService : IMotionService
             return await this.apiBroker.GetAllMotionsAsync();
         });
 
+    public Task<List<Motion>> RetrieveByApplicantId(Guid applicantId) =>
+        TryCatch(async () => await this.apiBroker.GetByApplicantIdAsync(applicantId));
+
     public async Task<Motion> RetrieveActiveAsync()
     {
         return await this.apiBroker.GetActiveMotion();
