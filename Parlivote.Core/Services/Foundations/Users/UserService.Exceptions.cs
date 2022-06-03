@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using EFxceptions.Models.Exceptions;
@@ -15,6 +16,7 @@ public partial class UserService
 {
     private delegate Task<User> ReturningUserFunction();
     private delegate IQueryable<User> ReturningUsersFunction();
+    private delegate Task<List<User>> ReturningUsersListFunction();
 
     private async Task<User> TryCatch(ReturningUserFunction returningUserFunction)
     {
@@ -96,7 +98,32 @@ public partial class UserService
             throw CreateAndLogServiceException(failedUserServiceException);
         }
     }
-        private UserValidationException CreateAndLogValidationException(Xeption exception)
+    private Task<List<User>> TryCatch(ReturningUsersListFunction returningUsersFunction)
+    {
+        try
+        {
+            return returningUsersFunction();
+        }
+        catch (NotFoundUserException notFoundUserException)
+        {
+            throw CreateAndLogValidationException(notFoundUserException);
+        }
+        catch (SqlException sqlException)
+        {
+            var failedUserStorageException =
+                new FailedUserStorageException(sqlException);
+
+            throw CreateAndLogCriticalDependencyException(failedUserStorageException);
+        }
+        catch (Exception exception)
+        {
+            var failedUserServiceException =
+                new FailedUserServiceException(exception);
+
+            throw CreateAndLogServiceException(failedUserServiceException);
+        }
+    }
+    private UserValidationException CreateAndLogValidationException(Xeption exception)
         {
             var divisionManagerValidationException =
                 new UserValidationException(exception);
@@ -106,7 +133,7 @@ public partial class UserService
             return divisionManagerValidationException;
         }
 
-        private UserServiceException CreateAndLogServiceException(Xeption exception)
+    private UserServiceException CreateAndLogServiceException(Xeption exception)
         {
             var divisionManagerServiceException
                 = new UserServiceException(exception);
@@ -116,7 +143,7 @@ public partial class UserService
             return divisionManagerServiceException;
         }
 
-        private UserDependencyException CreateAndLogCriticalDependencyException(Xeption exception)
+    private UserDependencyException CreateAndLogCriticalDependencyException(Xeption exception)
         {
             var divisionManagerDependencyException =
                 new UserDependencyException(exception);
@@ -126,7 +153,7 @@ public partial class UserService
             return divisionManagerDependencyException;
         }
 
-        private UserDependencyValidationException CreateAndLogDependencyValidationException(Xeption exception)
+    private UserDependencyValidationException CreateAndLogDependencyValidationException(Xeption exception)
         {
             var divisionManagerDependencyValidationException =
                 new UserDependencyValidationException(exception);
@@ -136,7 +163,7 @@ public partial class UserService
             return divisionManagerDependencyValidationException;
         }
 
-        private UserDependencyException CreateAndLogDependencyException(Xeption exception)
+    private UserDependencyException CreateAndLogDependencyException(Xeption exception)
         {
             var divisionManagerDependencyException =
                 new UserDependencyException(exception);

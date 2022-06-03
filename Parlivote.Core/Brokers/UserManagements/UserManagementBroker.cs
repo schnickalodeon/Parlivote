@@ -19,7 +19,7 @@ namespace Parlivote.Core.Brokers.UserManagements
         }
 
         public IQueryable<User> SelectAllUsers() => this.userManagement.Users;
-
+        
         public async Task<User> SelectUserByIdAsync(Guid userId)
         {
             var broker = new UserManagementBroker(this.userManagement);
