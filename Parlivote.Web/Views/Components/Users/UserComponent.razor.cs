@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 
-namespace Parlivote.Web.Views.Components;
+namespace Parlivote.Web.Views.Components.Users;
 
 public partial class UserComponent : ComponentBase
 {

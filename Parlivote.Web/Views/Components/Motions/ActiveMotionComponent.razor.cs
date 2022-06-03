@@ -13,6 +13,7 @@ using Parlivote.Web.Models.Views.Motions;
 using Parlivote.Web.Models.Views.Votes;
 using Parlivote.Web.Services.Views.Motions;
 using Parlivote.Web.Services.Views.Votes;
+using Parlivote.Web.Views.Components.Users;
 
 namespace Parlivote.Web.Views.Components.Motions;
 

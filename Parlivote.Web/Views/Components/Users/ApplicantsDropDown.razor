@@ -1,0 +1,16 @@
+﻿@using Parlivote.Shared.Models.Identity.Users
+<StateEvaluation State="@this.state" ErrorMessage="@this.error">
+    <Loading>
+        <ControlSpinnerBase Value="Lade Antragssteller:innen" />
+    </Loading>
+    <Content>
+        <DropDownBase
+            TEntity="User"
+            TValue="Guid?"
+            @bind-Value="@this.BoundValue"
+            ValueProperty="Id"
+            TextProperty="Email"
+            Items="@applicants"
+            Placeholder="[Antragssteller:in wählen]"/>
+    </Content>
+</StateEvaluation>
