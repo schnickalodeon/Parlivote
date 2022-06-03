@@ -9,7 +9,7 @@ namespace Parlivote.Web.Services.Views.Motions;
 
 public interface IMotionViewService
 {
-    Task<MotionView> AddAsync(MotionView pollView);
+    Task<MotionView> AddAsync(MotionView motionView);
     Task<List<MotionView>> GetAllAsync();
     Task<List<MotionView>> GetAllWithMeetingAsync();
     Task<MotionView> GetActiveAsync();

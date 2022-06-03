@@ -1,6 +1,8 @@
 ﻿@page "/"
 @using Parlivote.Shared.Models.Identity
 @using System.Security.Claims
+@using Parlivote.Web.Models.Views.Motions
+@using Parlivote.Web.Views.Components.Users
 
 <h2>Parlivote</h2>
 <AuthorizeView>
@@ -12,3 +14,11 @@
         <h4>Bitte <a href="/Identity/Account/Login">melden Sie sich an!</a></h4>
     </NotAuthorized>
 </AuthorizeView>
+
+<h2>@Motio.ApplicantId?.ToString()</h2>
+<ApplicantsDropDown @bind-ApplicantId="Motio.ApplicantId" />
+
+@code
+{
+    public MotionView Motio { get; set; } = new();
+}

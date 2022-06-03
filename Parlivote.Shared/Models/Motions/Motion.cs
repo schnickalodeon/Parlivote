@@ -1,4 +1,5 @@
 ﻿using System.Text.Json.Serialization;
+using Parlivote.Shared.Models.Identity.Users;
 using Parlivote.Shared.Models.Meetings;
 using Parlivote.Shared.Models.Votes;
 
@@ -8,6 +9,8 @@ namespace Parlivote.Shared.Models.Motions
     {
         public Guid Id { get; set; }
         public int Version { get; set; }
+        public Guid? ApplicantId { get; set; }
+        public User? Applicant { get; set; }
         public Guid? MeetingId { get; set; }
 
         [JsonIgnore]
