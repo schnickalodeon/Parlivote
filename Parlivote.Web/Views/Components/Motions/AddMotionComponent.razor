@@ -7,10 +7,15 @@
             CancelButtonText="Cancel"
             Error="@this.error"
             OnSubmit="AddMotionViewAsync">
+            
+    @*Title*@
+    <FormControlBase LabelText="Titel">
+        <TextBoxBase @bind-Value="motionView.Title"/>
+    </FormControlBase>
 
     @*Text*@
-    <FormControlBase LabelText="Beschreibung">
-        <TextBoxBase @bind-Value="motionView.Text"/>
+    <FormControlBase LabelText="Begründung">
+        <TextBoxBase @bind-Value="motionView.Text" Multiline="true"/>
     </FormControlBase>
     
     @*Applicant*@
