@@ -10,5 +10,6 @@ namespace Parlivote.Shared.Models.Identity
     {
         public const string CHAIR = "chair";
         public const string PARLIAMENTARIAN = "parliamentarian";
+        public const string Applicant = "applicant";
     }
 }

@@ -1,7 +1,15 @@
-﻿<AuthorizeView>
+﻿@using Parlivote.Shared.Models.Identity
+<AuthorizeView Roles=@($"{Roles.PARLIAMENTARIAN}, {Roles.CHAIR}")>
     <Authorized>
-        <AttendanceComponent />
-        <a href="Identity/Account/Manage">Hello, @context.User.Identity.Name!</a>
+        <AttendanceComponent/>
+        <a href="Identity/Account/Manage">Hallo, @context.User.Identity.Name!</a>
+        <button class="nav-link btn btn-link" @onclick="LogOut">Log out</button>
+    </Authorized>
+</AuthorizeView>
+
+<AuthorizeView Roles="@Roles.Applicant">
+    <Authorized>
+        <a href="Identity/Account/Manage">Hallo, @context.User.Identity.Name!</a>
         <button class="nav-link btn btn-link" @onclick="LogOut">Log out</button>
     </Authorized>
     <NotAuthorized>
