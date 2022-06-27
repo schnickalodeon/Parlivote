@@ -10,6 +10,7 @@ public interface IMotionService
 {
     Task<Motion> AddAsync(Motion motion);
     Task<List<Motion>> RetrieveAllAsync();
+    Task<List<Motion>> RetrieveByApplicantId(Guid applicantId);
     Task<Motion> RetrieveActiveAsync();
     Task<Motion> ModifyAsync(Motion motion);
     Task<Motion> RemoveByIdAsync(Guid motionIdToDelete);

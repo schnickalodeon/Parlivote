@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 
-namespace Parlivote.Web.Views.Components;
+namespace Parlivote.Web.Views.Components.Users;
 
 public partial class UserComponent : ComponentBase
 {
@@ -23,5 +24,16 @@ public partial class UserComponent : ComponentBase
             authState.User.Claims.First(claim => claim.Type == "id").Value;
 
         return Guid.Parse(strUserId);
+    }
+
+    public async Task<string> GetUserRole()
+    {
+        AuthenticationState authState =
+            await this.AuthenticationStateProvider.GetAuthenticationStateAsync();
+
+        string userRole =
+            authState.User.Claims.First(claim => claim.Type == "role").Value;
+
+        return userRole;
     }
 }

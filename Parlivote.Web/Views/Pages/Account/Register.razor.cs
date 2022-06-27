@@ -28,7 +28,8 @@ namespace Parlivote.Web.Views.Pages.Account
         protected List<Tuple<string,string>> roles = new()
         {
             new(Roles.CHAIR, "Präsidium"),
-            new(Roles.PARLIAMENTARIAN, "Parlamentarierin")
+            new(Roles.PARLIAMENTARIAN, "Parlamentarier:in"),
+            new(Roles.APPLICANT, "Antragsteller:in")
         };
 
         protected override void OnAfterRender(bool firstRender)

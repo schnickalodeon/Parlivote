@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Parlivote.Core.Brokers.Storage;
 
@@ -11,9 +12,10 @@ using Parlivote.Core.Brokers.Storage;
 namespace Parlivote.Core.Migrations
 {
     [DbContext(typeof(StorageBroker))]
-    partial class StorageBrokerModelSnapshot : ModelSnapshot
+    [Migration("20220602132247_SeedApplicantRole")]
+    partial class SeedApplicantRole
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -228,19 +230,11 @@ namespace Parlivote.Core.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<bool>("IsAttendant")
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsLoggedIn")
                         .HasColumnType("bit");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -312,9 +306,6 @@ namespace Parlivote.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("ApplicantId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<Guid?>("MeetingId")
                         .HasColumnType("uniqueidentifier");
 
@@ -329,8 +320,6 @@ namespace Parlivote.Core.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ApplicantId");
 
                     b.HasIndex("MeetingId");
 
@@ -425,17 +414,10 @@ namespace Parlivote.Core.Migrations
 
             modelBuilder.Entity("Parlivote.Shared.Models.Motions.Motion", b =>
                 {
-                    b.HasOne("Parlivote.Shared.Models.Identity.Users.User", "Applicant")
-                        .WithMany("Motions")
-                        .HasForeignKey("ApplicantId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
                     b.HasOne("Parlivote.Shared.Models.Meetings.Meeting", "Meeting")
                         .WithMany("Motions")
                         .HasForeignKey("MeetingId")
                         .OnDelete(DeleteBehavior.SetNull);
-
-                    b.Navigation("Applicant");
 
                     b.Navigation("Meeting");
                 });
@@ -457,11 +439,6 @@ namespace Parlivote.Core.Migrations
                     b.Navigation("Motion");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Parlivote.Shared.Models.Identity.Users.User", b =>
-                {
-                    b.Navigation("Motions");
                 });
 
             modelBuilder.Entity("Parlivote.Shared.Models.Meetings.Meeting", b =>

@@ -20,23 +20,23 @@ public partial class MotionViewServiceTests
 {
     private readonly Mock<IMotionService> motionServiceMock;
     private readonly Mock<IMeetingService> meetingServiceMock;
-    private readonly Mock<IUserService> userService;
+    private readonly Mock<IUserService> userServiceMock;
+    private readonly Mock<IVoteService> voteServiceMock;
     private readonly IMotionViewService motionViewService;
-    private readonly Mock<IVoteService> voteService;
     private readonly ICompareLogic compareLogic;
 
     public MotionViewServiceTests()
     {
         this.motionServiceMock = new Mock<IMotionService>();
         this.meetingServiceMock = new Mock<IMeetingService>();
-        this.userService = new Mock<IUserService>();
-        this.voteService = new Mock<IVoteService>();
+        this.userServiceMock = new Mock<IUserService>();
+        this.voteServiceMock = new Mock<IVoteService>();
 
         this.motionViewService = new MotionViewService(
             this.motionServiceMock.Object,
             this.meetingServiceMock.Object,
-            this.userService.Object,
-            this.voteService.Object);
+            this.userServiceMock.Object,
+            this.voteServiceMock.Object);
 
         var compareConfig = new ComparisonConfig();
         compareConfig.IgnoreProperty<Motion>(motion => motion.Id);
@@ -45,12 +45,17 @@ public partial class MotionViewServiceTests
 
     private static MotionState GetRandomState()
     {
-        int motionStateCount =
-            Enum.GetValues(typeof(MotionState)).Length;
+        int randomStateValue = -1;
+        do
+        {
+            int motionStateCount =
+                Enum.GetValues(typeof(MotionState)).Length;
 
-        int randomStateValue =
-            new IntRange(min: 0, max: motionStateCount - 1).GetValue();
+            randomStateValue =
+                new IntRange(min: 0, max: motionStateCount - 1).GetValue();
 
+        } while (randomStateValue == 1);
+        
         return (MotionState)randomStateValue;
     }
 
@@ -68,9 +73,11 @@ public partial class MotionViewServiceTests
         {
             Id = Guid.NewGuid(),
             MeetingId = randomMeeting.Id,
-            Version = Tests.GetRandomNumber(),
+            Version = 0,
             State = GetRandomState(),
             Text = Tests.GetRandomString(),
+            AppicantName = Tests.GetRandomString(),
+            ApplicantId = Guid.NewGuid(),
             Meeting = randomMeeting,
         };
     }

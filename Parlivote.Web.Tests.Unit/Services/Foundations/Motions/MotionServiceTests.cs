@@ -61,7 +61,8 @@ public partial class MotionServiceTests
             .OnType<int>().Use(new IntRange(1, 20))
             .OnType<MotionState>().Use(GetRandomState)
             .OnType<Meeting>().IgnoreIt()
-            .OnProperty(motion => motion.Votes).IgnoreIt();
+            .OnProperty(motion => motion.Votes).IgnoreIt()
+            .OnProperty(motion => motion.Applicant).IgnoreIt();
 
         return filler;
     }

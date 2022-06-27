@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -47,6 +48,24 @@ namespace Parlivote.Core.Controllers
                 IQueryable<User> allUsers = this.userService.RetrieveAll();
                 IQueryable<User> attendantUsers = allUsers.Where(user => user.IsAttendant && user.IsLoggedIn);
                 return Ok(attendantUsers);
+            }
+            catch (UserDependencyException pollDependencyException)
+            {
+                return InternalServerError(pollDependencyException);
+            }
+            catch (UserServiceException pollServiceException)
+            {
+                return InternalServerError(pollServiceException);
+            }
+        }
+
+        [HttpGet("applicants")]
+        public async Task<ActionResult<List<User>>> GetApplicants()
+        {
+            try
+            {
+                List<User> applicants = await this.userService.RetrieveAllApplicants();
+                return Ok(applicants);
             }
             catch (UserDependencyException pollDependencyException)
             {

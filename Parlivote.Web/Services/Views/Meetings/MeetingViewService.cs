@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Parlivote.Shared.Extensions;
 using Parlivote.Shared.Models.Identity.Users;
 using Parlivote.Shared.Models.Meetings;
 using Parlivote.Shared.Models.Motions;
@@ -35,7 +36,7 @@ public class MeetingViewService : IMeetingViewService
             await this.meetingService.AddAsync(mappedMeeting);
 
         MeetingView mappedMeetingView = 
-            MapToMeetingView(storageMeeting);
+            await MapToMeetingView(storageMeeting);
 
         return mappedMeetingView;
     }
@@ -45,7 +46,7 @@ public class MeetingViewService : IMeetingViewService
         List<Meeting> meetings =
             await this.meetingService.RetrieveAllAsync();
 
-        return meetings.Select(AsMeetingView).ToList();
+        return await MapToMeetingViews(meetings);
     }
 
     public async Task<List<MeetingView>> GetAllWithMotionsAsync()
@@ -53,7 +54,7 @@ public class MeetingViewService : IMeetingViewService
         List<Meeting> meetings =
             await this.meetingService.RetrieveAllWithMotionsAsync();
 
-        return meetings.Select(AsMeetingView).ToList();
+        return await MapToMeetingViews(meetings);
     }
 
     public async Task<MeetingView> GetByIdWithMotions(Guid meetingId)
@@ -61,7 +62,7 @@ public class MeetingViewService : IMeetingViewService
         Meeting meeting =
             await this.meetingService.RetrieveByIdWithMotionsAsync(meetingId);
 
-        return MapToMeetingView(meeting);
+        return await MapToMeetingView(meeting);
     }
 
     public async Task<MeetingView> UpdateAsync(MeetingView meetingView)
@@ -71,7 +72,8 @@ public class MeetingViewService : IMeetingViewService
         Meeting updatedMeeting =
             await this.meetingService.ModifyAsync(meetingToUpdate);
 
-        MeetingView updatedMeetingView = MapToMeetingView(updatedMeeting);
+        MeetingView updatedMeetingView = 
+            await MapToMeetingView(updatedMeeting);
 
         return updatedMeetingView;
     }
@@ -81,9 +83,7 @@ public class MeetingViewService : IMeetingViewService
         return await this.meetingService.DeleteByIdAsync(meetingId);
     }
 
-    private static Func<Meeting, MeetingView> AsMeetingView => MapToMeetingView;
-    private static Func<Motion, MotionView> AsMotionView => MapToMotionView;
-    private static Func<MotionView, Motion> AsMotion => MapToMotion;
+    private Func<Meeting, Task<MeetingView>> AsMeetingView => MapToMeetingView;
 
     private static Meeting MapToMeeting(MeetingView meetingView)
     {
@@ -95,15 +95,43 @@ public class MeetingViewService : IMeetingViewService
             Motions = meetingView.Motions?.Select(AsMotion).ToList() ?? new List<Motion>(),
         };
     }
-    private static MeetingView MapToMeetingView(Meeting meeting)
+    private async Task<MeetingView> MapToMeetingView(Meeting meeting)
     {
+        List<MotionView> motionViews = (meeting.Motions is null)
+            ? new List<MotionView>()
+            : await MapToMotionViews(meeting.Motions);
+        
         return new MeetingView
         {
             Id = meeting.Id,
             Description = meeting.Description,
             Start = meeting.Start,
-            Motions = meeting.Motions?.Select(AsMotionView).ToList() ?? new List<MotionView>(),
+            Motions = motionViews,
         };
+    }
+
+    private async Task<List<MeetingView>> MapToMeetingViews(List<Meeting> meetings)
+    {
+        List<MeetingView> meetingViews = new List<MeetingView>();
+        foreach (Meeting meeting in meetings)
+        {
+            MeetingView mappedMeetingView = await MapToMeetingView(meeting);
+            meetingViews.Add(mappedMeetingView);
+        }
+
+        return meetingViews;
+    }
+
+    private async Task<List<MotionView>> MapToMotionViews(List<Motion> motions)
+    {
+        var motionViews = new List<MotionView>();
+        foreach (Motion motion in motions)
+        {
+            MotionView motionView = await MapToMotionView(motion);
+            motionViews.Add(motionView);
+        }
+
+        return motionViews;
     }
 
     private static Func<Vote, VoteView> AsVoteView => MapToVoteView;
@@ -120,7 +148,6 @@ public class MeetingViewService : IMeetingViewService
 
         return voteView;
     }
-
     private static Vote MapToVote(VoteView voteView)
     {
         var vote = new Vote()
@@ -133,26 +160,58 @@ public class MeetingViewService : IMeetingViewService
 
         return vote;
     }
-    private static MotionView MapToMotionView(Motion motion)
+
+    private Func<Motion, Task<MotionView>> AsMotionView => MapToMotionView;
+    private static Func<MotionView, Motion> AsMotion => MapToMotion;
+    private async Task<MotionView> MapToMotionView(Motion motion)
     {
+        string meetingName = await GetMeetingDescription(motion.MeetingId);
+        string applicantName = await GetApplicantName(motion.ApplicantId);
+
         return new MotionView
         {
             MotionId = motion.Id,
-            Version = motion.Version,
-            State = motion.State.GetValue(),
             MeetingId = motion.MeetingId,
+            ApplicantId = motion.ApplicantId,
+            ApplicantName = applicantName,
+            State = motion.State.GetValue(),
             Text = motion.Text,
-            VoteViews = motion.Votes?.Select(AsVoteView).ToList() ?? new List<VoteView>()
+            MeetingName = meetingName,
+            VoteViews = motion.Votes?.Select(AsVoteView).ToList()
         };
+    }
+    private async Task<string> GetApplicantName(Guid? userId)
+    {
+        if (!userId.HasValue)
+        {
+            return string.Empty;
+        }
+
+        User applicant =
+            await this.userService.RetrieveByIdAsync(userId.Value);
+
+        return applicant?.FirstName ?? string.Empty;
+    }
+    private async Task<string> GetMeetingDescription(Guid? meetingId)
+    {
+        if (!meetingId.HasValue)
+        {
+            return string.Empty;
+        }
+
+        Meeting meeting =
+            await this.meetingService.RetrieveByIdWithMotionsAsync(meetingId.Value);
+
+        return meeting?.Description ?? string.Empty;
     }
     private static Motion MapToMotion(MotionView motionView)
     {
         return new Motion
         {
             Id = motionView.MotionId,
-            Version = motionView.Version,
             State = MotionStateConverter.FromString(motionView.State),
             MeetingId = motionView.MeetingId,
+            ApplicantId = motionView.ApplicantId,
             Text = motionView.Text,
             Votes = motionView.VoteViews?.Select(AsVote).ToList() ?? new List<Vote>()
         };

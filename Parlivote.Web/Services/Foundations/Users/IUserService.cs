@@ -13,4 +13,5 @@ public interface IUserService
     Task<User> RetrieveByIdAsync(Guid userId);
     Task<User> RetrieveByIdUntrackedAsync(Guid userId);
     Task<User> ModifyUserAsync(User user);
+    Task<List<User>> RetrieveApplicantsAsync();
 }

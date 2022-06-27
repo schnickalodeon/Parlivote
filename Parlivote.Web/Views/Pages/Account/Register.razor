@@ -11,8 +11,16 @@
             <TextBoxBase @bind-Value="registration.Email"/>
         </FormControlBase>
         
-        <FormControlBase LabelText="Confirm Email">
+        <FormControlBase LabelText="Email bestätigen">
             <TextBoxBase @bind-Value="registration.EmailConfirmation"/>
+        </FormControlBase>
+        
+        <FormControlBase LabelText="Vorname">
+            <TextBoxBase @bind-Value="registration.FirstName"/>
+        </FormControlBase>
+        
+        <FormControlBase LabelText="Nachname (Bei Funktionsaccounts weglassen)">
+            <TextBoxBase @bind-Value="registration.LastName"/>
         </FormControlBase>
 
         <FormControlBase LabelText="Passwort">

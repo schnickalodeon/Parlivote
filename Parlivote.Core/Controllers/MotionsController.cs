@@ -71,6 +71,28 @@ public class MotionsController : RESTFulController
         }
     }
 
+    [HttpGet("applicant/{applicantId}")]
+    public ActionResult<IQueryable<Motion>> GetByApplicantIdMotions(Guid applicantId)
+    {
+        try
+        {
+            IQueryable<Motion> motions = this.motionProcessingService
+                .RetrieveAll()
+                .Include(motion => motion.Votes)
+                .Where(motion => motion.ApplicantId == applicantId);
+
+            return Ok(motions);
+        }
+        catch (MotionDependencyException pollDependencyException)
+        {
+            return InternalServerError(pollDependencyException);
+        }
+        catch (MotionServiceException pollServiceException)
+        {
+            return InternalServerError(pollServiceException);
+        }
+    }
+
     [HttpGet("{motionId}")]
     public async Task<ActionResult<Motion>> GetMotionByIdAsync(Guid motionId)
     {
