@@ -1,15 +1,15 @@
 ﻿@using Parlivote.Shared.Models.Identity
-<AuthorizeView Roles=@($"{Roles.PARLIAMENTARIAN}, {Roles.CHAIR}")>
+<AuthorizeView>
     <Authorized>
-        <AttendanceComponent/>
-        <a href="Identity/Account/Manage">Hallo, @context.User.Identity.Name!</a>
-        <button class="nav-link btn btn-link" @onclick="LogOut">Log out</button>
-    </Authorized>
-</AuthorizeView>
+        <Condition Evaluation="(context.User.IsInRole(Roles.CHAIR) || context.User.IsInRole(Roles.PARLIAMENTARIAN))">
+            <Match>
+                <div class="px-4">
+                    <AttendanceComponent/>
+                </div>
+            </Match>
+        </Condition>
 
-<AuthorizeView Roles="@Roles.Applicant">
-    <Authorized>
-        <a href="Identity/Account/Manage">Hallo, @context.User.Identity.Name!</a>
+        <p class="m-0">Hallo, @context.User.Identity.Name!</p>
         <button class="nav-link btn btn-link" @onclick="LogOut">Log out</button>
     </Authorized>
     <NotAuthorized>
