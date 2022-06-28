@@ -3,12 +3,12 @@
 <UserComponent @ref="userComponent" />
 <DialogBase @ref="@this.dialog"
             Title="Antrag einreichen"
-            SubmitButtonText="Add"
-            CancelButtonText="Cancel"
+            SubmitButtonText="Anlegen"
+            CancelButtonText="Abbrechen"
             Error="@this.error"
             OnSubmit="AddMotionViewAsync">
             
-    @*Title*@
+    @*Title*@ 
     <FormControlBase LabelText="Titel">
         <TextBoxBase @bind-Value="motionView.Title"/>
     </FormControlBase>

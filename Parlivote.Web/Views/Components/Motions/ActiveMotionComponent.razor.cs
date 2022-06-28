@@ -39,6 +39,7 @@ public partial class ActiveMotionComponent : ComponentBase
     private HubConnection motionHubConnection;
     
     private MotionView finishedMotion;
+    private MotionDetailComponent motionDetailComponent;
     private MotionResultDialog motionResultDialog;
     private UserComponent userComponent;
     private Guid userId;

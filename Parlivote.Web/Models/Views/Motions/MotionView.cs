@@ -7,8 +7,8 @@ namespace Parlivote.Web.Models.Views.Motions
     public class MotionView
     {
         public Guid MotionId { get; set; }
-        public string Text { get; set; }
         public string Title { get; set; }
+        public string Text { get; set; }
         public string State { get; set; }
         public Guid? ApplicantId { get; set; }
         public string ApplicantName { get; set; }

@@ -1,6 +1,6 @@
 ﻿@using Parlivote.Shared.Models.Motions
 <ListGroupItem>
-    <Title>@Motion.Text</Title>
+    <Title><span @onclick="motionDetailComponent.Show">@Motion.Text</span></Title>
     <Body>@Motion.ApplicantName</Body>
     <Additional>
         <div class="d-flex align-items-center justify-content-center h-100 me-4">
@@ -20,5 +20,6 @@
     </Additional>
 </ListGroupItem>
 
-<EditMotionComponent @ref="this.editMotionComponent" OnMotionSaved="@this.OnMotionChanged" />
-<MotionResultDialog @ref="this.motionResultDialog" MotionView="Motion" />
+<MotionDetailComponent @ref="motionDetailComponent" Motion="Motion" />
+<EditMotionComponent @ref="editMotionComponent" OnMotionSaved="@this.OnMotionChanged" />
+<MotionResultDialog @ref="motionResultDialog" MotionView="Motion" />

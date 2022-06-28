@@ -11,7 +11,7 @@
                     </span>
                 </h3>
                 <div class="card-body">
-                    <h5 class="card-title">@activeMotion.Text</h5>
+                    <h5 class="card-title" @onclick="motionDetailComponent.Show">@activeMotion.Title</h5>
                     <hr/>
                     <VoteComponent 
                         @ref="voteComponent" 
@@ -19,13 +19,14 @@
                         AfterVoteSubmitted="UpdateVote" 
                         OnSelectedVoteValueChanged="SetSubmitButtonCss"
                         OnVotingFinished="OnVotingFinished"
-                        />
+                    />
                 </div>
                 <div class="card-footer text-center">
                     <button class="@submitButtonCss" @onclick="(() => voteComponent.SubmitVoteAsync())">Bestätigen</button>
                 </div>
             </div>
         </div>
+        <MotionDetailComponent @ref="motionDetailComponent" Motion="activeMotion" />
     </Match>
 </Condition>
 <Condition Evaluation="isVotingFinished">

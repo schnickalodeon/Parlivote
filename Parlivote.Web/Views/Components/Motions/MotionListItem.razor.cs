@@ -31,6 +31,7 @@ public partial class MotionListItem : ComponentBase
     private HubConnection hubConnection;
     private EditMotionComponent editMotionComponent;
     private MotionResultDialog motionResultDialog;
+    private MotionDetailComponent motionDetailComponent;
     private bool existsActiveMeeting = false;
     private bool resultsAvailable = false;
     private bool IsConnected => this.hubConnection.State == HubConnectionState.Connected;
