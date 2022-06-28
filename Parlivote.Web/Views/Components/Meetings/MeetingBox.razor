@@ -16,7 +16,7 @@
     <ChairAuthorization>
         <div class="btn-group w-100 mb-4" role="group">
             <ButtonBase Text="Sitzung bearbeiten" OnClick="@(() => editMeetingComponent.Show(Meeting))" />
-            <ButtonBase Text="Meeting View" OnClick="@(() => NavigationManager.NavigateTo($"/meetings/{Meeting.Id}"))" />
+            <ButtonBase Text="Detailansicht" OnClick="@(() => NavigationManager.NavigateTo($"/meetings/{Meeting.Id}"))" />
             <ButtonBase Text="Sitzung löschen" OnClick="confirmationDialog.Show" />
         </div>
     </ChairAuthorization>
@@ -24,7 +24,7 @@
         <div class="d-flex flex-row my-3 align-items-center">
         <h4 class="me-4 mb-0">Anträge</h4>
         <ChairAuthorization>
-            <ButtonBase CustomCss="e-success" Text="Add Motion" OnClick="(() => addMotionComponent.Show(this.Meeting))" />
+            <ButtonBase CustomCss="e-success" Text="Antrag hinzufügen" OnClick="(() => addMotionComponent.Show(this.Meeting))" />
         </ChairAuthorization>
     </div>
 
@@ -40,6 +40,6 @@
 <EditMeetingComponent @ref="editMeetingComponent" OnMeetingChanged="OnMeetingChanged" />
 <AddMotionComponent @ref="addMotionComponent" OnMotionAdded="OnMeetingChanged" />
 
-<ConfirmationDialog @ref="confirmationDialog" Title="Confirm Delete" OnDelete="DeleteMeeting">
+<ConfirmationDialog @ref="confirmationDialog" Title="Löschen bestätigen" OnDelete="DeleteMeeting">
     @($"Möchten Sie die Sitzung {Meeting.Description} wirklich löschen?")
 </ConfirmationDialog>

@@ -30,6 +30,12 @@ public partial class MotionIndex : ComponentBase
     private DeleteMotionDialog deleteMotionComponent;
 
     private List<MotionView> motions;
+
+    private readonly List<string> fieldsToIgnore = new()
+    {
+        ("Text")
+    };
+
     private string error;
 
     protected override async Task OnInitializedAsync()

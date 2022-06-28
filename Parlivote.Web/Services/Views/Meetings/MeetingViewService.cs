@@ -175,6 +175,7 @@ public class MeetingViewService : IMeetingViewService
             ApplicantId = motion.ApplicantId,
             ApplicantName = applicantName,
             State = motion.State.GetValue(),
+            Title = motion.Title,
             Text = motion.Text,
             MeetingName = meetingName,
             VoteViews = motion.Votes?.Select(AsVoteView).ToList()
@@ -212,6 +213,7 @@ public class MeetingViewService : IMeetingViewService
             State = MotionStateConverter.FromString(motionView.State),
             MeetingId = motionView.MeetingId,
             ApplicantId = motionView.ApplicantId,
+            Title = motionView.Title,
             Text = motionView.Text,
             Votes = motionView.VoteViews?.Select(AsVote).ToList() ?? new List<Vote>()
         };

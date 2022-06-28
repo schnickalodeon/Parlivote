@@ -17,11 +17,11 @@
 
         <CrudDataGridBase
             DataItems="motions"
+            FieldsToIgnore="fieldsToIgnore"
             OnEditClicked="@((MotionView view) => editMotionComponent.Show(view))"
             OnDeleteClicked="@((MotionView view) => deleteMotionComponent.Show(view))">
             <HeaderTemplate>
                 <th>Titel</th>
-                <th>Begründung</th>
                 <th>Status</th>
                 <th>Antragssteller:in</th>
                 <th>Sitzung</th>

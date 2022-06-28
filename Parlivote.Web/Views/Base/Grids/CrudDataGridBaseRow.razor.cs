@@ -13,6 +13,9 @@ namespace Parlivote.Web.Views.Base.Grids
         public TDataItem DataItem { get; set; }
 
         [Parameter]
+        public List<string> Ignore { get; set; }
+
+        [Parameter]
         public EventCallback<TDataItem> OnEdit { get; set; }
 
         [Parameter]
@@ -34,7 +37,7 @@ namespace Parlivote.Web.Views.Base.Grids
             Func<PropertyInfo, bool> isNoList = 
                 property => !(property.PropertyType.IsGenericType && (property.PropertyType.GetGenericTypeDefinition() == typeof(List<>)));
 
-            Func<PropertyInfo, bool> filter = property => (isNoList(property) && containsNoId(property));
+            Func<PropertyInfo, bool> filter = property => (isNoList(property) && containsNoId(property) && !Ignore.Contains(property.Name));
 
             PropertyInfo[] propertiesToShow = propertyInfos.Where(filter).ToArray();
             this.properties = propertiesToShow;

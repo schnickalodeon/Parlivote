@@ -1,14 +1,19 @@
 ﻿@using Parlivote.Web.Views.Components.Meetings
 <DialogBase @ref="@this.dialog"
-            Title="Edit Motion"
-            SubmitButtonText="Save"
-            CancelButtonText="Cancel"
+            Title="Antrag bearbeiten"
+            SubmitButtonText="Speichern"
+            CancelButtonText="Abbrechen"
             Error="@this.error"
             OnSubmit="SaveMotionViewAsync">
+            
+    @*Titel*@
+    <FormControlBase LabelText="Beschreibung">
+        <TextBoxBase @bind-Value="motionView.Title"/>
+    </FormControlBase>
 
     @*Text*@
     <FormControlBase LabelText="Beschreibung">
-        <TextBoxBase @bind-Value="motionView.Text"/>
+        <TextBoxBase @bind-Value="motionView.Text" Multiline="true"/>
     </FormControlBase>
     
     @*Meeting*@
