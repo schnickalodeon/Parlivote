@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2022-06-30T18:45:33.605Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.53 Safari/537.36" etag="4XHIIWCu7hqNEIEK5Y93" version="20.0.3" type="github" pages="7">
+<mxfile host="app.diagrams.net" modified="2022-07-01T10:59:12.861Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.53 Safari/537.36" etag="aCjQ2sQuRhm87JD6i5iN" version="20.0.3" type="github" pages="7">
   <diagram id="vE7D_mwjwtpvmULDhP63" name="Page-1">
     <mxGraphModel dx="1458" dy="1044" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" background="#182E3E" math="0" shadow="0">
       <root>
@@ -120,7 +120,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="HaZjlLXnvPG3SXVUsyJo" name="Ablauf">
-    <mxGraphModel dx="3939" dy="1044" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" background="none" math="0" shadow="0">
+    <mxGraphModel dx="4510" dy="771" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" background="none" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -188,18 +188,17 @@
         <mxCell id="AxbuYcmB-UJ5sYUbgxRA-35" value="Methode wird implementiert" style="whiteSpace=wrap;html=1;fontSize=16;fillColor=#99004D;fontColor=#FFFFFF;rounded=1;aspect=fixed;" parent="AxbuYcmB-UJ5sYUbgxRA-31" vertex="1">
           <mxGeometry x="30" y="120" width="140.81" height="103" as="geometry" />
         </mxCell>
-        <mxCell id="NtLP1mlw3N1Po65p7g2v-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.75;entryDx=0;entryDy=0;fontSize=25;fontColor=#990099;strokeColor=#000000;strokeWidth=3;" parent="AxbuYcmB-UJ5sYUbgxRA-31" source="AxbuYcmB-UJ5sYUbgxRA-37" target="AxbuYcmB-UJ5sYUbgxRA-35" edge="1">
+        <mxCell id="UvYr2KaAie5EBpnBld1e-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;fontSize=18;strokeWidth=3;" edge="1" parent="AxbuYcmB-UJ5sYUbgxRA-31" source="AxbuYcmB-UJ5sYUbgxRA-37" target="AxbuYcmB-UJ5sYUbgxRA-35">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="391" y="231" />
-              <mxPoint x="391" y="293" />
-              <mxPoint x="10" y="293" />
-              <mxPoint x="10" y="197" />
+              <mxPoint x="405" y="233" />
+              <mxPoint x="405" y="297" />
+              <mxPoint x="100" y="297" />
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="AxbuYcmB-UJ5sYUbgxRA-37" value="Tests schlagen fehl" style="whiteSpace=wrap;html=1;fontSize=16;fillColor=#99004D;rounded=1;fontColor=#FFFFFF;aspect=fixed;" parent="AxbuYcmB-UJ5sYUbgxRA-31" vertex="1">
-          <mxGeometry x="230" y="180" width="140.81" height="103" as="geometry" />
+        <mxCell id="AxbuYcmB-UJ5sYUbgxRA-37" value="Tests &lt;br&gt;schlagen fehl" style="whiteSpace=wrap;html=1;fontSize=16;fillColor=#99004D;rounded=1;fontColor=#FFFFFF;" parent="AxbuYcmB-UJ5sYUbgxRA-31" vertex="1">
+          <mxGeometry x="230" y="180" width="140.81" height="107" as="geometry" />
         </mxCell>
         <mxCell id="AxbuYcmB-UJ5sYUbgxRA-38" value="Push auf Remote" style="whiteSpace=wrap;html=1;fontSize=16;fillColor=#99004D;rounded=1;fontColor=#FFFFFF;aspect=fixed;" parent="AxbuYcmB-UJ5sYUbgxRA-31" vertex="1">
           <mxGeometry x="580" y="55" width="140.81" height="103" as="geometry" />
@@ -263,7 +262,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="VvR3OcdfH1ni_TUDnAZf" name="Ebenenmodell">
-    <mxGraphModel dx="1458" dy="1044" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="2942" dy="1118" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -337,7 +336,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="_gASq3AfsUvC8tfcg-YI" name="3-Tier">
-    <mxGraphModel dx="1458" dy="1044" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="2942" dy="1118" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -387,7 +386,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="LrNVQZjLRpYHIMPF9Tki" name="Mehrschichten Architektur">
-    <mxGraphModel dx="1458" dy="1044" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="2942" dy="1118" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -493,7 +492,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="HebhnODWt6ARiomZQ1ab" name="Klassenstruktur">
-    <mxGraphModel dx="2856" dy="727" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="2856" dy="771" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
