@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2022-07-01T12:41:14.627Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.53 Safari/537.36" etag="Ush0vbrSdW2_X_INzR2f" version="20.0.3" type="github" pages="7">
+<mxfile host="app.diagrams.net" modified="2022-07-01T12:44:17.856Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.53 Safari/537.36" etag="lqDiiZOxO2jVzMUB66ji" version="20.0.3" type="github" pages="7">
   <diagram id="vE7D_mwjwtpvmULDhP63" name="Page-1">
     <mxGraphModel dx="1458" dy="1044" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" background="#182E3E" math="0" shadow="0">
       <root>
@@ -280,7 +280,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="VvR3OcdfH1ni_TUDnAZf" name="Ebenenmodell">
-    <mxGraphModel dx="2942" dy="1118" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="2942" dy="1054" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -354,7 +354,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="_gASq3AfsUvC8tfcg-YI" name="3-Tier">
-    <mxGraphModel dx="2942" dy="1118" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="2942" dy="1054" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -404,7 +404,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="LrNVQZjLRpYHIMPF9Tki" name="Mehrschichten Architektur">
-    <mxGraphModel dx="2942" dy="1118" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="2942" dy="1054" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -414,7 +414,7 @@
         <mxCell id="7KqOrBdWck9W9CCJ156k-17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;fontSize=20;fontColor=none;startArrow=classic;startFill=1;strokeColor=#000000;strokeWidth=2;" parent="PIcjWxUnx6QOndBftlft-1" source="7KqOrBdWck9W9CCJ156k-1" target="7KqOrBdWck9W9CCJ156k-3" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="7KqOrBdWck9W9CCJ156k-1" value="&lt;font style=&quot;font-size: 22px;&quot;&gt;&lt;b&gt;User-Interaction&lt;/b&gt;&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;fontColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fillColor=#99004D;" parent="PIcjWxUnx6QOndBftlft-1" vertex="1">
+        <mxCell id="7KqOrBdWck9W9CCJ156k-1" value="&lt;font style=&quot;font-size: 22px;&quot;&gt;&lt;b&gt;Benutzerinteraktions-Schicht&lt;/b&gt;&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;fontColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fillColor=#99004D;" parent="PIcjWxUnx6QOndBftlft-1" vertex="1">
           <mxGeometry x="10" y="178" width="390" height="77" as="geometry" />
         </mxCell>
         <mxCell id="7KqOrBdWck9W9CCJ156k-12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;fontSize=20;fontColor=none;startArrow=classic;startFill=1;strokeColor=#000000;strokeWidth=2;" parent="PIcjWxUnx6QOndBftlft-1" source="7KqOrBdWck9W9CCJ156k-4" target="7KqOrBdWck9W9CCJ156k-6" edge="1">
@@ -423,13 +423,13 @@
         <mxCell id="7KqOrBdWck9W9CCJ156k-13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=1;exitDx=0;exitDy=0;fontSize=20;fontColor=none;startArrow=classic;startFill=1;strokeColor=#000000;strokeWidth=2;" parent="PIcjWxUnx6QOndBftlft-1" source="7KqOrBdWck9W9CCJ156k-4" target="7KqOrBdWck9W9CCJ156k-7" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="7KqOrBdWck9W9CCJ156k-4" value="&lt;font style=&quot;font-size: 22px;&quot;&gt;&lt;b&gt;Infrastructure&lt;/b&gt;&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;fontColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fillColor=#99004D;" parent="PIcjWxUnx6QOndBftlft-1" vertex="1">
+        <mxCell id="7KqOrBdWck9W9CCJ156k-4" value="&lt;font style=&quot;font-size: 22px;&quot;&gt;&lt;b&gt;Infrastruktur-Schicht&lt;/b&gt;&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;fontColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fillColor=#99004D;" parent="PIcjWxUnx6QOndBftlft-1" vertex="1">
           <mxGeometry x="10" y="406" width="390" height="77" as="geometry" />
         </mxCell>
         <mxCell id="7KqOrBdWck9W9CCJ156k-18" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=20;fontColor=none;startArrow=classic;startFill=1;strokeColor=#000000;strokeWidth=2;" parent="PIcjWxUnx6QOndBftlft-1" source="7KqOrBdWck9W9CCJ156k-3" target="7KqOrBdWck9W9CCJ156k-4" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="7KqOrBdWck9W9CCJ156k-3" value="&lt;font style=&quot;font-size: 22px;&quot;&gt;&lt;b&gt;Domain-Logic&lt;/b&gt;&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;fontColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fillColor=#99004D;" parent="PIcjWxUnx6QOndBftlft-1" vertex="1">
+        <mxCell id="7KqOrBdWck9W9CCJ156k-3" value="&lt;font style=&quot;font-size: 22px;&quot;&gt;&lt;b&gt;Logik-Schicht&lt;/b&gt;&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;fontColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fillColor=#99004D;" parent="PIcjWxUnx6QOndBftlft-1" vertex="1">
           <mxGeometry x="10" y="292" width="390" height="77" as="geometry" />
         </mxCell>
         <mxCell id="7KqOrBdWck9W9CCJ156k-6" value="" style="fontColor=#0066CC;verticalAlign=top;verticalLabelPosition=bottom;labelPosition=center;align=center;html=1;outlineConnect=0;fillColor=#CCCCCC;strokeColor=#6881B3;gradientColor=none;gradientDirection=north;strokeWidth=2;shape=mxgraph.networks.storage;labelBackgroundColor=none;fontSize=20;" parent="PIcjWxUnx6QOndBftlft-1" vertex="1">
