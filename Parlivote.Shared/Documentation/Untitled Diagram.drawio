@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2022-07-01T14:54:10.628Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.53 Safari/537.36" etag="eCeYaPgntuHhbFrYOuWg" version="20.0.3" type="github" pages="8">
+<mxfile host="app.diagrams.net" modified="2022-07-01T14:58:25.524Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.53 Safari/537.36" etag="vf-cA-JZ566MiD8NC_QI" version="20.0.3" type="github" pages="8">
   <diagram id="vE7D_mwjwtpvmULDhP63" name="Page-1">
     <mxGraphModel dx="2942" dy="1054" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" background="#182E3E" math="0" shadow="0">
       <root>
@@ -715,7 +715,7 @@
         <mxCell id="yk89FYSuiAZQ46gSRnfY-20" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=16;strokeWidth=2;" edge="1" parent="yk89FYSuiAZQ46gSRnfY-1" source="yk89FYSuiAZQ46gSRnfY-18" target="yk89FYSuiAZQ46gSRnfY-15">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="yk89FYSuiAZQ46gSRnfY-18" value="&lt;b&gt;Controller / View&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size: 17px;&quot;&gt;(Exposer)&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fontSize=20;strokeColor=#82b366;strokeWidth=1;fillColor=#d5e8d4;" vertex="1" parent="yk89FYSuiAZQ46gSRnfY-1">
+        <mxCell id="yk89FYSuiAZQ46gSRnfY-18" value="&lt;b&gt;Controller / View&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size: 17px;&quot;&gt;(Nutzerschnittstelle)&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fontSize=20;strokeColor=#82b366;strokeWidth=1;fillColor=#d5e8d4;" vertex="1" parent="yk89FYSuiAZQ46gSRnfY-1">
           <mxGeometry x="30" y="80" width="170" height="77" as="geometry" />
         </mxCell>
         <mxCell id="yk89FYSuiAZQ46gSRnfY-21" value="&lt;b&gt;Broker&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size: 17px;&quot;&gt;(Abhänigkeiten)&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fontSize=20;strokeColor=#b85450;strokeWidth=1;fillColor=#f8cecc;" vertex="1" parent="yk89FYSuiAZQ46gSRnfY-1">
