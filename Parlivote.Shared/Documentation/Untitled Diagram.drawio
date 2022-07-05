@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2022-07-04T21:37:11.054Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.53 Safari/537.36" etag="L1DaaS_qr67ZpUNxKIx3" version="20.0.4" type="github" pages="11">
+<mxfile host="app.diagrams.net" modified="2022-07-05T07:04:13.184Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.53 Safari/537.36" etag="yw8NM3rrBREvemfFpyhT" version="20.0.4" type="github" pages="11">
   <diagram id="vE7D_mwjwtpvmULDhP63" name="Page-1">
     <mxGraphModel dx="1422" dy="758" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" background="#182E3E" math="0" shadow="0">
       <root>
@@ -462,7 +462,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="-7o6FoPbX2k0eO__gRI8" name="Architektur-Blazor">
-    <mxGraphModel dx="2249" dy="758" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="3769" dy="1054" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -779,7 +779,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="ncU4QOdXWrBrHrinF-n7" name="StorageBrokerAufbau">
-    <mxGraphModel dx="2946" dy="1076" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="2029" dy="727" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -798,19 +798,19 @@
         <mxCell id="WC-QCLngHYzSRAGnRQX4-3" value="StorageBroker.[X].cs" style="swimlane;fontSize=18;fontColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fillColor=#99004D;startSize=40;verticalAlign=top;" parent="lAKcjuLOhfVw5Jhg_7Bq-1" vertex="1">
           <mxGeometry x="240" y="90" width="210" height="298.5" as="geometry" />
         </mxCell>
-        <mxCell id="WC-QCLngHYzSRAGnRQX4-4" value="Insert[X]Asnyc" style="rounded=1;whiteSpace=wrap;html=1;fontSize=20;fontColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fillColor=#99004D;" parent="WC-QCLngHYzSRAGnRQX4-3" vertex="1">
+        <mxCell id="WC-QCLngHYzSRAGnRQX4-4" value="Insert[X]Asnyc" style="rounded=1;whiteSpace=wrap;html=1;fontSize=20;strokeColor=#82b366;strokeWidth=1;fillColor=#d5e8d4;" parent="WC-QCLngHYzSRAGnRQX4-3" vertex="1">
           <mxGeometry x="10" y="50" width="190" height="38.5" as="geometry" />
         </mxCell>
-        <mxCell id="WC-QCLngHYzSRAGnRQX4-6" value="SelectAll[X]" style="rounded=1;whiteSpace=wrap;html=1;fontSize=20;fontColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fillColor=#99004D;" parent="WC-QCLngHYzSRAGnRQX4-3" vertex="1">
+        <mxCell id="WC-QCLngHYzSRAGnRQX4-6" value="SelectAll[X]" style="rounded=1;whiteSpace=wrap;html=1;fontSize=20;strokeColor=#82b366;strokeWidth=1;fillColor=#d5e8d4;" parent="WC-QCLngHYzSRAGnRQX4-3" vertex="1">
           <mxGeometry x="10" y="98.5" width="190" height="38.5" as="geometry" />
         </mxCell>
-        <mxCell id="WC-QCLngHYzSRAGnRQX4-7" value="Select[X]ById" style="rounded=1;whiteSpace=wrap;html=1;fontSize=20;fontColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fillColor=#99004D;" parent="WC-QCLngHYzSRAGnRQX4-3" vertex="1">
+        <mxCell id="WC-QCLngHYzSRAGnRQX4-7" value="Select[X]ById" style="rounded=1;whiteSpace=wrap;html=1;fontSize=20;strokeColor=#82b366;strokeWidth=1;fillColor=#d5e8d4;" parent="WC-QCLngHYzSRAGnRQX4-3" vertex="1">
           <mxGeometry x="10" y="148.5" width="190" height="38.5" as="geometry" />
         </mxCell>
-        <mxCell id="WC-QCLngHYzSRAGnRQX4-8" value="Update[X]Asnyc" style="rounded=1;whiteSpace=wrap;html=1;fontSize=20;fontColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fillColor=#99004D;" parent="WC-QCLngHYzSRAGnRQX4-3" vertex="1">
+        <mxCell id="WC-QCLngHYzSRAGnRQX4-8" value="Update[X]Asnyc" style="rounded=1;whiteSpace=wrap;html=1;fontSize=20;strokeColor=#82b366;strokeWidth=1;fillColor=#d5e8d4;" parent="WC-QCLngHYzSRAGnRQX4-3" vertex="1">
           <mxGeometry x="10" y="198.5" width="190" height="38.5" as="geometry" />
         </mxCell>
-        <mxCell id="WC-QCLngHYzSRAGnRQX4-9" value="Delete[X]Asnyc" style="rounded=1;whiteSpace=wrap;html=1;fontSize=20;fontColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fillColor=#99004D;" parent="WC-QCLngHYzSRAGnRQX4-3" vertex="1">
+        <mxCell id="WC-QCLngHYzSRAGnRQX4-9" value="Delete[X]Asnyc" style="rounded=1;whiteSpace=wrap;html=1;fontSize=20;strokeColor=#82b366;strokeWidth=1;fillColor=#d5e8d4;" parent="WC-QCLngHYzSRAGnRQX4-3" vertex="1">
           <mxGeometry x="10" y="248.5" width="190" height="38.5" as="geometry" />
         </mxCell>
         <mxCell id="WC-QCLngHYzSRAGnRQX4-10" value="Interface &#xa;IStorageBroker" style="swimlane;fontSize=25;fontColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fillColor=#99004D;startSize=70;verticalAlign=top;" parent="1" vertex="1">
@@ -819,22 +819,22 @@
         <mxCell id="WC-QCLngHYzSRAGnRQX4-11" value="IStorageBroker.cs" style="swimlane;fontSize=18;fontColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fillColor=#99004D;startSize=40;verticalAlign=top;" parent="WC-QCLngHYzSRAGnRQX4-10" vertex="1">
           <mxGeometry x="20" y="90" width="210" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="WC-QCLngHYzSRAGnRQX4-14" value="IStorageBroker.[X].cs" style="swimlane;fontSize=18;fontColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fillColor=#99004D;startSize=40;verticalAlign=top;" parent="WC-QCLngHYzSRAGnRQX4-10" vertex="1">
+        <mxCell id="WC-QCLngHYzSRAGnRQX4-14" value="IStorageBroker.[X].cs" style="swimlane;fontSize=18;strokeColor=#82b366;strokeWidth=1;fillColor=#d5e8d4;startSize=40;verticalAlign=top;" parent="WC-QCLngHYzSRAGnRQX4-10" vertex="1">
           <mxGeometry x="20" y="160" width="210" height="298.5" as="geometry" />
         </mxCell>
-        <mxCell id="WC-QCLngHYzSRAGnRQX4-15" value="Insert[X]Asnyc" style="rounded=1;whiteSpace=wrap;html=1;fontSize=20;fontColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fillColor=#99004D;" parent="WC-QCLngHYzSRAGnRQX4-14" vertex="1">
+        <mxCell id="WC-QCLngHYzSRAGnRQX4-15" value="Insert[X]Asnyc" style="rounded=1;whiteSpace=wrap;html=1;fontSize=20;strokeColor=#82b366;strokeWidth=1;fillColor=#d5e8d4;" parent="WC-QCLngHYzSRAGnRQX4-14" vertex="1">
           <mxGeometry x="10" y="50" width="190" height="38.5" as="geometry" />
         </mxCell>
-        <mxCell id="WC-QCLngHYzSRAGnRQX4-16" value="SelectAll[X]" style="rounded=1;whiteSpace=wrap;html=1;fontSize=20;fontColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fillColor=#99004D;" parent="WC-QCLngHYzSRAGnRQX4-14" vertex="1">
+        <mxCell id="WC-QCLngHYzSRAGnRQX4-16" value="SelectAll[X]" style="rounded=1;whiteSpace=wrap;html=1;fontSize=20;strokeColor=#82b366;strokeWidth=1;fillColor=#d5e8d4;" parent="WC-QCLngHYzSRAGnRQX4-14" vertex="1">
           <mxGeometry x="10" y="98.5" width="190" height="38.5" as="geometry" />
         </mxCell>
-        <mxCell id="WC-QCLngHYzSRAGnRQX4-17" value="Select[X]ById" style="rounded=1;whiteSpace=wrap;html=1;fontSize=20;fontColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fillColor=#99004D;" parent="WC-QCLngHYzSRAGnRQX4-14" vertex="1">
+        <mxCell id="WC-QCLngHYzSRAGnRQX4-17" value="Select[X]ById" style="rounded=1;whiteSpace=wrap;html=1;fontSize=20;strokeColor=#82b366;strokeWidth=1;fillColor=#d5e8d4;" parent="WC-QCLngHYzSRAGnRQX4-14" vertex="1">
           <mxGeometry x="10" y="148.5" width="190" height="38.5" as="geometry" />
         </mxCell>
-        <mxCell id="WC-QCLngHYzSRAGnRQX4-18" value="Update[X]Asnyc" style="rounded=1;whiteSpace=wrap;html=1;fontSize=20;fontColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fillColor=#99004D;" parent="WC-QCLngHYzSRAGnRQX4-14" vertex="1">
+        <mxCell id="WC-QCLngHYzSRAGnRQX4-18" value="Update[X]Asnyc" style="rounded=1;whiteSpace=wrap;html=1;fontSize=20;strokeColor=#82b366;strokeWidth=1;fillColor=#d5e8d4;" parent="WC-QCLngHYzSRAGnRQX4-14" vertex="1">
           <mxGeometry x="10" y="198.5" width="190" height="38.5" as="geometry" />
         </mxCell>
-        <mxCell id="WC-QCLngHYzSRAGnRQX4-19" value="Delete[X]Asnyc" style="rounded=1;whiteSpace=wrap;html=1;fontSize=20;fontColor=#FFFFFF;strokeColor=#000000;strokeWidth=1;fillColor=#99004D;" parent="WC-QCLngHYzSRAGnRQX4-14" vertex="1">
+        <mxCell id="WC-QCLngHYzSRAGnRQX4-19" value="Delete[X]Asnyc" style="rounded=1;whiteSpace=wrap;html=1;fontSize=20;strokeColor=#82b366;strokeWidth=1;fillColor=#d5e8d4;" parent="WC-QCLngHYzSRAGnRQX4-14" vertex="1">
           <mxGeometry x="10" y="248.5" width="190" height="38.5" as="geometry" />
         </mxCell>
         <mxCell id="WC-QCLngHYzSRAGnRQX4-20" value="Legende" style="swimlane;fontSize=15;" parent="1" vertex="1">
