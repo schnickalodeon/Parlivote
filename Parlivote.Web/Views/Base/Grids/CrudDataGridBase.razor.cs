@@ -12,6 +12,9 @@ namespace Parlivote.Web.Views.Base.Grids
         public RenderFragment HeaderTemplate { get; set; }
 
         [Parameter]
+        public List<string> FieldsToIgnore { get; set; }
+
+        [Parameter]
         public EventCallback<TDataItem> OnDeleteClicked { get; set; }
 
         [Parameter]

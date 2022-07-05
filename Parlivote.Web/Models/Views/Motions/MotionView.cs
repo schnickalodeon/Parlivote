@@ -7,6 +7,7 @@ namespace Parlivote.Web.Models.Views.Motions
     public class MotionView
     {
         public Guid MotionId { get; set; }
+        public string Title { get; set; }
         public string Text { get; set; }
         public string State { get; set; }
         public Guid? ApplicantId { get; set; }
@@ -23,6 +24,7 @@ namespace Parlivote.Web.Models.Views.Motions
                 MeetingName = this.MeetingName,
                 MotionId = this.MotionId,
                 Text = this.Text,
+                Title = this.Title,
                 State = this.State,
                 VoteViews = new List<VoteView>(this.VoteViews),
             };

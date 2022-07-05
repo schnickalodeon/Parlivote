@@ -45,6 +45,7 @@ public class MotionViewService : IMotionViewService
             MeetingId = motionView.MeetingId,
             State = MotionState.Submitted,
             Text = motionView.Text,
+            Title = motionView.Title,
             ApplicantId = motionView.ApplicantId
         };
 
@@ -154,6 +155,7 @@ public class MotionViewService : IMotionViewService
             ApplicantId = motionView.ApplicantId,
             State = MotionStateConverter.FromString(motionView.State),
             Text = motionView.Text,
+            Title = motionView.Title,
             Votes = motionView.VoteViews?.Select(AsVote).ToList() ?? new List<Vote>()
         };
     }
@@ -169,6 +171,7 @@ public class MotionViewService : IMotionViewService
             ApplicantId = motion.ApplicantId,
             ApplicantName = applicantName,
             State = motion.State.GetValue(),
+            Title = motion.Title,
             Text = motion.Text,
             MeetingName = meetingName,
             VoteViews = motion.Votes?.Select(AsVoteView).ToList()

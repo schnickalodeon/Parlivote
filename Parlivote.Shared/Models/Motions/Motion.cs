@@ -16,6 +16,7 @@ namespace Parlivote.Shared.Models.Motions
         [JsonIgnore]
         public Meeting? Meeting { get; set; }
         public MotionState State { get; set; }
+        public string Title { get; set; }
         public string Text { get; set; }
 
         public ICollection<Vote>? Votes { get; set; }

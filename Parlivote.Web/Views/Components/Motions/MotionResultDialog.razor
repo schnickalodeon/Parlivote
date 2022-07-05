@@ -1,10 +1,14 @@
 ﻿<InfoDialogBase @ref="infoDialog" Title="Abstimmungsergebnis" IsVisible="@IsVisible" OnCancel="CloseAsync">
     
-    <div class="d-flex border border-1 rounded p-2 justify-content-center align-items-center">
-        <h6 class="flex-grow-1 mb-0">@MotionView.Text</h6>
-        <span class="badge @this.statusPillCss rounded-pill" style="font-size: 1em; width: 8em;">
-            @MotionView.State
-        </span>
+    <div class="border border-1 rounded p-2">
+        <div class="d-flex justify-content-center align-items-center pb-2">
+            <h5 class="flex-grow-1 mb-0">@MotionView.Title</h5>
+            <span class="badge @this.statusPillCss rounded-pill" style="font-size: 1em; width: 8em;">
+                @MotionView.State
+            </span>
+        </div>
+        <hr class="mt-0" />
+        @MotionView.Text
     </div>
     <div class="mt-2">
         <h5>Stimmenverteilung:</h5>
@@ -19,7 +23,7 @@
                 <td>@noCount</td>
             </tr>
             <tr>
-                <td><strong>Enhtaltungen</strong></td>
+                <td><strong>Enthaltungen</strong></td>
                 <td>@abstentionCount</td>
             </tr>
             </Body>

@@ -21,6 +21,9 @@ public partial class TextBoxBase : ComponentBase
     [Parameter]
     public bool IsDisabled { get; set; }
 
+    [Parameter]
+    public bool Multiline { get; set; }
+
     public bool IsEnabled => IsDisabled is false;
 
     public async Task SetValue(string value)

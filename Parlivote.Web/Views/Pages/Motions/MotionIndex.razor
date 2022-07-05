@@ -17,6 +17,7 @@
 
         <CrudDataGridBase
             DataItems="motions"
+            FieldsToIgnore="fieldsToIgnore"
             OnEditClicked="@((MotionView view) => editMotionComponent.Show(view))"
             OnDeleteClicked="@((MotionView view) => deleteMotionComponent.Show(view))">
             <HeaderTemplate>
