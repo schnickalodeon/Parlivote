@@ -56,6 +56,7 @@ public partial class MotionServiceTests
         {
             Id = Guid.Empty,
             ApplicantId = Guid.Empty,
+            Title = invalidText,
             Text = invalidText,
         };
 
@@ -65,6 +66,10 @@ public partial class MotionServiceTests
         invalidMotionException.AddData(
             key: nameof(Motion.Id),
             values: ExceptionMessages.INVALID_ID);
+
+        invalidMotionException.AddData(
+            key: nameof(Motion.Title),
+            values: ExceptionMessages.INVALID_STRING);
 
         invalidMotionException.AddData(
             key: nameof(Motion.Text),
